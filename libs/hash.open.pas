@@ -15,7 +15,6 @@ type
                      key      : tKey;
                      parent   : idxRange;
                      left     : idxRange;
-                     center   : idxRange;
                      right    : idxRange;
                    end;
   tControlRecord = record
@@ -24,29 +23,30 @@ type
                    end;
   tControl       = file of tControlRecord;
   tData          = file of tNode;
-  tTrinaryTree   = record
+  tOpenHash      = record
                      data    : tData;
                      control : tControl;
                    end;
 
-  procedure loadHash         (var this : tTrinaryTree; path, filename : string);
-  procedure newEmptyHash     (var this : tTrinaryTree; path, filename : string);
-  function  isEmpty          (var this : tTrinaryTree) : boolean;
-  function  search           (var this : tTrinaryTree; key : tKey; var pos: idxRange) : boolean;
-  procedure insert           (var this : tTrinaryTree; pos: idxRange; key : tKey);
-  procedure remove           (var this : tTrinaryTree; pos: idxRange);
-  function  fetch            (var this : tTrinaryTree; pos: idxRange) : tNode;
+  procedure loadHash         (var this : tOpenHash; path, filename : string);
+  procedure newEmptyHash     (var this : tOpenHash; path, filename : string);
+  function  isEmpty          (var this : tOpenHash) : boolean;
+  function  search           (var this : tOpenHash; key : tKey; var pos: idxRange) : boolean;
+  procedure insert           (var this : tOpenHash; pos: idxRange; key : tKey);
+  procedure remove           (var this : tOpenHash; pos: idxRange);
+  function  fetch            (var this : tOpenHash; pos: idxRange) : tNode;
 
 implementation
   { Helpers }
-  procedure  _openHash (var this : tTrinaryTree);
+  procedure  _openHash (var this : tOpenHash);
   begin
     reset(this.data);
     reset(this.control);
   end;
 
-  procedure  _closeHash (var this : tTrinaryTree);
+  procedure  _closeHash (var this : tOpenHash);
   begin
     close(this.data);
     close(this.control);
   end;
+end.

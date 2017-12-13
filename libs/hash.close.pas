@@ -15,7 +15,6 @@ type
                      key      : tKey;
                      parent   : idxRange;
                      left     : idxRange;
-                     center   : idxRange;
                      right    : idxRange;
                    end;
   tControlRecord = record
@@ -24,29 +23,30 @@ type
                    end;
   tControl       = file of tControlRecord;
   tData          = file of tNode;
-  tTrinaryTree   = record
+  tCloseHash     = record
                      data    : tData;
                      control : tControl;
                    end;
 
-  procedure loadHash         (var this : tTrinaryTree; path, filename : string);
-  procedure newEmptyHash     (var this : tTrinaryTree; path, filename : string);
-  function  isEmpty          (var this : tTrinaryTree) : boolean;
-  function  search           (var this : tTrinaryTree; key : tKey; var pos: idxRange) : boolean;
-  procedure insert           (var this : tTrinaryTree; pos: idxRange; key : tKey);
-  procedure remove           (var this : tTrinaryTree; pos: idxRange);
-  function  fetch            (var this : tTrinaryTree; pos: idxRange) : tNode;
+  procedure loadHash         (var this : tCloseHash; path, filename : string);
+  procedure newEmptyHash     (var this : tCloseHash; path, filename : string);
+  function  isEmpty          (var this : tCloseHash) : boolean;
+  function  search           (var this : tCloseHash; key : tKey; var pos: idxRange) : boolean;
+  procedure insert           (var this : tCloseHash; pos: idxRange; key : tKey);
+  procedure remove           (var this : tCloseHash; pos: idxRange);
+  function  fetch            (var this : tCloseHash; pos: idxRange) : tNode;
 
 implementation
   { Helpers }
-  procedure  _openHash (var this : tTrinaryTree);
+  procedure  _openHash (var this : tCloseHash);
   begin
     reset(this.data);
     reset(this.control);
   end;
 
-  procedure  _closeHash (var this : tTrinaryTree);
+  procedure  _closeHash (var this : tCloseHash);
   begin
     close(this.data);
     close(this.control);
   end;
+end.
