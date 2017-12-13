@@ -7,19 +7,30 @@ uses
 
 const
   NULLIDX  = -1;
+  MAX      = 50;
 
 type
   idxRange       = NULLIDX..MAXINT;
-  tKey           = string[3];
   tNode          = record
-                     key      : tKey;
-                     parent   : idxRange;
-                     left     : idxRange;
-                     right    : idxRange;
+                     idBuyer      : longint;
+                     idItem       : longint;
+                     itemName     : string;
+                     price        : decimal(10, 2);
+                     publishDate  : timestamp;
+                     sellDate     : timestamp;
+                     itemType     : 1..2;
+                     calification : 0..3;
+                     tax          : double;
+                     previous     : idxRange;
+                     next         : idxRange;
                    end;
   tControlRecord = record
-                     root   : idxRange;
                      erased : idxRange;
+                   end;
+  tHashNode      = record
+                     first : idxRange;
+                     last  : idxRange;
+                     total : int;
                    end;
   tControl       = file of tControlRecord;
   tData          = file of tNode;

@@ -11,21 +11,41 @@ const
 type
   idxRange       = NULLIDX..MAXINT;
   tKey           = string[3];
+  tCategory      = record
+                     id         : longint;
+                     idCategory : longint;
+                     idUser     : longint;
+                     itemName   : string;
+                     details    : string;
+                     price      : decimal(10, 2);
+                     ctimestamp : timestamp;
+                     etimestamp : timestamp;
+                     itemType   : 1..2;
+                     status     : 1..5;
+                   end;
   tNode          = record
-                     key      : tKey;
+                     key      : longint;
+                     index    : idxRange;
                      parent   : idxRange;
                      left     : idxRange;
                      right    : idxRange;
                    end;
   tControlRecord = record
-                     root   : idxRange;
-                     erased : idxRange;
+                     root1   : idxRange;
+                     root2   : idxRange;
+                     erased1 : idxRange;
+                     erased2 : idxRange;
+                     lastID  : longint;
                    end;
   tControl       = file of tControlRecord;
-  tData          = file of tNode;
+  tIdxByUser     = file of tNode;
+  tIdxByCategory = file of tNode;
+  tData          = file of tCategory;
   tAVLtree       = record
-                     data    : tData;
-                     control : tControl;
+                     data          : tData;
+                     idxByUser     : tIdxByUser
+                     idxByCategory : tIdxByCategory
+                     control       : tControl;
                    end;
 
   procedure loadTree         (var this : tAVLtree; path, filename : string);
@@ -47,12 +67,16 @@ implementation
   procedure  _openTree (var this : tAVLtree);
   begin
     reset(this.data);
+    reset(this.idxByUser);
+    reset(this.idxByCategory);
     reset(this.control);
   end;
 
   procedure  _closeTree (var this : tAVLtree);
   begin
     close(this.data);
+    close(this.idxByUser);
+    close(this.idxByCategory);
     close(this.control);
   end;
 

@@ -3,23 +3,31 @@ unit lib.hash.open;
 interface
 
 uses
-  sysutils;
+  sysutils, md5;
 
 const
   NULLIDX  = -1;
+  MAX      = 80;
 
 type
   idxRange       = NULLIDX..MAXINT;
-  tKey           = string[3];
+  tHashValue     = 0..MAX;
   tNode          = record
-                     key      : tKey;
-                     parent   : idxRange;
-                     left     : idxRange;
-                     right    : idxRange;
+                     id         : longint;
+                     email      : string;
+                     password   : string;
+                     fullname   : string;
+                     address    : string;
+                     providence : 0..25;
+                     ctimestamp : timestamp; {creation timestamp}
+                     photoUrl   : string;
+                     status     : boolean;
+                     utimestamp : timestamp; {login timestamp}
+                     next       : idxRange; {next item on the open hash}
                    end;
   tControlRecord = record
-                     root   : idxRange;
-                     erased : idxRange;
+                     hash   : array [tHashValue] of idxRange;
+                     lastID : longint;
                    end;
   tControl       = file of tControlRecord;
   tData          = file of tNode;
@@ -48,5 +56,13 @@ implementation
   begin
     close(this.data);
     close(this.control);
+  end;
+
+  function  _hash(email : string) : tHashValue;
+  var
+    hashing : string;
+  begin
+    hashing := MD5String(email);
+    _hash   := Hex2Dec(hashing) mod MAX;
   end;
 end.
