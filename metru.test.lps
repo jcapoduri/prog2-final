@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <PathDelim Value="\"/>
+    <Version Value="10"/>
+    <BuildModes Active="Default"/>
+    <Units Count="2">
+      <Unit0>
+        <Filename Value="metru.test.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <CursorPos X="11" Y="9"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+      </Unit0>
+      <Unit1>
+        <Filename Value="libs\lib.tree.avl.pas"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="151"/>
+        <CursorPos X="17" Y="175"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit1>
+    </Units>
+    <JumpHistory Count="3" HistoryIndex="2">
+      <Position1>
+        <Filename Value="metru.test.lpr"/>
+        <Caret Line="18" Column="23"/>
+      </Position1>
+      <Position2>
+        <Filename Value="metru.test.lpr"/>
+        <Caret Line="23" Column="22"/>
+      </Position2>
+      <Position3>
+        <Filename Value="metru.test.lpr"/>
+        <Caret Line="9" Column="11"/>
+      </Position3>
+    </JumpHistory>
+  </ProjectSession>
+</CONFIG>

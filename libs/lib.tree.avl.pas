@@ -1,3 +1,4 @@
+{Published files}
 unit lib.tree.avl;
 
 interface
@@ -11,17 +12,19 @@ const
 type
   idxRange       = NULLIDX..MAXINT;
   tKey           = string[3];
-  tCategory      = record
+  tItemType      = (New, Used);
+  tStatus        = (Publish, Paused, Sold, Void, Blocked);
+  tPublish       = record
                      id         : longint;
                      idCategory : longint;
                      idUser     : longint;
-                     itemName   : string;
-                     details    : string;
-                     price      : decimal(10, 2);
-                     ctimestamp : timestamp;
-                     etimestamp : timestamp;
-                     itemType   : 1..2;
-                     status     : 1..5;
+                     itemName   : string[255];
+                     details    : string[255];
+                     price      : Currency;
+                     ctimestamp : TDateTime;
+                     etimestamp : TDateTime;
+                     itemType   : tItemType;
+                     status     : tStatus;
                    end;
   tNode          = record
                      key      : longint;
@@ -31,20 +34,21 @@ type
                      right    : idxRange;
                    end;
   tControlRecord = record
-                     root1   : idxRange;
-                     root2   : idxRange;
-                     erased1 : idxRange;
-                     erased2 : idxRange;
+                     root1   : idxRange; { by user }
+                     root2   : idxRange; { by category }
+                     erased1 : idxRange; { by user }
+                     erased2 : idxRange; { by category }
                      lastID  : longint;
                    end;
   tControl       = file of tControlRecord;
-  tIdxByUser     = file of tNode;
-  tIdxByCategory = file of tNode;
-  tData          = file of tCategory;
+  tIdxFile       = file of tNode;      
+  tIdxByUser     = tIdxFile;
+  tIdxByCategory = tIdxFile;
+  tData          = file of tPublish;
   tAVLtree       = record
                      data          : tData;
-                     idxByUser     : tIdxByUser
-                     idxByCategory : tIdxByCategory
+                     idxByUser     : tIdxByUser;
+                     idxByCategory : tIdxByCategory;
                      control       : tControl;
                    end;
 
@@ -52,15 +56,22 @@ type
   procedure newEmptyTree     (var this : tAVLtree; path, filename : string);
   function  isEmpty          (var this : tAVLtree) : boolean;
   function  search           (var this : tAVLtree; key : tKey; var pos: idxRange) : boolean;
-  procedure insert           (var this : tAVLtree; pos: idxRange; key : tKey);
-  procedure remove           (var this: tAVLtree; pos: idxRange);
-  function  fetch            (var this : tAVLtree; pos: idxRange) : tNode;
+  procedure append           (var this : tAVLtree; key : tKey);
+  procedure remove           (var this : tAVLtree; key : tKey);
+  function  fetch            (var this : tAVLtree; pos: idxRange) : tPublish;
   function  root             (var this : tAVLtree) : idxRange;
   function  leftChild        (var this : tAVLtree; pos: idxRange) : idxRange;
   function  rightChild       (var this : tAVLtree; pos: idxRange) : idxRange;
   function  parent           (var this : tAVLtree; pos: idxRange) : idxRange;
-
-
+  {
+  procedure insert           (var this : tAVLtree; pos: idxRange; key : tKey);
+  procedure remove           (var this : tAVLtree; pos: idxRange);
+  function  fetch            (var this : tAVLtree; pos: idxRange) : tPublish;
+  function  root             (var this : tAVLtree) : idxRange;
+  function  leftChild        (var this : tAVLtree; pos: idxRange) : idxRange;
+  function  rightChild       (var this : tAVLtree; pos: idxRange) : idxRange;
+  function  parent           (var this : tAVLtree; pos: idxRange) : idxRange;
+  }
 
 implementation
   { Helpers }
@@ -80,21 +91,53 @@ implementation
     close(this.control);
   end;
 
-  function  _get (var this : tAVLtree; pos : idxRange) : tNode;
+  { getters }
+  function _getByReference(var idx: tIdxFile; pos : idxRange) : tNode;
   var
     node : tNode;
   begin
-    seek(this.data, pos);
-    read(this.data, node);
-    _get := node;
+    seek(idx, pos);
+    read(idx, node);
+    _getByReference := node;
   end;
 
-  procedure _set (var this : tAVLtree; pos : idxRange; node : tNode);
+  function  _getByUser (var this : tAVLtree; pos : idxRange) : tNode;
   begin
-    seek(this.data, pos);
-    write(this.data, node);
+    _getByUser := _getByReference(this.idxByUser, pos);
   end;
 
+  function  _getByCategory (var this : tAVLtree; pos : idxRange) : tNode;
+  begin
+    _getByCategory := _getByReference(this.idxByCategory, pos);
+  end;
+
+  function  _getCategoryByNode (var this : tAVLtree; idx : tNode) : tPublish;
+  var
+    node : tPublish;
+  begin
+    seek(this.data, idx.index);
+    read(this.data, node);
+    _getCategoryByNode := node;
+  end;
+
+  { setters }
+  procedure _setByReference(var idx: tIdxFile; pos : idxRange; node : tNode);
+  begin
+    seek(idx, pos);
+    write(idx, node);
+  end;
+
+  procedure  _setByUser (var this : tAVLtree; pos : idxRange; node : tNode);
+  begin
+    _setByReference(this.idxByUser, pos, node);
+  end;
+
+  procedure  _setByCategory (var this : tAVLtree; pos : idxRange; node : tNode);
+  begin
+    _setByReference(this.idxByCategory, pos, node);
+  end;
+
+  { control management }
   function  _getControl (var this : tAVLtree) : tControlRecord;
   var
     rc : tControlRecord;
@@ -118,7 +161,7 @@ implementation
       _max := b;
   end;
 
-  function _height (var this : tAVLtree; branchRoot : idxRange) : integer;
+  function _heightByReference (var idx : tIdxFile; branchRoot : idxRange) : integer;
   var
     h    : integer;
     node : tNode;
@@ -127,12 +170,61 @@ implementation
       h := 0
     else
       begin
-        node := _get(this, branchRoot);
-        h := _max(_height(this, node.right), _height(this, node.left)) + 1;
+        node := _getByReference(idx, branchRoot);
+        h := _max(_heightByReference(idx, node.right), _heightByReference(idx, node.left)) + 1;
       end;
-    _height := h;
+    _heightByReference := h;
   end;
 
+  function _heightByUser (var this : tAVLtree; branchRoot : idxRange) : integer;
+  begin
+    _heightByUser := _heightByReference(this.idxByUser, branchRoot);
+  end;
+
+  function _heightByCategory (var this : tAVLtree; branchRoot : idxRange) : integer;
+  begin
+    _heightByUser := _heightByReference(this.idxByCategory, branchRoot);
+  end;
+
+  { ---------------------------------------------------------------------------------------------------------------- }
+
+  function _appendData (var this : tAVLtree; var item : tPublish) : idxRange;
+  var
+    auxNode : tNode;
+  begin
+
+  end;
+
+  function _appendByReference (var idx : tIdxFile; var item : tNode) : idxRange;
+  var
+    rc      : tControlRecord;
+    pos     : idxRange;
+    auxNode : tNode;
+  begin
+    rc  := _getControl(this);
+    pos := NULLIDX;
+    if rc.erased = NULLIDX then
+      begin
+        pos        := filesize(this.data);
+        item.right := NULLIDX;
+        item.index := NULLIDX;
+        item.left  := NULLIDX;
+        _setByReference(idx, pos, item);
+      end
+    else
+      begin
+        pos        := rc.erased;
+        auxNode    := _getByReference(idx, pos);
+        rc.erased  := auxNode.parent;
+        item.right := NULLIDX;
+        item.left  := NULLIDX;
+        _setByReference(idx, pos, item);
+        _setControl(this, rc);
+      end;
+    _appendByReference := pos;
+  end;
+
+  {
   function _append (var this : tAVLtree; var item : tNode) : idxRange;
   var
     rc      : tControlRecord;
@@ -145,13 +237,14 @@ implementation
       begin
         pos        := filesize(this.data);
         item.right := NULLIDX;
+        item.index := NULLIDX;
         item.left  := NULLIDX;
         _set(this, pos, item);
       end
     else
       begin
         pos        := rc.erased;
-        auxNode    := _get(this, pos);
+        auxNode    := _getCategoryByNode(this, pos);
         rc.erased  := auxNode.parent;
         item.right := NULLIDX;
         item.left  := NULLIDX;
@@ -160,6 +253,7 @@ implementation
       end;
     _append := pos;
   end;
+  }
 
   procedure _detach (var this : tAVLtree; pos : idxRange; var node : tNode);
   var
@@ -403,15 +497,24 @@ implementation
   begin
     fullFileName := path + filename;
     {$I-}
-    assign(this.data, fullFileName + '.dat');
-    assign(this.control, fullFileName + '.ctrl');
+    assign(this.data,          fullFileName + '.dat');
+    assign(this.idxByUser,     fullFileName + '.ntx_1');
+    assign(this.idxByCategory, fullFileName + '.ntx_2');
+    assign(this.control,       fullFileName + '.ctrl');
     rewrite(this.data);
+    rewrite(this.idxByUser);
+    rewrite(this.idxByCategory);
     rewrite(this.control);
-    rc.root := NULLIDX;
-    rc.erased := NULLIDX;
+
+    rc.root1   := NULLIDX;
+    rc.erased1 := NULLIDX;
+    rc.root2   := NULLIDX;
+    rc.erased2 := NULLIDX;
+    rc.lastID  := 0;
     _setControl(this, rc);
 
     _closeTree(this);
+    {$I+}
   end;
 
   function  isEmpty          (var this : tAVLtree) : boolean;
@@ -546,7 +649,7 @@ implementation
     _closeTree(this);
   end;
 
-  function  fetch            (var this : tAVLtree; pos: idxRange) : tNode;
+  function  fetch            (var this : tAVLtree; pos: idxRange) : tPublish;
   var
     node : tNode;
   begin

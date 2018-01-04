@@ -1,3 +1,4 @@
+{messages module}
 unit lib.tree.trinary;
 
 interface

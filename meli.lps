@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <PathDelim Value="\"/>
+    <Version Value="10"/>
+    <BuildModes Active="Default"/>
+    <Units Count="9">
+      <Unit0>
+        <Filename Value="meli.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="32" Y="13"/>
+        <UsageCount Value="30"/>
+      </Unit0>
+      <Unit1>
+        <Filename Value="mainunit.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="Form1"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="29" Y="9"/>
+        <UsageCount Value="30"/>
+      </Unit1>
+      <Unit2>
+        <Filename Value="C:\lazarus\lcl\interfaces\win32\interfaces.pp"/>
+        <UnitName Value="Interfaces"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="6" Y="19"/>
+        <UsageCount Value="9"/>
+      </Unit2>
+      <Unit3>
+        <Filename Value="libs\lib.tree.avl.pas"/>
+        <IsPartOfProject Value="True"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="1"/>
+        <CursorPos X="34" Y="19"/>
+        <UsageCount Value="23"/>
+        <Loaded Value="True"/>
+      </Unit3>
+      <Unit4>
+        <Filename Value="libs\lib.hash.close.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="3"/>
+        <CursorPos X="41" Y="19"/>
+        <UsageCount Value="23"/>
+      </Unit4>
+      <Unit5>
+        <Filename Value="libs\lib.hash.open.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="50"/>
+        <CursorPos X="36" Y="75"/>
+        <UsageCount Value="23"/>
+      </Unit5>
+      <Unit6>
+        <Filename Value="C:\lazarus\fpc\3.0.4\source\packages\hash\src\md5.pp"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="148"/>
+        <CursorPos X="18" Y="183"/>
+        <UsageCount Value="14"/>
+      </Unit6>
+      <Unit7>
+        <Filename Value="libs\lib.tree.trinary.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="23"/>
+      </Unit7>
+      <Unit8>
+        <Filename Value="libs\lib.tree.lcrs.pas"/>
+        <IsPartOfProject Value="True"/>
+        <TopLine Value="200"/>
+        <CursorPos X="34" Y="224"/>
+        <UsageCount Value="23"/>
+        <Loaded Value="True"/>
+      </Unit8>
+    </Units>
+    <JumpHistory Count="8" HistoryIndex="7">
+      <Position1>
+        <Filename Value="libs\lib.tree.lcrs.pas"/>
+        <Caret Line="51" Column="79" TopLine="262"/>
+      </Position1>
+      <Position2>
+        <Filename Value="libs\lib.tree.lcrs.pas"/>
+        <Caret Line="59" Column="36" TopLine="35"/>
+      </Position2>
+      <Position3>
+        <Filename Value="libs\lib.tree.lcrs.pas"/>
+        <Caret Line="50" Column="98" TopLine="40"/>
+      </Position3>
+      <Position4>
+        <Filename Value="libs\lib.tree.lcrs.pas"/>
+        <Caret Line="136" Column="39" TopLine="112"/>
+      </Position4>
+      <Position5>
+        <Filename Value="libs\lib.tree.lcrs.pas"/>
+        <Caret Line="146" Column="14" TopLine="122"/>
+      </Position5>
+      <Position6>
+        <Filename Value="libs\lib.tree.lcrs.pas"/>
+        <Caret Line="210" Column="34" TopLine="187"/>
+      </Position6>
+      <Position7>
+        <Filename Value="libs\lib.tree.lcrs.pas"/>
+        <Caret Line="211" Column="33" TopLine="187"/>
+      </Position7>
+      <Position8>
+        <Filename Value="libs\lib.tree.lcrs.pas"/>
+        <Caret Line="224" Column="34" TopLine="200"/>
+      </Position8>
+    </JumpHistory>
+  </ProjectSession>
+</CONFIG>
