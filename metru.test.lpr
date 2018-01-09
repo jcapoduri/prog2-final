@@ -13,9 +13,8 @@ uses
   lib.hash.close   in 'libs\lib.hash.close.pas',
   //lib.tree.avl     in 'libs\lib.tree.avl.pas',
   lib.tree.trinary in 'libs\lib.tree.trinary.pas'
+  //io.helpers       in 'libs\io.helpers.pas'
   ;
-
-{$R *.res}
 
 begin
 end.

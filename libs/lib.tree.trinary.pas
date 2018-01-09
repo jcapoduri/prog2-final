@@ -41,6 +41,7 @@ type
   function  leftChild        (var this : tTrinaryTree; pos: idxRange) : idxRange;
   function  rightChild       (var this : tTrinaryTree; pos: idxRange) : idxRange;
   function  parent           (var this : tTrinaryTree; pos: idxRange) : idxRange;
+  function  nextItem         (var this : tTrinaryTree; node: tNode) : tNode;
 
 
 
@@ -157,7 +158,7 @@ implementation
 
   function _isLeaf(var node : tNode) : boolean;
   begin
-    _isLeaf := (node.left = NULLIDX) and (node.right = NULLIDX) and (node.center = NULLIDX);
+    _isLeaf := (node.left = NULLIDX) and (node.right = NULLIDX);
   end;
 
   function _parent(var this : tTrinaryTree; var idx : idxRange) : idxRange;
@@ -346,11 +347,15 @@ implementation
     else
       begin
         parent := _get(this, pos);
-        if keyGt(key, parent.key) then
-          parent.right := auxIdx
+        if keyEq(key, parent.key) then
+          begin
+          end
         else
-          parent.left  := auxIdx;
-        _set(this, pos, parent);
+          if keyGt(key, parent.key) then
+            parent.right := auxIdx
+          else
+            parent.left  := auxIdx;
+          _set(this, pos, parent);
       end;
 
     _closeTree(this);
@@ -460,5 +465,13 @@ implementation
     parent := idx;
   end;
 
-
+  function  nextItem         (var this : tTrinaryTree; node: tNode) : tNode;
+   var
+    auxNode : tNode;
+  begin
+    _openTree(this);
+    auxNode := _get(this, node.center);
+    _closeTree(this);
+    nextItem := auxNode;
+  end;
 end.
