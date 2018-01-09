@@ -97,7 +97,7 @@ implementation
     hashing : string;
   begin
     hashing := MD5Print(MD5String(email));
-    _hash   := StrToInt64('$' + hashing) mod MAX;
+    _hash   := StrToInt64(LeftStr('$' + hashing, 16)) mod MAX;
   end;
 
   function _append (var this : tOpenHash; var item : tNode) : idxRange;
