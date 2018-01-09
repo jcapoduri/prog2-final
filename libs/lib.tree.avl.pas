@@ -11,7 +11,7 @@ const
 
 type
   idxRange       = NULLIDX..MAXINT;
-  tKey           = string[3];
+  tKey           = longint;
   tItemType      = (New, Used);
   tStatus        = (Publish, Paused, Sold, Void, Blocked);
   tPublish       = record
@@ -55,9 +55,10 @@ type
   procedure loadTree         (var this : tAVLtree; path, filename : string);
   procedure newEmptyTree     (var this : tAVLtree; path, filename : string);
   function  isEmpty          (var this : tAVLtree) : boolean;
-  function  search           (var this : tAVLtree; key : tKey; var pos: idxRange) : boolean;
-  procedure append           (var this : tAVLtree; key : tKey);
-  procedure remove           (var this : tAVLtree; key : tKey);
+  function  searchByUser     (var this : tAVLtree; key : tKey; var pos: idxRange) : boolean;
+  function  searchByCategory (var this : tAVLtree; key : tKey; var pos: idxRange) : boolean;
+  procedure append           (var this : tAVLtree; publication : tPublish);
+  procedure remove           (var this : tAVLtree; publication : tPublish);
   function  fetch            (var this : tAVLtree; pos: idxRange) : tPublish;
   function  root             (var this : tAVLtree) : idxRange;
   function  leftChild        (var this : tAVLtree; pos: idxRange) : idxRange;
@@ -137,6 +138,14 @@ implementation
     _setByReference(this.idxByCategory, pos, node);
   end;
 
+  procedure _setPublication (var this : tAVLtree; pos : idxRange; publication : tPublish);
+  var
+    node : tPublish;
+  begin
+    seek(this.data, pos);
+    write(this.data, publication);
+  end;
+
   { control management }
   function  _getControl (var this : tAVLtree) : tControlRecord;
   var
@@ -151,6 +160,22 @@ implementation
   begin
     seek(this.control, 0);
     write(this.control, RC);
+  end;
+
+  { key helpers }
+  function keyGt(key1, key2 : tKey) : boolean;
+  begin
+    keyGt := key1 > key2;
+  end;
+
+  function keyLt(key1, key2 : tKey) : boolean;
+  begin
+    keyLt := key1 < key2;
+  end;
+
+  function keyEq(key1, key2 : tKey) : boolean;
+  begin
+    keyEq := key1 = key2;
   end;
 
   function _max(a, b : integer) : integer;
@@ -183,19 +208,21 @@ implementation
 
   function _heightByCategory (var this : tAVLtree; branchRoot : idxRange) : integer;
   begin
-    _heightByUser := _heightByReference(this.idxByCategory, branchRoot);
+    _heightByCategory := _heightByReference(this.idxByCategory, branchRoot);
   end;
 
   { ---------------------------------------------------------------------------------------------------------------- }
 
   function _appendData (var this : tAVLtree; var item : tPublish) : idxRange;
   var
-    auxNode : tNode;
+    pos     : idxRange;
   begin
-
+    pos        := filesize(this.data);
+    _setPublication(this, pos, item);
+    _appendData := pos;
   end;
 
-  function _appendByReference (var idx : tIdxFile; var item : tNode) : idxRange;
+  function _appendByUser (var this : tAVLtree; var item : tNode) : idxRange;
   var
     rc      : tControlRecord;
     pos     : idxRange;
@@ -203,29 +230,28 @@ implementation
   begin
     rc  := _getControl(this);
     pos := NULLIDX;
-    if rc.erased = NULLIDX then
+    if rc.erased1 = NULLIDX then
       begin
-        pos        := filesize(this.data);
+        pos        := filesize(this.idxByUser);
         item.right := NULLIDX;
         item.index := NULLIDX;
         item.left  := NULLIDX;
-        _setByReference(idx, pos, item);
+        _setByReference(this.idxByUser, pos, item);
       end
     else
       begin
-        pos        := rc.erased;
-        auxNode    := _getByReference(idx, pos);
-        rc.erased  := auxNode.parent;
+        pos        := rc.erased1;
+        auxNode    := _getByReference(this.idxByUser, pos);
+        rc.erased1 := auxNode.parent;
         item.right := NULLIDX;
         item.left  := NULLIDX;
-        _setByReference(idx, pos, item);
+        _setByReference(this.idxByUser, pos, item);
         _setControl(this, rc);
       end;
-    _appendByReference := pos;
+    _appendByUser := pos;
   end;
 
-  {
-  function _append (var this : tAVLtree; var item : tNode) : idxRange;
+  function _appendByCategory (var this : tAVLtree; var item : tNode) : idxRange;
   var
     rc      : tControlRecord;
     pos     : idxRange;
@@ -233,28 +259,93 @@ implementation
   begin
     rc  := _getControl(this);
     pos := NULLIDX;
-    if Rc.erased = NULLIDX then
+    if rc.erased2 = NULLIDX then
       begin
-        pos        := filesize(this.data);
+        pos        := filesize(this.idxByCategory);
         item.right := NULLIDX;
         item.index := NULLIDX;
         item.left  := NULLIDX;
-        _set(this, pos, item);
+        _setByReference(this.idxByCategory, pos, item);
       end
     else
       begin
-        pos        := rc.erased;
-        auxNode    := _getCategoryByNode(this, pos);
-        rc.erased  := auxNode.parent;
+        pos        := rc.erased2;
+        auxNode    := _getByReference(this.idxByCategory, pos);
+        rc.erased2 := auxNode.parent;
         item.right := NULLIDX;
         item.left  := NULLIDX;
-        _set(this, pos, item);
+        _setByReference(this.idxByCategory, pos, item);
         _setControl(this, rc);
       end;
-    _append := pos;
+    _appendByCategory := pos;
   end;
-  }
 
+  function _append (var this : tAVLtree; var publication : tPublish) : idxRange;
+   var
+    nodeUser, nodeCat, parent : tNode;
+    rc                        : tControlRecord;
+    auxIdxUser, auxIdxCat, posUser, posCat   : idxRange;
+  begin
+    {_openTree(this);}
+    { add user node }
+    searchByUser(this, publication.idUser, posUser);
+    nodeUser.key    := publication.idUser;
+    nodeUser.parent := posUser;
+    auxIdxUser      := _appendByUser(this, nodeUser);
+
+    { add category node }
+    searchByCategory(this, publication.idCategory, posCat);
+    nodeCat.key    := publication.idCategory;
+    nodeCat.parent := posUser;
+    auxIdxCat      := _appendByUser(this, nodeCat);
+
+    { set index for publication }
+    if nodeUser.index = NULLIDX then { we need to create a new publication }
+      begin
+        nodeUser.index := _appendData(this, publication);
+        nodeCat.index  := nodeUser.index;
+      end
+    else
+      _setPublication(this, nodeUser.index, publication);
+
+    if posUser = NULLIDX then //empty tree, insert at root
+      begin
+        rc      := _getControl(this);
+        rc.root1 := auxIdxUser;
+        _setControl(this, rc);
+      end
+    else
+      begin
+        parent := _getByUser(this, posUser);
+        if keyGt(nodeUser.key, parent.key) then
+          parent.right := auxIdxUser
+        else
+          parent.left  := auxIdxUser;
+        _setByUser(this, posUser, parent);
+      end;
+
+    if posCat = NULLIDX then //empty tree, insert at root
+      begin
+        rc      := _getControl(this);
+        rc.root2 := auxIdxCat;
+        _setControl(this, rc);
+      end
+    else
+      begin
+        parent := _getByCategory(this, posCat);
+        if keyGt(nodeCat.key, parent.key) then
+          parent.right := auxIdxCat
+        else
+          parent.left  := auxIdxCat;
+        _setByCategory(this, posCat, parent);
+      end;
+
+    
+    _balanceIfNeeded(this, pos);
+    {_closeTree(this);}
+  end;
+
+  { todo }
   procedure _detach (var this : tAVLtree; pos : idxRange; var node : tNode);
   var
     rc : tControlRecord;
@@ -443,22 +534,6 @@ implementation
       end;
   end;
 
-  { key helpers }
-  function keyGt(key1, key2 : tKey) : boolean;
-  begin
-    keyGt := key1 > key2;
-  end;
-
-  function keyLt(key1, key2 : tKey) : boolean;
-  begin
-    keyLt := key1 < key2;
-  end;
-
-  function keyEq(key1, key2 : tKey) : boolean;
-  begin
-    keyEq := key1 = key2;
-  end;
-
   {Public}
   procedure loadTree         (var this : tAVLtree; path, filename : string);
   var
@@ -529,7 +604,7 @@ implementation
     isEmpty := empty;
   end;
 
-  function  search           (var this : tAVLtree; key : tKey; var pos: idxRange) : boolean;
+  function searchByUser      (var this : tAVLtree; key : tKey; var pos: idxRange) : boolean;
   var
     found      : boolean;
     curNodeIdx : idxRange;
@@ -539,11 +614,11 @@ implementation
     _openTree(this);
     found      := false;
     rc         := _getControl(this);
-    curNodeIdx := rc.root;
+    curNodeIdx := rc.root1;
     pos        := NULLIDX;
     while (curNodeIdx <> NULLIDX) and (not found) do
       begin
-        curNode := _get(this, curNodeIdx);
+        curNode := _getByUser(this, curNodeIdx);
         if keyEq(curNode.key, key) then
           begin
             found := true;
@@ -559,16 +634,50 @@ implementation
           end;
       end;
     _closeTree(this);
-    search := found;
+    searchByUser := found;
   end;
 
-  procedure insert           (var this : tAVLtree; pos: idxRange; key : tKey);
+  function  searchByCategory    (var this : tAVLtree; key : tKey; var pos: idxRange) : boolean;
   var
-    node, parent : tNode;
-    rc           : tControlRecord;
-    auxIdx       : idxRange;
+    found      : boolean;
+    curNodeIdx : idxRange;
+    curNode    : tNode;
+    rc         : tControlRecord;
   begin
     _openTree(this);
+    found      := false;
+    rc         := _getControl(this);
+    curNodeIdx := rc.root2;
+    pos        := NULLIDX;
+    while (curNodeIdx <> NULLIDX) and (not found) do
+      begin
+        curNode := _getByCategory(this, curNodeIdx);
+        if keyEq(curNode.key, key) then
+          begin
+            found := true;
+            pos   := curNodeIdx;
+          end
+        else
+          begin
+            pos := curNodeIdx;
+            if keyGt(key, curNode.key) then
+              curNodeIdx := curNode.right
+            else
+              curNodeIdx := curNode.left;
+          end;
+      end;
+    _closeTree(this);
+    searchByCategory := found;
+  end;
+
+  function append           (var this : tAVLtree; key : tPublish) : boolean;
+  var
+    nodeUser, nodeCat, parent : tNode;
+    rc                        : tControlRecord;
+    auxIdx, posUser, posCat   : idxRange;
+  begin
+    _openTree(this);
+    pos         := _search(this, tPublish);
     node.key    := key;
     node.parent := pos;
     auxIdx      := _append(this, node);
@@ -590,7 +699,7 @@ implementation
       end;
 
 
-    _balanceIfNeeded(this, pos);
+    //_balanceIfNeeded(this, pos);
     _closeTree(this);
   end;
 
@@ -641,9 +750,12 @@ implementation
       end;
   end;
 
-  procedure remove          (var this: tAVLtree; pos: idxRange);
+  procedure remove          (var this: tAVLtree; publication: tPublish);
+  var
+    pos : idxRange;
   begin
     _openTree(this);
+    searchByUser(this, publication.idUser, pos)
     _remove(this, pos);
     _balanceIfNeeded(this, pos);
     _closeTree(this);
