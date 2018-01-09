@@ -43,7 +43,7 @@ type
   procedure loadHash         (var this : tOpenHash; path, filename : string);
   procedure newEmptyHash     (var this : tOpenHash; path, filename : string);
   {function  isEmpty          (var this : tOpenHash) : boolean;}
-  function  search           (var this : tOpenHash; key : tKey; var pos: idxRange) : boolean;
+  function  search           (var this : tOpenHash; email : tKey; var pos: idxRange) : boolean;
   procedure insert           (var this : tOpenHash; node : tNode);
   procedure remove           (var this : tOpenHash; pos: idxRange);
   function  fetch            (var this : tOpenHash; pos: idxRange) : tNode;
@@ -92,7 +92,7 @@ implementation
     write(this.data, node);
   end;
 
-  function  _hash(email : string) : tHashValue;
+  function  _hash(email : tKey) : tHashValue;
   var
     hashing : string;
   begin
@@ -178,11 +178,29 @@ implementation
     _closeHash(this);
   end;
 
-  function  search           (var this : tOpenHash; key : tKey; var pos: idxRange) : boolean;
+  function  search           (var this : tOpenHash; email : tKey; var pos: idxRange) : boolean;
+  var
+    keyHash : tHashValue;
+    rc      : tControlRecord;
+    found   : boolean;
+    i       : integer;
+    node    : tNode;
   begin
-    {TODO}
     _openHash(this);
+    found   := false;
+    keyHash := _hash(email);
+    rc      := _getControl(this);
+    pos     := rc.hash[keyHash];
+    while (pos <> NULLIDX) and (not found) do
+      begin
+        node := _get(this, pos);
+        if email = node.email then
+          found := true
+        else
+          pos := node.next;
+      end;
     _closeHash(this);
+    search := found;
   end;
 
   procedure insert           (var this : tOpenHash; node : tNode);
@@ -191,7 +209,6 @@ implementation
     pos : idxRange;
     rc  : tControlRecord;
   begin
-    {TODO}
     _openHash(this);
     key := _hash(node.email);
     pos := _append(this, node);
@@ -209,26 +226,45 @@ implementation
 
   procedure remove           (var this : tOpenHash; pos: idxRange);
   var
-    key    : tHashValue;
-    auxPos : idxRange;
-    node   : tNode;
-    rc     : tControlRecord;
+    key              : tHashValue;
+    auxPos           : idxRange;
+    node, parentNode : tNode;
+    rc               : tControlRecord;
+    found            : boolean;
   begin
-    {TODO}
     _openHash(this);
+    node   := _get(this, pos);
     key    := _hash(node.email);
-    node   := _get(this, node, pos);
     rc     := _getControl(this);
     auxPos := rc.hash[key];
-    if pos = auxPos then
+    if pos = auxPos then { the node to be deleted is the first on the list }
       begin
-        rc.hash[key] := node.next
+        rc.hash[key] := node.next;
         node.next    := rc.erased;
         rc.erased    := pos;
+      end 
+    else                  { the node is in the middle of the list }
+      begin
+        parentNode := _get(this, auxPos);
+        found      := false;
+        auxPos     := parentNode.next;
+        while (auxPos <> NULLIDX) and (not found) do
+          begin
+            if parentNode.next = pos then
+              found := true
+            else
+              begin
+                auxPos     := parentNode.next;
+                parentNode := _get(this, auxPos);
+              end;
+          end;
+        parentNode.next := node.next; { unlink node to be deleted }
+        node.next       := rc.erased; { chain node to be deleted to deleted list }
+        rc.erased       := pos;       { update deleted list }
+        _set(this, auxPos, parentNode);
       end;
-    {else}
 
-    _set(this, node, pos);
+    _set(this, pos, node);
     _setControl(this, rc);
     _closeHash(this);
   end;
