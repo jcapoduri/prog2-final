@@ -188,26 +188,59 @@ implementation
   procedure insert           (var this : tOpenHash; node : tNode);
   var
     key : tHashValue;
+    pos : idxRange;
+    rc  : tControlRecord;
   begin
     {TODO}
     _openHash(this);
     key := _hash(node.email);
-    _append(this, node);
+    pos := _append(this, node);
+    rc  := _getControl(this);
+    if rc.hash[key] = NULLIDX then
+      rc.hash[key] := pos
+    else
+      begin
+        node.next    := rc.hash[key];
+        rc.hash[key] := pos;
+      end;
+    _setControl(this, rc);
     _closeHash(this);
   end;
 
   procedure remove           (var this : tOpenHash; pos: idxRange);
+  var
+    key    : tHashValue;
+    auxPos : idxRange;
+    node   : tNode;
+    rc     : tControlRecord;
   begin
     {TODO}
     _openHash(this);
+    key    := _hash(node.email);
+    node   := _get(this, node, pos);
+    rc     := _getControl(this);
+    auxPos := rc.hash[key];
+    if pos = auxPos then
+      begin
+        rc.hash[key] := node.next
+        node.next    := rc.erased;
+        rc.erased    := pos;
+      end;
+    {else}
+
+    _set(this, node, pos);
+    _setControl(this, rc);
     _closeHash(this);
   end;
 
   function  fetch            (var this : tOpenHash; pos: idxRange) : tNode;
+  var
+    node   : tNode;
   begin
-    {TODO}
     _openHash(this);
+    node := _get(this, pos);
     _closeHash(this);
+    fetch := node;
   end;
   
 end.
