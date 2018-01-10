@@ -7,8 +7,9 @@ uses
   sysutils, md5;
 
 const
-  NULLIDX  = -1;
-  MAX      = 80;
+  NULLIDX     = -1;
+  MAX         = 80;
+  defaultPass = 'palo_y_a_la_bolsa';
 
 type
   idxRange       = NULLIDX..MAXINT;
@@ -139,7 +140,7 @@ implementation
     reset(this.data);
     dataError := IOResult <> 0;
 
-    assign(this.control, fullFileName + '.ctrl');
+    assign(this.control, fullFileName + '.con');
     reset(this.control);
     controlError := IOResult <> 0;
     {$I+}
