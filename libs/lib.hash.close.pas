@@ -145,6 +145,22 @@ implementation
     _append := pos;
   end;
 
+  procedure _detach  (var this : tOpenHash; pos : idxRange);
+  var
+    rc      : tControlRecord;
+    pos     : idxRange;
+    auxNode : tNode;
+  begin
+    rc               := _getControl(this);
+    auxNode          := _get(this, pos);
+    auxNode.next     := rc.erased;
+    auxNode.previous := NULLIDX;
+    rc.erased        := pos;
+
+    _set(this, pos, auxNode);
+    _setControl(this, rc);
+  end;
+
   procedure loadHash         (var this : tCloseHash; path, filename : string);
   var
     controlError, dataError : boolean;
@@ -206,8 +222,34 @@ implementation
   end;
 
   function  search           (var this : tCloseHash; key : tKey; var pos: idxRange) : boolean;
+  var
+    key      : tHashValue;
+    rc       : tControlRecord;
+    hashNode : tHashNode;
+    node     : tNode;
+    found    : boolean;
   begin
     {TODO}
+    _openHash(this);
+    key      := _hash(node.email);
+    pos      := NULLIDX;
+    hashNode := _getHash(this, key);
+    found    := false;
+
+    if (hashNode.total > 0) then
+      begin
+        pos := hashNode.first;
+        while (pos <> NULLIDX) and (not found) do
+          begin
+            node := _get(this, pos);
+            if (node.email = key) then
+              found := true
+            else
+              pos := node.next;
+          end;
+      end;
+
+    search := found;
   end;
 
   procedure insert           (var this : tCloseHash; pos: idxRange; sell : tSell);
@@ -245,15 +287,73 @@ implementation
   end;
 
   procedure remove           (var this : tCloseHash; pos: idxRange);
+  var
+    node     : tNode;
+    key      : tHashValue;
+    auxPos   : idxRange;
+    rc       : tControlRecord;
+    hashNode : tHashNode;
+    auxNode  : tNode;
   begin
     {TODO}
+     _openHash(this);
+    node     := _get(this, pos);
+    key      := _hash(node.email);
+    hashNode := _getHash(this, key);
+
+    //remove element from the hash
+    if (hashNode.total = 1) then { it's the only one }
+      begin
+        hashNode.total := 0;
+        hashNode.first := NULLIDX;
+        hashNode.last  := NULLIDX;
+      end
+    else
+      begin
+        if (pos = hashNode.first) then { first element from the list}
+          begin
+            auxPos           := node.next;
+            auxNode          := _get(this, auxPos);
+            auxNode.previous := NULLIDX;
+            _set(this, auxPos, auxNode);
+            rc.first         := auxPos;
+          end
+        else                            { it's in the middle or last}
+          begin
+            auxPos       := node.previous;
+            auxNode      := _get(this, auxPos);
+            auxNode.next := node.next;
+            _set(this, auxPos, auxNode); 
+
+            if (pos = hashNode.last) then { last element from the list}
+              begin
+                auxPos           := node.next;
+                auxNode          := _get(this, auxPos);
+                auxNode.previous := NULLIDX;
+                _set(this, auxPos, auxNode);
+                rc.last         := auxPos;
+              end
+            else                            { it's in the middle}
+              begin
+                auxPos       := node.next;
+                auxNode      := _get(this, auxPos);
+                auxNode.next := node.next;
+                _set(this, auxPos, auxNode); 
+              end;
+          end;
+        hashNode.total := hashNode.total - 1;
+      end;
+
+    //mark element as deleted
+    _detach(this, pos);
+
+    _closeHash(this);
   end;
 
   function  fetch            (var this : tCloseHash; pos: idxRange) : tNode;
   var
-    node   : tNode;
+    node : tNode;
   begin
-    {TODO}
     _openHash(this);
     node  := _get(this, pos);
     _closeHash(this);
