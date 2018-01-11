@@ -20,10 +20,10 @@ var
   user1, user2, user3 : lib.hash.open.tUser; 
   userDB              : lib.hash.open.tOpenHash;
   found               : boolean;
-  userPointer         : lib.hash.open.idxRange;
+  userPointer         : lib.hash.open.tHashValue;
 
 begin
-  lib.hash.open.loadHash(userDB, 'databases/', 'users');
+  lib.hash.open.loadHash(userDB, 'data/', 'users');
 
   user1.email := 'jcapoduri@gmail.com';
 
@@ -46,7 +46,7 @@ begin
   else
     WriteLn('nop');
 
-  user1 := lib.hash.open.fetch(userDB, userPointer);
+  user1 := lib.hash.open.fetch(userDB, 'jcapoduri@gmail.com');
 
   Write(user1.email);
 
