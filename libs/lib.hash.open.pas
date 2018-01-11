@@ -13,7 +13,7 @@ const
 
 type
   idxRange       = NULLIDX..MAXINT;
-  tHashValue     = 0..MAX;
+  tHashValue     = NULLIDX..MAX;
   tKey           = string[255];
   tNode          = record
                      id         : longint;
@@ -25,14 +25,12 @@ type
                      ctimestamp : TDateTime; {creation timestamp}
                      photoUrl   : string[255];
                      status     : boolean;
-                     utimestamp : TDateTime; {login timestamp}
-                     next       : idxRange; {next item on the open hash}
+                     utimestamp : TDateTime; {login timestamp}                     
                    end;
   tUser          = tNode;
   tControlRecord = record
-                     hash   : array [tHashValue] of idxRange;
                      lastID : longint;
-                     erased : idxRange;
+                     count  : tHashValue;
                    end;
   tControl       = file of tControlRecord;
   tData          = file of tNode;
@@ -44,10 +42,10 @@ type
   procedure loadHash         (var this : tOpenHash; path, filename : string);
   procedure newEmptyHash     (var this : tOpenHash; path, filename : string);
   {function  isEmpty          (var this : tOpenHash) : boolean;}
-  function  search           (var this : tOpenHash; email : tKey; var pos: idxRange) : boolean;
+  function  search           (var this : tOpenHash; email : tKey; var pos: tHashValue) : boolean;
   procedure insert           (var this : tOpenHash; node : tNode);
-  procedure remove           (var this : tOpenHash; pos: idxRange);
-  function  fetch            (var this : tOpenHash; pos: idxRange) : tNode;
+  procedure remove           (var this : tOpenHash; node : tNode);
+  function  fetch            (var this : tOpenHash; email: tKey) : tNode;
 
 implementation
   { Helpers }
@@ -72,10 +70,10 @@ implementation
     _getControl := rc;
   end;
 
-  procedure _setControl(var this : tOpenHash; RC : tControlRecord);
+  procedure _setControl(var this : tOpenHash; rc : tControlRecord);
   begin
     seek(this.control, 0);
-    write(this.control, RC);
+    write(this.control, rc);
   end;
 
   function  _get (var this : tOpenHash; pos : idxRange) : tNode;
@@ -101,37 +99,33 @@ implementation
     _hash   := StrToInt64(LeftStr('$' + hashing, 16)) mod MAX;
   end;
 
-  function _append (var this : tOpenHash; var item : tNode) : idxRange;
-  var
-    rc      : tControlRecord;
-    pos     : idxRange;
-    auxNode : tNode;
+  function _nextPos(pos : tHashValue) : tHashValue;
   begin
-    rc        := _getControl(this);
-    rc.lastID := rc.lastID + 1;
-    pos := NULLIDX;
-    item.next   := NULLIDX;
-    item.id     := rc.lastID;
+    _nextPos := (pos + 1) mod (MAX + 1);
+  end;
 
-    if Rc.erased = NULLIDX then
-      pos         := filesize(this.data)
-    else
+  function _getBucket(var this : tOpenHash; email : tKey) : tHashValue;
+  var
+    pos  : tHashValue;
+    node : tNode;
+  begin
+    pos  := _hash(email);
+    node := _get(this, pos);
+    while (node.id <> NULLIDX) do
       begin
-        pos         := rc.erased;
-        auxNode     := _get(this, pos);
-        rc.erased   := auxNode.next;
+        pos  := _nextPos(pos);
+        node := _get(this, pos);
       end;
-    _set(this, pos, item);
-    _setControl(this, rc);
-    _append := pos;
+    _getBucket := pos;
   end;
 
   procedure loadHash         (var this : tOpenHash; path, filename : string);
   var
     controlError, dataError : boolean;
-    fullFileName : string;
-    rc : tControlRecord;
-    i : integer;
+    fullFileName            : string;
+    rc                      : tControlRecord;
+    i                       : integer;
+    node                    : tNode;
   begin
     fullFileName := path + filename;
     {$I-}
@@ -149,10 +143,11 @@ implementation
       begin
         rewrite(this.data);
         rewrite(this.control);
-        rc.erased := NULLIDX;
+        rc.count  := 0;
         rc.lastID := 0;
+        node.id   := NULLIDX;
         for i := 0 to MAX do
-          rc.hash[i] := NULLIDX;
+          _set(this, i, node);
         _setControl(this, rc);
       end;
 
@@ -162,118 +157,95 @@ implementation
   procedure newEmptyHash     (var this : tOpenHash; path, filename : string);
   var
     fullFileName : string;
-    rc : tControlRecord;
-    i: integer;
+    rc           : tControlRecord;
+    i            : integer;
+    node         : tNode;
   begin
     fullFileName := path + filename;
     {$I-}
     assign(this.data, fullFileName + '.dat');
-    assign(this.control, fullFileName + '.ctrl');
+    assign(this.control, fullFileName + '.con');
     rewrite(this.data);
     rewrite(this.control);
     rc.lastID := 0;
-    rc.erased := NULLIDX;
+    rc.count  := 0;
+    node.id   := NULLIDX;
     for i := 0 to MAX do
-          rc.hash[i] := NULLIDX;
+      _set(this, i, node);
     _setControl(this, rc);
     _closeHash(this);
   end;
 
-  function  search           (var this : tOpenHash; email : tKey; var pos: idxRange) : boolean;
+  function  search           (var this : tOpenHash; email : tKey; var pos: tHashValue) : boolean;
   var
-    keyHash : tHashValue;
     rc      : tControlRecord;
     found   : boolean;
-    i       : integer;
+    auxPos  : tHashValue;
     node    : tNode;
   begin
     _openHash(this);
-    found   := false;
-    keyHash := _hash(email);
     rc      := _getControl(this);
-    pos     := rc.hash[keyHash];
-    while (pos <> NULLIDX) and (not found) do
+    found   := false;
+    pos     := NULLIDX;
+    if (rc.count > 0) then
       begin
-        node := _get(this, pos);
-        if email = node.email then
+        pos    := _hash(email);
+        node   := _get(this, pos);
+        if (node.email = email) then
           found := true
         else
-          pos := node.next;
+          begin
+            auxPos := _nextPos(pos);
+            while (auxPos <> pos) and (not found) do
+              begin
+                node := _get(this, auxPos);
+                if (node.email = email) then
+                  found := true
+                else
+                  auxPos := _nextPos(pos);
+              end;
+          end;
       end;
+
     _closeHash(this);
     search := found;
   end;
 
   procedure insert           (var this : tOpenHash; node : tNode);
   var
-    key : tHashValue;
-    pos : idxRange;
+    pos : tHashValue;
     rc  : tControlRecord;
   begin
     _openHash(this);
-    key := _hash(node.email);
-    pos := _append(this, node);
+    pos := _getBucket(this, node.email);
     rc  := _getControl(this);
-    if rc.hash[key] = NULLIDX then
-      rc.hash[key] := pos
-    else
-      begin
-        node.next    := rc.hash[key];
-        rc.hash[key] := pos;
-      end;
+    _set(this, pos, node);
+    rc.count := rc.count + 1;
     _setControl(this, rc);
     _closeHash(this);
   end;
 
-  procedure remove           (var this : tOpenHash; pos: idxRange);
+  procedure remove           (var this : tOpenHash; node: tNode);
   var
-    key              : tHashValue;
-    auxPos           : idxRange;
-    node, parentNode : tNode;
-    rc               : tControlRecord;
-    found            : boolean;
+    pos   : tHashValue;
+    rc    : tControlRecord;
   begin
     _openHash(this);
-    node   := _get(this, pos);
-    key    := _hash(node.email);
-    rc     := _getControl(this);
-    auxPos := rc.hash[key];
-    if pos = auxPos then { the node to be deleted is the first on the list }
-      begin
-        rc.hash[key] := node.next;
-        node.next    := rc.erased;
-        rc.erased    := pos;
-      end 
-    else                  { the node is in the middle of the list }
-      begin
-        parentNode := _get(this, auxPos);
-        found      := false;
-        auxPos     := parentNode.next;
-        while (auxPos <> NULLIDX) and (not found) do
-          begin
-            if parentNode.next = pos then
-              found := true
-            else
-              begin
-                auxPos     := parentNode.next;
-                parentNode := _get(this, auxPos);
-              end;
-          end;
-        parentNode.next := node.next; { unlink node to be deleted }
-        node.next       := rc.erased; { chain node to be deleted to deleted list }
-        rc.erased       := pos;       { update deleted list }
-        _set(this, auxPos, parentNode);
-      end;
-
+    search(this, node.email, pos);
+    node.id := NULLIDX;
     _set(this, pos, node);
+    rc       := _getControl(this);
+    rc.count := rc.count + 1;
     _setControl(this, rc);
     _closeHash(this);
   end;
 
-  function  fetch            (var this : tOpenHash; pos: idxRange) : tNode;
+  function  fetch            (var this : tOpenHash; email : tKey) : tNode;
   var
-    node   : tNode;
+    node : tNode;
+    pos  : tHashValue; 
   begin
+    search(this, email, pos);
     _openHash(this);
     node := _get(this, pos);
     _closeHash(this);
