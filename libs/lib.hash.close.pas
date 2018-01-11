@@ -51,9 +51,9 @@ type
   procedure newEmptyHash     (var this : tCloseHash; path, filename : string);
   function  isEmpty          (var this : tCloseHash) : boolean;
   function  search           (var this : tCloseHash; key : tKey; var pos: idxRange) : boolean;
-  procedure insert           (var this : tCloseHash; pos: idxRange; key : tKey);
+  procedure insert           (var this : tCloseHash; sell : tSell);
   procedure remove           (var this : tCloseHash; pos: idxRange);
-  function  fetch            (var this : tCloseHash; pos: idxRange) : tNode;
+  function  fetch            (var this : tCloseHash; pos: idxRange) : tSell;
 
 implementation
   { Helpers }
@@ -86,16 +86,16 @@ implementation
     write(this.data, node);
   end;
 
-  function  _getHash (var this : tCloseHash; pos : tHashValue) : tNode;
+  function  _getHash (var this : tCloseHash; pos : tHashValue) : tHashNode;
   var
-    node : tNode;
+    node : tHashNode;
   begin
     seek(this.hash, pos);
     read(this.hash, node);
-    _get := node;
+    _getHash := node;
   end;
 
-  procedure _setHash (var this : tCloseHash; pos : tHashValue; node : tNode);
+  procedure _setHash (var this : tCloseHash; pos : tHashValue; node : tHashNode);
   begin
     seek(this.hash, pos);
     write(this.hash, node);
@@ -121,7 +121,7 @@ implementation
     _hash := id mod MAX;
   end;
 
-  function _append (var this : tOpenHash; var item : tNode) : idxRange;
+  function _append (var this : tCloseHash; var item : tNode) : idxRange;
   var
     rc      : tControlRecord;
     pos     : idxRange;
@@ -145,10 +145,9 @@ implementation
     _append := pos;
   end;
 
-  procedure _detach  (var this : tOpenHash; pos : idxRange);
+  procedure _detach  (var this : tCloseHash; pos : idxRange);
   var
     rc      : tControlRecord;
-    pos     : idxRange;
     auxNode : tNode;
   begin
     rc               := _getControl(this);
@@ -164,9 +163,7 @@ implementation
   procedure loadHash         (var this : tCloseHash; path, filename : string);
   var
     controlError, dataError : boolean;
-    fullFileName : string;
-    rc : tControlRecord;
-    i : integer;
+    fullFileName            : string;
   begin
     {TODO}
     fullFileName := path + filename;
@@ -223,17 +220,16 @@ implementation
 
   function  search           (var this : tCloseHash; key : tKey; var pos: idxRange) : boolean;
   var
-    key      : tHashValue;
-    rc       : tControlRecord;
     hashNode : tHashNode;
     node     : tNode;
     found    : boolean;
+    hashKey  : tHashValue;
   begin
     {TODO}
     _openHash(this);
-    key      := _hash(node.email);
+    hashKey  := _hash(key);
     pos      := NULLIDX;
-    hashNode := _getHash(this, key);
+    hashNode := _getHash(this, hashKey);
     found    := false;
 
     if (hashNode.total > 0) then
@@ -242,7 +238,7 @@ implementation
         while (pos <> NULLIDX) and (not found) do
           begin
             node := _get(this, pos);
-            if (node.email = key) then
+            if (node.idItem = key) then
               found := true
             else
               pos := node.next;
@@ -252,18 +248,17 @@ implementation
     search := found;
   end;
 
-  procedure insert           (var this : tCloseHash; pos: idxRange; sell : tSell);
+  procedure insert           (var this : tCloseHash; sell : tSell);
   var
     key              : tHashValue;
     pos, previousPos : idxRange;
-    rc               : tControlRecord;
     hashNode         : tHashNode;
     previousSell     : tSell;
   begin
     {TODO}
     _openHash(this);
-    key      := _hash(node.email);
-    pos      := _append(this, node);
+    key      := _hash(sell.idItem);
+    pos      := _append(this, sell);
     hashNode := _getHash(this, key);
     if (hashNode.total = 0) then
       begin
@@ -291,14 +286,13 @@ implementation
     node     : tNode;
     key      : tHashValue;
     auxPos   : idxRange;
-    rc       : tControlRecord;
     hashNode : tHashNode;
     auxNode  : tNode;
   begin
     {TODO}
      _openHash(this);
     node     := _get(this, pos);
-    key      := _hash(node.email);
+    key      := _hash(node.idItem);
     hashNode := _getHash(this, key);
 
     //remove element from the hash
@@ -316,7 +310,7 @@ implementation
             auxNode          := _get(this, auxPos);
             auxNode.previous := NULLIDX;
             _set(this, auxPos, auxNode);
-            rc.first         := auxPos;
+            hashNode.first   := auxPos;
           end
         else                            { it's in the middle or last}
           begin
@@ -331,7 +325,7 @@ implementation
                 auxNode          := _get(this, auxPos);
                 auxNode.previous := NULLIDX;
                 _set(this, auxPos, auxNode);
-                rc.last         := auxPos;
+                hashNode.last    := auxPos;
               end
             else                            { it's in the middle}
               begin
@@ -350,9 +344,9 @@ implementation
     _closeHash(this);
   end;
 
-  function  fetch            (var this : tCloseHash; pos: idxRange) : tNode;
+  function  fetch            (var this : tCloseHash; pos: idxRange) : tSell;
   var
-    node : tNode;
+    node : tSell;
   begin
     _openHash(this);
     node  := _get(this, pos);
