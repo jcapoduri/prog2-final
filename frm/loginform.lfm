@@ -1,0 +1,74 @@
+object LoginForm: TLoginForm
+  Left = 656
+  Height = 149
+  Top = 352
+  Width = 450
+  Caption = 'MercaTrucho::Login'
+  ClientHeight = 149
+  ClientWidth = 450
+  PopupMode = pmAuto
+  Position = poDesktopCenter
+  LCLVersion = '1.8.0.6'
+  object emailEdit: TLabeledEdit
+    Left = 17
+    Height = 23
+    Top = 19
+    Width = 399
+    EditLabel.AnchorSideLeft.Control = emailEdit
+    EditLabel.AnchorSideRight.Control = emailEdit
+    EditLabel.AnchorSideRight.Side = asrBottom
+    EditLabel.AnchorSideBottom.Control = emailEdit
+    EditLabel.Left = 17
+    EditLabel.Height = 15
+    EditLabel.Top = 1
+    EditLabel.Width = 399
+    EditLabel.Caption = 'Email:'
+    EditLabel.ParentColor = False
+    TabOrder = 0
+    TextHint = 'ejemplo@mercatrucho.com'
+  end
+  object passwordEdit: TLabeledEdit
+    Left = 18
+    Height = 23
+    Top = 64
+    Width = 398
+    EchoMode = emPassword
+    EditLabel.AnchorSideLeft.Control = passwordEdit
+    EditLabel.AnchorSideRight.Control = passwordEdit
+    EditLabel.AnchorSideRight.Side = asrBottom
+    EditLabel.AnchorSideBottom.Control = passwordEdit
+    EditLabel.Left = 18
+    EditLabel.Height = 15
+    EditLabel.Top = 46
+    EditLabel.Width = 398
+    EditLabel.Caption = 'Contraseña:'
+    EditLabel.ParentColor = False
+    PasswordChar = '*'
+    TabOrder = 1
+    TextHint = 'password'
+  end
+  object loginButton: TBitBtn
+    Left = 248
+    Height = 25
+    Top = 104
+    Width = 82
+    Caption = 'Login'
+    TabOrder = 2
+  end
+  object cancelButton: TBitBtn
+    Left = 17
+    Height = 30
+    Top = 104
+    Width = 75
+    Caption = 'Cancelar'
+    TabOrder = 3
+  end
+  object newUserButton: TBitBtn
+    Left = 357
+    Height = 30
+    Top = 102
+    Width = 75
+    Caption = 'Soy Nuevo'
+    TabOrder = 4
+  end
+end
