@@ -4,7 +4,7 @@
     <PathDelim Value="\"/>
     <Version Value="10"/>
     <BuildModes Active="Default"/>
-    <Units Count="10">
+    <Units Count="11">
       <Unit0>
         <Filename Value="metru.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -18,7 +18,6 @@
         <ComponentName Value="Form1"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="2"/>
         <CursorPos X="36" Y="22"/>
         <UsageCount Value="38"/>
@@ -62,25 +61,25 @@
       <Unit6>
         <Filename Value="libs\lib.tree.lcrs.pas"/>
         <IsPartOfProject Value="True"/>
-        <IsVisibleTab Value="True"/>
         <TopLine Value="43"/>
         <CursorPos Y="58"/>
         <UsageCount Value="23"/>
         <Loaded Value="True"/>
       </Unit6>
       <Unit7>
+        <Filename Value="frm\loginform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FormLogin"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="loginForm"/>
+        <UsageCount Value="20"/>
+      </Unit7>
+      <Unit8>
         <Filename Value="C:\lazarus\lcl\interfaces\win32\interfaces.pp"/>
         <UnitName Value="Interfaces"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="6" Y="19"/>
         <UsageCount Value="9"/>
-      </Unit7>
-      <Unit8>
-        <Filename Value="C:\lazarus\fpc\3.0.4\source\packages\hash\src\md5.pp"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="148"/>
-        <CursorPos X="18" Y="183"/>
-        <UsageCount Value="14"/>
       </Unit8>
       <Unit9>
         <Filename Value="C:\lazarus\fpc\3.0.4\source\packages\hash\src\md5.pp"/>
@@ -89,8 +88,18 @@
         <CursorPos X="18" Y="183"/>
         <UsageCount Value="13"/>
       </Unit9>
+      <Unit10>
+        <Filename Value="libs\metru.core.pas"/>
+        <IsPartOfProject Value="True"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="3"/>
+        <TopLine Value="23"/>
+        <CursorPos X="47" Y="40"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+      </Unit10>
     </Units>
-    <JumpHistory Count="9" HistoryIndex="8">
+    <JumpHistory Count="10" HistoryIndex="9">
       <Position1>
         <Filename Value="libs\lib.tree.lcrs.pas"/>
         <Caret Line="59" Column="36" TopLine="35"/>
@@ -127,6 +136,10 @@
         <Filename Value="libs\lib.tree.lcrs.pas"/>
         <Caret Line="224" Column="34" TopLine="128"/>
       </Position9>
+      <Position10>
+        <Filename Value="mainunit.pas"/>
+        <Caret Line="22" Column="36"/>
+      </Position10>
     </JumpHistory>
   </ProjectSession>
 </CONFIG>
