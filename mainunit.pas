@@ -5,13 +5,15 @@ unit mainunit;
 interface
 
 uses
-  Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs;
+  Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, Menus,
+  ExtCtrls;
 
 type
 
   { TForm1 }
 
   TForm1 = class(TForm)
+    Panel1: TPanel;
     procedure FormCreate(Sender: TObject);
   private
     { private declarations }
