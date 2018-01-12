@@ -6,7 +6,7 @@
     <BuildModes Active="Default"/>
     <Units Count="10">
       <Unit0>
-        <Filename Value="meli.lpr"/>
+        <Filename Value="metru.lpr"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="32" Y="13"/>
@@ -29,8 +29,9 @@
         <Filename Value="libs\lib.tree.avl.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="1"/>
-        <CursorPos X="34" Y="19"/>
-        <UsageCount Value="31"/>
+        <TopLine Value="323"/>
+        <CursorPos X="5" Y="344"/>
+        <UsageCount Value="23"/>
         <Loaded Value="True"/>
       </Unit2>
       <Unit3>
@@ -39,7 +40,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="3"/>
         <CursorPos X="41" Y="19"/>
-        <UsageCount Value="31"/>
+        <UsageCount Value="23"/>
       </Unit3>
       <Unit4>
         <Filename Value="libs\lib.hash.open.pas"/>
@@ -47,7 +48,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="50"/>
         <CursorPos X="36" Y="75"/>
-        <UsageCount Value="31"/>
+        <UsageCount Value="23"/>
       </Unit4>
       <Unit5>
         <Filename Value="libs\lib.tree.trinary.pas"/>
@@ -56,35 +57,30 @@
         <WindowIndex Value="-1"/>
         <TopLine Value="-1"/>
         <CursorPos X="-1" Y="-1"/>
-        <UsageCount Value="31"/>
+        <UsageCount Value="23"/>
       </Unit5>
       <Unit6>
         <Filename Value="libs\lib.tree.lcrs.pas"/>
         <IsPartOfProject Value="True"/>
-        <TopLine Value="200"/>
-        <CursorPos X="34" Y="224"/>
-        <UsageCount Value="31"/>
+        <IsVisibleTab Value="True"/>
+        <TopLine Value="43"/>
+        <CursorPos Y="58"/>
+        <UsageCount Value="23"/>
         <Loaded Value="True"/>
       </Unit6>
       <Unit7>
-        <Filename Value="frm\loginform.pas"/>
-        <IsPartOfProject Value="True"/>
-        <ComponentName Value="LoginForm"/>
-        <HasResources Value="True"/>
-        <ResourceBaseClass Value="Form"/>
-        <UnitName Value="loginForm"/>
-        <EditorIndex Value="3"/>
-        <CursorPos X="37" Y="8"/>
-        <UsageCount Value="28"/>
-        <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
-      </Unit7>
-      <Unit8>
         <Filename Value="C:\lazarus\lcl\interfaces\win32\interfaces.pp"/>
         <UnitName Value="Interfaces"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="6" Y="19"/>
-        <UsageCount Value="8"/>
+        <UsageCount Value="9"/>
+      </Unit7>
+      <Unit8>
+        <Filename Value="C:\lazarus\fpc\3.0.4\source\packages\hash\src\md5.pp"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="148"/>
+        <CursorPos X="18" Y="183"/>
+        <UsageCount Value="14"/>
       </Unit8>
       <Unit9>
         <Filename Value="C:\lazarus\fpc\3.0.4\source\packages\hash\src\md5.pp"/>
@@ -94,7 +90,7 @@
         <UsageCount Value="13"/>
       </Unit9>
     </Units>
-    <JumpHistory Count="19" HistoryIndex="18">
+    <JumpHistory Count="9" HistoryIndex="8">
       <Position1>
         <Filename Value="libs\lib.tree.lcrs.pas"/>
         <Caret Line="59" Column="36" TopLine="35"/>
@@ -124,53 +120,13 @@
         <Caret Line="224" Column="34" TopLine="200"/>
       </Position7>
       <Position8>
-        <Filename Value="mainunit.pas"/>
-        <Caret Line="9" Column="29"/>
+        <Filename Value="libs\lib.tree.avl.pas"/>
+        <Caret Line="19" Column="34"/>
       </Position8>
       <Position9>
-        <Filename Value="mainunit.pas"/>
-        <Caret Line="13" Column="42"/>
+        <Filename Value="libs\lib.tree.lcrs.pas"/>
+        <Caret Line="224" Column="34" TopLine="128"/>
       </Position9>
-      <Position10>
-        <Filename Value="frm\loginform.pas"/>
-        <Caret Line="7" Column="19"/>
-      </Position10>
-      <Position11>
-        <Filename Value="frm\loginform.pas"/>
-        <Caret Line="17" Column="39"/>
-      </Position11>
-      <Position12>
-        <Filename Value="frm\loginform.pas"/>
-        <Caret Line="20" Column="11"/>
-      </Position12>
-      <Position13>
-        <Filename Value="frm\loginform.pas"/>
-        <Caret Line="23"/>
-      </Position13>
-      <Position14>
-        <Filename Value="frm\loginform.pas"/>
-        <Caret Line="19" Column="32"/>
-      </Position14>
-      <Position15>
-        <Filename Value="frm\loginform.pas"/>
-        <Caret Line="15" Column="32"/>
-      </Position15>
-      <Position16>
-        <Filename Value="frm\loginform.pas"/>
-        <Caret Line="24" Column="21"/>
-      </Position16>
-      <Position17>
-        <Filename Value="frm\loginform.pas"/>
-        <Caret Line="20" Column="3"/>
-      </Position17>
-      <Position18>
-        <Filename Value="frm\loginform.pas"/>
-        <Caret Line="25" Column="4"/>
-      </Position18>
-      <Position19>
-        <Filename Value="frm\loginform.pas"/>
-        <Caret Line="13" Column="21"/>
-      </Position19>
     </JumpHistory>
   </ProjectSession>
 </CONFIG>
