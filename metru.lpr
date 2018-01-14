@@ -15,12 +15,10 @@ uses
 {$R *.res}
 
 begin
-  Application.Title:='metru';
-  metru.core.setup(metru);
+  metru.core.kickoff(metruApp);
   RequireDerivedFormResource:=True;
   Application.Initialize;
   Application.CreateForm(TForm1, Form1);
-  Application.CreateForm(TFormLogin, FormLogin);
   Application.Run;
 end.
 

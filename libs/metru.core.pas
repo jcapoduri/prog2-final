@@ -41,9 +41,9 @@ type
   function  isLogedIn  (var this : tMetruCore) : boolean;
   function  loggedUser (var this : tMetruCore) : tUser;
   procedure logoff     (var this : tMetruCore);
-  function  createUser (var this : tMetruCore; tUser : user) : boolean;
-  function  updateUser (var this : tMetruCore; tUser : user) : boolean;
-  function  banUser    (var this : tMetruCore; tUser : user) : boolean;
+  function  createUser (var this : tMetruCore; user : tUser) : boolean;
+  function  updateUser (var this : tMetruCore; user : tUser) : boolean;
+  function  banUser    (var this : tMetruCore; user : tUser) : boolean;
 
   { category functions }
 
@@ -53,36 +53,50 @@ var
 implementation
   procedure setup   (var this : tMetruCore);
   begin
-    lib.hash.open.loadHash(this.io.users, BASEPATH, CATEGORYFILE);
+    lib.hash.open.loadHash(this.io.users, BASEPATH, USERFILE);
     lib.tree.lcrs.loadTree(this.io.categories, BASEPATH, CATEGORYFILE);
     lib.tree.trinary.loadTree(this.io.messages, BASEPATH, MESSAGEFILE);
     lib.hash.close.loadHash(this.io.sells, BASEPATH, SELLSFILE);
   end;
 
   procedure kickoff (var this : tMetruCore);
+  var
+    user : tUser;
   begin
-    lib.hash.open.newEmptyHash(this.io.users, BASEPATH, CATEGORYFILE);
+    lib.hash.open.newEmptyHash(this.io.users, BASEPATH, USERFILE);
     lib.tree.lcrs.newEmptyTree(this.io.categories, BASEPATH, CATEGORYFILE);
     lib.tree.trinary.newEmptyTree(this.io.messages, BASEPATH, MESSAGEFILE);
     lib.hash.close.newEmptyHash(this.io.sells, BASEPATH, SELLSFILE);
+    user.email      := 'admistrador@mercatrucho.com';
+    user.password   := 'palo_y_a_la_bolsa';
+    user.fullname   := 'Administrador';
+    user.address    := '';
+    user.providence := 0;
+    user.ctimestamp := Now;
+    user.photoUrl   := '';
+    user.status     := false;
+    user.utimestamp := Now;
+
+    {user.ctimestamp := }
+    lib.hash.open.insert(this.io.users, user);
   end;
 
   function  login      (var this : tMetruCore; email, pass : string) : boolean;
   var
     found : boolean;
-    pos   : idxRange;
+    pos   : tHashValue;
     user  : tUser;
   begin
-    found := this.hash.open.search(this.io.users, email, pos);
+    found := lib.hash.open.search(this.io.users, email, pos);
     if (found) then
       begin
-        user := this.hash.open.fetch(this.io.users, pos);
-        if (this.user.password = pass) then
+        user := lib.hash.open.fetch(this.io.users, email);
+        if (user.password = pass) then
           begin
             user.status := true;
             lib.hash.open.insert(this.io.users, user);
             this.user   := user;
-          end;
+          end
         else
           found := false;
       end;
@@ -101,7 +115,7 @@ implementation
 
   procedure logoff     (var this : tMetruCore);
   var 
-    user : tUser
+    user : tUser;
     pos  : idxRange;
   begin
     this.user.status := false;
@@ -109,7 +123,7 @@ implementation
     this.user.id := 0;
   end;
 
-  function  createUser (var this : tMetruCore; tUser : user) : boolean;
+  function  createUser (var this : tMetruCore; user : tUser) : boolean;
   var 
     pos : tHashValue;
     ok  : boolean;
@@ -120,7 +134,7 @@ implementation
     createUser := ok;
   end;
 
-  function  updateUser (var this : tMetruCore; tUser : user) : boolean;
+  function  updateUser (var this : tMetruCore; user : tUser) : boolean;
   var 
     pos : tHashValue;
     ok  : boolean;
@@ -128,10 +142,10 @@ implementation
     ok := lib.hash.open.search(this.io.users, user.email, pos);
     if ok then
       lib.hash.open.insert(this.io.users, user);        
-    createUser := ok;
+    updateUser := ok;
   end;
   
-  function  banUser    (var this : tMetruCore; tUser : user) : boolean;
+  function  banUser    (var this : tMetruCore; user : tUser) : boolean;
   var 
     pos : tHashValue;
     ok  : boolean;
@@ -139,9 +153,8 @@ implementation
     ok := lib.hash.open.search(this.io.users, user.email, pos);
     if ok then
       {TODO : search if has active publication}
-      lib.hash.open.remove(this.io.users, user);        
-      }
-    createUser := ok;
+      lib.hash.open.remove(this.io.users, user);
+    banUser := ok;
   end;
   
 end.
