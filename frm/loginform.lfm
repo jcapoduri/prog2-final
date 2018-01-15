@@ -1,0 +1,86 @@
+object LoginForm: TLoginForm
+  Left = 656
+  Height = 178
+  Top = 352
+  Width = 450
+  Caption = 'MercaTrucho::Login'
+  ClientHeight = 178
+  ClientWidth = 450
+  PopupMode = pmAuto
+  Position = poDesktopCenter
+  LCLVersion = '1.8.0.6'
+  object emailEdit: TLabeledEdit
+    Left = 17
+    Height = 23
+    Top = 19
+    Width = 415
+    EditLabel.AnchorSideLeft.Control = emailEdit
+    EditLabel.AnchorSideRight.Control = emailEdit
+    EditLabel.AnchorSideRight.Side = asrBottom
+    EditLabel.AnchorSideBottom.Control = emailEdit
+    EditLabel.Left = 17
+    EditLabel.Height = 15
+    EditLabel.Top = 1
+    EditLabel.Width = 415
+    EditLabel.Caption = 'Email:'
+    EditLabel.ParentColor = False
+    TabOrder = 0
+    TextHint = 'ejemplo@mercatrucho.com'
+  end
+  object passwordEdit: TLabeledEdit
+    Left = 18
+    Height = 23
+    Top = 64
+    Width = 414
+    EchoMode = emPassword
+    EditLabel.AnchorSideLeft.Control = passwordEdit
+    EditLabel.AnchorSideRight.Control = passwordEdit
+    EditLabel.AnchorSideRight.Side = asrBottom
+    EditLabel.AnchorSideBottom.Control = passwordEdit
+    EditLabel.Left = 18
+    EditLabel.Height = 15
+    EditLabel.Top = 46
+    EditLabel.Width = 414
+    EditLabel.Caption = 'Contraseña:'
+    EditLabel.ParentColor = False
+    PasswordChar = '*'
+    TabOrder = 1
+    TextHint = 'password'
+  end
+  object loginButton: TBitBtn
+    Left = 248
+    Height = 30
+    Top = 128
+    Width = 82
+    Caption = 'Login'
+    OnClick = loginButtonClick
+    TabOrder = 2
+  end
+  object cancelButton: TBitBtn
+    Left = 17
+    Height = 30
+    Top = 128
+    Width = 75
+    Caption = 'Cancelar'
+    OnClick = cancelButtonClick
+    TabOrder = 3
+  end
+  object newUserButton: TBitBtn
+    Left = 357
+    Height = 30
+    Top = 128
+    Width = 75
+    Caption = 'Soy nuevo'
+    OnClick = newUserButtonClick
+    TabOrder = 4
+  end
+  object errorLabel: TLabel
+    Left = 22
+    Height = 1
+    Top = 96
+    Width = 1
+    Font.Color = clRed
+    ParentColor = False
+    ParentFont = False
+  end
+end

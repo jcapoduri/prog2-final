@@ -30,7 +30,7 @@
         <PackageName Value="LCL"/>
       </Item1>
     </RequiredPackages>
-    <Units Count="7">
+    <Units Count="11">
       <Unit0>
         <Filename Value="metru.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -62,6 +62,31 @@
         <Filename Value="libs\lib.tree.lcrs.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit6>
+      <Unit7>
+        <Filename Value="frm\loginform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="LoginForm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+      </Unit7>
+      <Unit8>
+        <Filename Value="libs\metru.core.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit8>
+      <Unit9>
+        <Filename Value="frm\userform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="UserForm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+      </Unit9>
+      <Unit10>
+        <Filename Value="frm\categoryform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="CategoryForm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+      </Unit10>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -72,7 +97,8 @@
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
-      <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
+      <OtherUnitFiles Value="frm"/>
+      <UnitOutputDirectory Value="obj\$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Linking>
       <Options>

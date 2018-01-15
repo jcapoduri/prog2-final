@@ -16,20 +16,15 @@ type
   tStatus        = (Publish, Paused, Sold, Void, Blocked);
   tNode          = record
                      id           : longint;
-                     idCategory   : longint;
-                     idUser       : longint;
-                     itemName     : string[255];
-                     details      : string[255];
-                     price        : Currency;
-                     ctimestamp   : TDateTime;
-                     etimestamp   : TDateTime;
-                     itemType     : tItemType;
-                     status       : tStatus;
+                     categoryName : string[255];
+                     description  : string[255];
+                     VAT          : Currency;
                      parent       : idxRange;
                      leftChild    : idxRange;
                      rightSibling : idxRange;
                    end;
   tCategory      = tNode;
+  tCategoryList  = array of tCategory;
   tControlRecord = record
                      root   : idxRange;
                      erased : idxRange;
@@ -48,6 +43,7 @@ type
   function  search           (var this : tLCRStree; key : tKey; var pos: idxRange) : boolean;
   procedure addChild         (var this : tLCRStree; pos: idxRange; item : tNode);
   procedure addSibling       (var this : tLCRStree; pos: idxRange; item : tNode);
+  procedure update           (var this : tLCRStree; pos: idxRange; item : tNode);
   procedure remove           (var this : tLCRStree; pos: idxRange);
   function  fetch            (var this : tLCRStree; pos: idxRange) : tCategory;
   function  root             (var this : tLCRStree) : idxRange;
@@ -294,6 +290,13 @@ implementation
     idx := _parent(this, pos);
     _closeTree(this);
     parent := idx;
+  end;
+
+  procedure update          (var this : tLCRStree; pos: idxRange; item : tNode);
+  begin
+    _openTree(this);
+    _set(this, pos, item);
+    _closeTree(this);
   end;
 
   procedure remove          (var this: tLCRStree; pos: idxRange);

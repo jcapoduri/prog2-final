@@ -1,0 +1,162 @@
+object UserForm: TUserForm
+  Left = 626
+  Height = 480
+  Top = 272
+  Width = 400
+  Caption = 'Usuario'
+  ClientHeight = 480
+  ClientWidth = 400
+  OnCreate = FormCreate
+  Position = poDesktopCenter
+  LCLVersion = '1.8.0.6'
+  object emailEdit: TLabeledEdit
+    Left = 8
+    Height = 23
+    Top = 24
+    Width = 384
+    EditLabel.AnchorSideLeft.Control = emailEdit
+    EditLabel.AnchorSideRight.Control = emailEdit
+    EditLabel.AnchorSideRight.Side = asrBottom
+    EditLabel.AnchorSideBottom.Control = emailEdit
+    EditLabel.Left = 8
+    EditLabel.Height = 15
+    EditLabel.Top = 6
+    EditLabel.Width = 384
+    EditLabel.Caption = 'Email:'
+    EditLabel.ParentColor = False
+    TabOrder = 0
+  end
+  object pass1Edit: TLabeledEdit
+    Left = 8
+    Height = 23
+    Top = 72
+    Width = 384
+    EchoMode = emPassword
+    EditLabel.AnchorSideLeft.Control = pass1Edit
+    EditLabel.AnchorSideRight.Control = pass1Edit
+    EditLabel.AnchorSideRight.Side = asrBottom
+    EditLabel.AnchorSideBottom.Control = pass1Edit
+    EditLabel.Left = 8
+    EditLabel.Height = 15
+    EditLabel.Top = 54
+    EditLabel.Width = 384
+    EditLabel.Caption = 'Contraseña:'
+    EditLabel.ParentColor = False
+    PasswordChar = '*'
+    TabOrder = 1
+  end
+  object pass2Edit: TLabeledEdit
+    Left = 8
+    Height = 23
+    Top = 120
+    Width = 384
+    EchoMode = emPassword
+    EditLabel.AnchorSideLeft.Control = pass2Edit
+    EditLabel.AnchorSideRight.Control = pass2Edit
+    EditLabel.AnchorSideRight.Side = asrBottom
+    EditLabel.AnchorSideBottom.Control = pass2Edit
+    EditLabel.Left = 8
+    EditLabel.Height = 15
+    EditLabel.Top = 102
+    EditLabel.Width = 384
+    EditLabel.Caption = 'Repetir constraseña:'
+    EditLabel.ParentColor = False
+    PasswordChar = '*'
+    TabOrder = 2
+  end
+  object saveButton: TBitBtn
+    Left = 317
+    Height = 30
+    Top = 446
+    Width = 75
+    Caption = 'Guardar'
+    OnClick = saveButtonClick
+    TabOrder = 3
+  end
+  object cancelButton: TBitBtn
+    Left = 8
+    Height = 30
+    Top = 446
+    Width = 75
+    Caption = 'Cancelar'
+    OnClick = cancelButtonClick
+    TabOrder = 4
+  end
+  object nameEdit: TLabeledEdit
+    Left = 8
+    Height = 23
+    Top = 168
+    Width = 384
+    EditLabel.AnchorSideLeft.Control = nameEdit
+    EditLabel.AnchorSideRight.Control = nameEdit
+    EditLabel.AnchorSideRight.Side = asrBottom
+    EditLabel.AnchorSideBottom.Control = nameEdit
+    EditLabel.Left = 8
+    EditLabel.Height = 15
+    EditLabel.Top = 150
+    EditLabel.Width = 384
+    EditLabel.Caption = 'Apellido y Nombre'
+    EditLabel.ParentColor = False
+    TabOrder = 5
+  end
+  object addressEdit: TLabeledEdit
+    Left = 8
+    Height = 23
+    Top = 216
+    Width = 384
+    EditLabel.AnchorSideLeft.Control = addressEdit
+    EditLabel.AnchorSideRight.Control = addressEdit
+    EditLabel.AnchorSideRight.Side = asrBottom
+    EditLabel.AnchorSideBottom.Control = addressEdit
+    EditLabel.Left = 8
+    EditLabel.Height = 15
+    EditLabel.Top = 198
+    EditLabel.Width = 384
+    EditLabel.Caption = 'Domicilio'
+    EditLabel.ParentColor = False
+    TabOrder = 6
+  end
+  object Label1: TLabel
+    Left = 8
+    Height = 15
+    Top = 248
+    Width = 49
+    Caption = 'Provincia'
+    ParentColor = False
+  end
+  object State: TComboBox
+    Left = 10
+    Height = 23
+    Top = 265
+    Width = 380
+    AutoComplete = True
+    AutoCompleteText = [cbactEnabled, cbactEndOfLineComplete, cbactSearchAscending]
+    ItemHeight = 15
+    Items.Strings = (
+      'Buenos Aires'
+      'Capital Federal'
+      'Catamarca'
+      'Chaco'
+      'Chubut'
+      'Cordoba'
+      'Corrientes'
+      'Entre Rios'
+      'Formosa'
+      'Jujuy'
+      'La Pampa'
+      'La Rioja'
+      'Mendoza'
+      'Misiones'
+      'Neuquen'
+      'Rio Negro'
+      'San Juan'
+      'San Luis'
+      'Santa Cruz'
+      'Santa Fe'
+      'Santiago del Estero'
+      'Tierra del Fuego'
+      'Tucuman'
+    )
+    TabOrder = 7
+  end
+end
