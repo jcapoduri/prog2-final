@@ -46,6 +46,13 @@ type
   function  banUser    (var this : tMetruCore; user : tUser) : boolean;
 
   { category functions }
+  function  createCateogry         (var this : tMetruCore; category : tCategory) : boolean;
+  function  editCateogry           (var this : tMetruCore; category : tCategory) : boolean;
+  function  deleteCateogry         (var this : tMetruCore; category : tCategory) : boolean;
+  function  retrieveBaseCateogies  (var this : tMetruCore) : tCategoryList;
+  function  retrieveChildCateogies (var this : tMetruCore; category : tCategory) : tCategoryList;
+  function  retrieveAllCateogies   (var this : tMetruCore) : tCategoryList;
+
 
 var
   metruApp : tMetruCore;
@@ -62,11 +69,13 @@ implementation
   procedure kickoff (var this : tMetruCore);
   var
     user : tUser;
+    cat  : tCategory;
   begin
     lib.hash.open.newEmptyHash(this.io.users, BASEPATH, USERFILE);
     lib.tree.lcrs.newEmptyTree(this.io.categories, BASEPATH, CATEGORYFILE);
     lib.tree.trinary.newEmptyTree(this.io.messages, BASEPATH, MESSAGEFILE);
     lib.hash.close.newEmptyHash(this.io.sells, BASEPATH, SELLSFILE);
+    { setup users}
     user.email      := 'admistrador@mercatrucho.com';
     user.password   := 'palo_y_a_la_bolsa';
     user.fullname   := 'Administrador';
@@ -76,9 +85,16 @@ implementation
     user.photoUrl   := '';
     user.status     := false;
     user.utimestamp := Now;
-
-    {user.ctimestamp := }
     lib.hash.open.insert(this.io.users, user);
+
+    { setup categories }
+    cat.categoryName := 'ROOT';
+    cat.description  := 'ROOT';
+    cat.VAT          := 0;
+    cat.parent       := NULLIDX;
+    cat.leftChild    := NULLIDX;
+    cat.rightSibling := NULLIDX;
+    lib.tree.lcrs.addSibling(this.io.categories, NULLIDX, cat);
   end;
 
   function  login      (var this : tMetruCore; email, pass : string) : boolean;
@@ -155,6 +171,99 @@ implementation
       {TODO : search if has active publication}
       lib.hash.open.remove(this.io.users, user);
     banUser := ok;
+  end;
+
+  function  createCateogry         (var this : tMetruCore; category : tCategory) : boolean;
+  var
+    pos : idxRange;
+  begin
+    if (category.parent = NULLIDX) then
+      category.parent := lib.tree.lcrs.root(this.io.categories);
+
+    lib.tree.lcrs.addChild(this.io.categories, pos, category);
+  end;
+
+  function  editCateogry           (var this : tMetruCore; category : tCategory) : boolean;
+  var
+    pos : idxRange;
+  begin
+    lib.tree.lcrs.search(this.io.categories, category.id, pos);
+    lib.tree.lcrs.update(this.io.categories, pos, category);
+  end;
+
+  function  deleteCateogry         (var this : tMetruCore; category : tCategory) : boolean;
+  var
+    pos : idxRange;
+  begin
+    lib.tree.lcrs.search(this.io.categories, category.id, pos);
+    lib.tree.lcrs.remove(this.io.categories, pos);
+  end;
+
+  function  retrieveBaseCateogies  (var this : tMetruCore) : tCategoryList;
+  var
+    list    : tCategoryList;
+    auxList : tCategoryList;
+    auxCat  : tCategory;
+    i       : integer;
+    auxPos  : idxRange;
+  begin
+    auxPos  := lib.tree.lcrs.root(this.io.categories);
+    i := 0;
+    while (auxPos <> NULLIDX) do
+      begin
+        auxCat      := lib.tree.lcrs.fetch(this.io.categories, auxPos);
+        i           := i + 1;
+        SetLength(list, i);
+        list[i - 1] := auxCat;
+        auxPos      := lib.tree.lcrs.nextSibling(this.io.categories, auxPos);
+      end;
+    retrieveBaseCateogies := list;
+  end;
+
+  function  retrieveChildCateogies (var this : tMetruCore; category : tCategory) : tCategoryList;
+  var
+    list    : tCategoryList;
+    auxList : tCategoryList;
+    auxCat  : tCategory;
+    i       : integer;
+    auxPos  : idxRange;
+  begin
+    lib.tree.lcrs.search(this.io.categories, category.id, auxPos);
+    auxPos := lib.tree.lcrs.firstChild(this.io.categories, auxPos);
+    i := 0;
+    while (auxPos <> NULLIDX) do
+      begin
+        auxCat      := lib.tree.lcrs.fetch(this.io.categories, auxPos);
+        i           := i + 1;
+        SetLength(list, i);
+        list[i - 1] := auxCat;
+        auxPos      := lib.tree.lcrs.nextSibling(this.io.categories, auxPos);
+      end;
+    retrieveChildCateogies := list;
+  end;
+
+  function  retrieveAllCateogies   (var this : tMetruCore) : tCategoryList;
+  var
+    list    : tCategoryList;
+    auxList : tCategoryList;
+    auxCat  : tCategory;
+    i       : integer;
+    auxPos  : idxRange;
+  begin
+    SetLength(list, 1);
+    auxPos  := lib.tree.lcrs.root(this.io.categories);
+    auxCat  := lib.tree.lcrs.fetch(this.io.categories, auxPos); 
+    list[0] := auxCat;
+    i       := 0;
+    while (Length(list) > i) do
+      begin
+        auxCat  := list[i];
+        auxList := retrieveChildCateogies(this, auxCat);
+        if (Length(auxList) > 0) then
+            Move(auxList[0], list[Length(list)], Length(auxList) * SizeOf(tCategory));
+        i       := i + 1;
+      end;
+    retrieveAllCateogies := list;
   end;
   
 end.
