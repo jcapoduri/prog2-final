@@ -1,0 +1,80 @@
+object CategoryForm: TCategoryForm
+  Left = 749
+  Height = 206
+  Top = 337
+  Width = 320
+  Caption = 'Categoría'
+  ClientHeight = 206
+  ClientWidth = 320
+  LCLVersion = '1.8.0.6'
+  object nameEdit: TLabeledEdit
+    Left = 8
+    Height = 23
+    Top = 24
+    Width = 304
+    EditLabel.AnchorSideLeft.Control = nameEdit
+    EditLabel.AnchorSideRight.Control = nameEdit
+    EditLabel.AnchorSideRight.Side = asrBottom
+    EditLabel.AnchorSideBottom.Control = nameEdit
+    EditLabel.Left = 8
+    EditLabel.Height = 15
+    EditLabel.Top = 6
+    EditLabel.Width = 304
+    EditLabel.Caption = 'Nombre:'
+    EditLabel.ParentColor = False
+    TabOrder = 0
+    Text = 'nameEdit'
+  end
+  object Label1: TLabel
+    Left = 9
+    Height = 15
+    Top = 56
+    Width = 54
+    Caption = 'Comision:'
+    ParentColor = False
+  end
+  object comisionEdit: TFloatSpinEdit
+    Left = 9
+    Height = 23
+    Top = 80
+    Width = 56
+    Increment = 1
+    MaxValue = 100
+    MinValue = 0
+    TabOrder = 1
+    Value = 0
+  end
+  object ComboBox1: TComboBox
+    Left = 9
+    Height = 23
+    Top = 134
+    Width = 303
+    ItemHeight = 15
+    TabOrder = 2
+    Text = 'ComboBox1'
+  end
+  object Label2: TLabel
+    Left = 8
+    Height = 15
+    Top = 110
+    Width = 94
+    Caption = 'Cateogoría padre:'
+    ParentColor = False
+  end
+  object saveButton: TBitBtn
+    Left = 237
+    Height = 30
+    Top = 168
+    Width = 75
+    Caption = 'Salvar'
+    TabOrder = 3
+  end
+  object cancelButton: TBitBtn
+    Left = 9
+    Height = 30
+    Top = 168
+    Width = 75
+    Caption = 'Cancelar'
+    TabOrder = 4
+  end
+end
