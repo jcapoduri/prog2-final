@@ -8,6 +8,7 @@ uses
   ,lib.hash.open    in 'libs\lib.hash.open.pas'
   ,lib.hash.close   in 'libs\lib.hash.close.pas'
   ,lib.tree.trinary in 'libs\lib.tree.trinary.pas'
+  ,lib.images       in 'libs\lib.images.pas'
   ;
 
 const
@@ -17,6 +18,7 @@ const
   CATEGORYFILE = 'categories';
   SELLSFILE    = 'sells';
   MESSAGEFILE  = 'messages';
+  IMAGESPATH   = 'images';
 
 type
   { expose data records only }
@@ -28,6 +30,7 @@ type
                  categories : tLCRStree;
                  messages   : tTrinaryTree;
                  sells      : tCloseHash;
+                 images     : tImageContainer;
                end;
 
   tMetruCore = record
@@ -68,6 +71,7 @@ implementation
     lib.tree.lcrs.loadTree(this.io.categories, BASEPATH, CATEGORYFILE);
     lib.tree.trinary.loadTree(this.io.messages, BASEPATH, MESSAGEFILE);
     lib.hash.close.loadHash(this.io.sells, BASEPATH, SELLSFILE);
+    lib.images.setupContainer(this.io.images, BASEPATH + IMAGESPATH);
   end;
 
   procedure kickoff (var this : tMetruCore);
@@ -79,6 +83,7 @@ implementation
     lib.tree.lcrs.newEmptyTree(this.io.categories, BASEPATH, CATEGORYFILE);
     lib.tree.trinary.newEmptyTree(this.io.messages, BASEPATH, MESSAGEFILE);
     lib.hash.close.newEmptyHash(this.io.sells, BASEPATH, SELLSFILE);
+    lib.images.setupContainer(this.io.images, BASEPATH + IMAGESPATH);
     { setup users}
     user.email      := 'admistrador@mercatrucho.com';
     user.password   := 'palo_y_a_la_bolsa';

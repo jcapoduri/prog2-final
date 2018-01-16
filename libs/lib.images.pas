@@ -3,7 +3,7 @@ unit lib.images;
 interface
 
 uses
-  sysutils, md5;
+  sysutils, md5, fileutil;
 
 const
   BASEPATH = 'data/images';
@@ -19,7 +19,6 @@ type
 
 implementation
   function _uniqId (image : string) : string;
-  var
   begin
     _uniqId := MD5Print(MD5String(image));
   end;
