@@ -19,6 +19,10 @@ const
   MESSAGEFILE  = 'messages';
 
 type
+  { expose data records only }
+  tCategoryList = lib.tree.lcrs.tCategoryList;
+  tCategory     = lib.tree.lcrs.tCategory;
+
   tMetruIO =   record
                  users      : tOpenHash;
                  categories : tLCRStree;
@@ -228,6 +232,7 @@ implementation
     i       : integer;
     auxPos  : idxRange;
   begin
+    SetLength(list, 0);
     lib.tree.lcrs.search(this.io.categories, category.id, auxPos);
     auxPos := lib.tree.lcrs.firstChild(this.io.categories, auxPos);
     i := 0;

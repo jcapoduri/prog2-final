@@ -68,7 +68,7 @@ implementation
   begin
     close(this.data);
     close(this.control);
-    reset(this.hash);
+    close(this.hash);
   end;
 
   function  _get (var this : tCloseHash; pos : idxRange) : tNode;
@@ -175,6 +175,10 @@ implementation
 
     assign(this.control, fullFileName + '.con');
     reset(this.control);
+    controlError := IOResult <> 0;
+
+    assign(this.hash, fullFileName + '.hash');
+    reset(this.hash);
     controlError := IOResult <> 0;
     {$I+}
 

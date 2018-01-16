@@ -115,8 +115,10 @@ implementation
     pos     : idxRange;
     auxNode : tNode;
   begin
-    rc  := _getControl(this);
-    pos := NULLIDX;
+    rc        := _getControl(this);
+    pos       := NULLIDX;
+    rc.lastID := rc.lastID + 1;
+    item.id   := rc.lastID;
     if Rc.erased = NULLIDX then
       begin
         pos               := filesize(this.data);
@@ -132,8 +134,8 @@ implementation
         item.rightSibling := NULLIDX;
         item.leftChild    := NULLIDX;
         _set(this, pos, item);
-        _setControl(this, rc);
       end;
+    _setControl(this, rc);
     _append := pos;
   end;
 
@@ -394,32 +396,35 @@ implementation
     _closeTree(this);
   end;
 
-  function _search (var this : tLCRStree; key : tKey; pos: idxRange) : boolean;
+  function _search (var this : tLCRStree; key : tKey; var pos: idxRange) : boolean;
   var 
     found      : boolean;
     curNodeIdx : idxRange;
     curNode    : tNode;
   begin
     curNodeIdx := pos;
-    curNode    := _get(this, curNodeIdx);
-
-    if curNode.id = key then
-        begin
-          found := true;
-          pos   := curNodeIdx;
-        end
-      else
-        begin
-          pos := curNode.rightSibling;
-          found := _search(this, key, pos);
-          if not found then
-            begin
-              pos := curNode.leftChild;
-              found := _search(this, key, pos);
-            end;
-        end;
-
-      _search := found;
+    found      := false;
+    
+    if pos <> NULLIDX then
+      begin
+        curNode    := _get(this, curNodeIdx);
+        if curNode.id = key then
+          begin
+            found := true;
+            pos   := curNodeIdx;
+          end
+        else
+          begin
+            pos := curNode.rightSibling;
+            found := _search(this, key, pos);
+            if not found then
+              begin
+                pos := curNode.leftChild;
+                found := _search(this, key, pos);
+              end;
+          end;
+      end;
+    _search := found;
   end;
 
   function  search           (var this : tLCRStree; key : tKey; var pos: idxRange) : boolean;
@@ -429,7 +434,6 @@ implementation
     curNode    : tNode;
     rc         : tControlRecord;
   begin
-    { todo }
     _openTree(this);
     rc         := _getControl(this);
     pos        := rc.root;

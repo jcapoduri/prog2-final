@@ -1,0 +1,28 @@
+object CategoryBase: TCategoryBase
+  Left = 416
+  Height = 600
+  Top = 141
+  Width = 800
+  Caption = 'Categorias'
+  ClientHeight = 600
+  ClientWidth = 800
+  OnActivate = FormActivate
+  Position = poDesktopCenter
+  LCLVersion = '1.8.0.6'
+  object treeView: TTreeView
+    Left = 9
+    Height = 540
+    Top = 12
+    Width = 777
+    TabOrder = 0
+  end
+  object addButton: TBitBtn
+    Left = 711
+    Height = 30
+    Top = 560
+    Width = 75
+    Caption = 'Agregar'
+    OnClick = addButtonClick
+    TabOrder = 1
+  end
+end

@@ -7,8 +7,9 @@ interface
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, Menus,
   ExtCtrls,
-  loginform  in 'frm\loginform',
-  metru.core in 'libs\metru.core.pas';
+  loginform    in 'frm\loginform',
+  categorybase in 'frm\cateogorybase.pas',
+  metru.core   in 'libs\metru.core.pas';
 
 type
 
@@ -18,7 +19,7 @@ type
     MainMenu1: TMainMenu;
     MenuItem1: TMenuItem;
     MenuItem2: TMenuItem;
-    MenuItem3: TMenuItem;
+    categoryMenuItem: TMenuItem;
     MenuItem4: TMenuItem;
     MenuItem5: TMenuItem;
     MenuItem6: TMenuItem;
@@ -26,8 +27,10 @@ type
     MenuItem8: TMenuItem;
     Panel1: TPanel;
     login : TLoginForm;
+    catBase : TCategoryBase;
     procedure FormCreate(Sender: TObject);
     procedure MenuItem1Click(Sender: TObject);
+    procedure categoryMenuItemClick(Sender: TObject);
   private
     { private declarations }
   public
@@ -46,12 +49,21 @@ implementation
 procedure TForm1.FormCreate(Sender: TObject);
 begin
   Application.CreateForm(TLoginForm, login);
+  { WARNING : Please delete this 2 lines before prod! }
+  login.emailEdit.Text    := 'admistrador@mercatrucho.com';
+  login.passwordEdit.Text := 'palo_y_a_la_bolsa';
   login.ShowModal;
 end;
 
 procedure TForm1.MenuItem1Click(Sender: TObject);
 begin
 
+end;
+
+procedure TForm1.categoryMenuItemClick(Sender: TObject);
+begin
+   Application.CreateForm(TCategoryBase, self.catBase);
+   self.catBase.Show;
 end;
 
 end.

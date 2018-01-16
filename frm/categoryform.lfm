@@ -6,6 +6,7 @@ object CategoryForm: TCategoryForm
   Caption = 'Categoría'
   ClientHeight = 206
   ClientWidth = 320
+  OnActivate = FormActivate
   LCLVersion = '1.8.0.6'
   object nameEdit: TLabeledEdit
     Left = 8
@@ -23,7 +24,7 @@ object CategoryForm: TCategoryForm
     EditLabel.Caption = 'Nombre:'
     EditLabel.ParentColor = False
     TabOrder = 0
-    Text = 'nameEdit'
+    TextHint = 'Nombre'
   end
   object Label1: TLabel
     Left = 9
@@ -44,14 +45,14 @@ object CategoryForm: TCategoryForm
     TabOrder = 1
     Value = 0
   end
-  object ComboBox1: TComboBox
+  object categoryCombobox: TComboBox
     Left = 9
     Height = 23
     Top = 134
     Width = 303
     ItemHeight = 15
     TabOrder = 2
-    Text = 'ComboBox1'
+    Text = 'categoryCombobox'
   end
   object Label2: TLabel
     Left = 8
@@ -67,6 +68,7 @@ object CategoryForm: TCategoryForm
     Top = 168
     Width = 75
     Caption = 'Salvar'
+    OnClick = saveButtonClick
     TabOrder = 3
   end
   object cancelButton: TBitBtn
