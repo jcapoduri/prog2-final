@@ -20,7 +20,7 @@ type
 implementation
   function _uniqId (image : string) : string;
   begin
-    _uniqId := MD5Print(MD5String(image));
+    _uniqId := MD5Print(MD5File(image));
   end;
 
   procedure setupContainer (var this : tImageContainer; path : string);
