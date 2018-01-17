@@ -1,16 +1,16 @@
 object CategoryForm: TCategoryForm
-  Left = 749
-  Height = 206
-  Top = 337
+  Left = 662
+  Height = 285
+  Top = 1287
   Width = 320
   Caption = 'Categoría'
-  ClientHeight = 206
+  ClientHeight = 285
   ClientWidth = 320
   OnActivate = FormActivate
   LCLVersion = '1.8.0.6'
   object nameEdit: TLabeledEdit
     Left = 8
-    Height = 23
+    Height = 27
     Top = 24
     Width = 304
     EditLabel.AnchorSideLeft.Control = nameEdit
@@ -18,8 +18,8 @@ object CategoryForm: TCategoryForm
     EditLabel.AnchorSideRight.Side = asrBottom
     EditLabel.AnchorSideBottom.Control = nameEdit
     EditLabel.Left = 8
-    EditLabel.Height = 15
-    EditLabel.Top = 6
+    EditLabel.Height = 17
+    EditLabel.Top = 4
     EditLabel.Width = 304
     EditLabel.Caption = 'Nombre:'
     EditLabel.ParentColor = False
@@ -28,16 +28,16 @@ object CategoryForm: TCategoryForm
   end
   object Label1: TLabel
     Left = 9
-    Height = 15
-    Top = 56
-    Width = 54
+    Height = 17
+    Top = 136
+    Width = 68
     Caption = 'Comision:'
     ParentColor = False
   end
   object comisionEdit: TFloatSpinEdit
     Left = 9
-    Height = 23
-    Top = 80
+    Height = 27
+    Top = 160
     Width = 56
     Increment = 1
     MaxValue = 100
@@ -47,25 +47,25 @@ object CategoryForm: TCategoryForm
   end
   object categoryCombobox: TComboBox
     Left = 9
-    Height = 23
-    Top = 134
+    Height = 29
+    Top = 214
     Width = 303
-    ItemHeight = 15
+    ItemHeight = 0
     TabOrder = 2
     Text = 'categoryCombobox'
   end
   object Label2: TLabel
     Left = 8
-    Height = 15
-    Top = 110
-    Width = 94
+    Height = 17
+    Top = 190
+    Width = 123
     Caption = 'Cateogoría padre:'
     ParentColor = False
   end
   object saveButton: TBitBtn
     Left = 237
     Height = 30
-    Top = 168
+    Top = 248
     Width = 75
     Caption = 'Salvar'
     OnClick = saveButtonClick
@@ -74,9 +74,27 @@ object CategoryForm: TCategoryForm
   object cancelButton: TBitBtn
     Left = 9
     Height = 30
-    Top = 168
+    Top = 248
     Width = 75
     Caption = 'Cancelar'
     TabOrder = 4
+  end
+  object descriptionEdit: TLabeledEdit
+    Left = 9
+    Height = 27
+    Top = 73
+    Width = 80
+    EditLabel.AnchorSideLeft.Control = descriptionEdit
+    EditLabel.AnchorSideRight.Control = descriptionEdit
+    EditLabel.AnchorSideRight.Side = asrBottom
+    EditLabel.AnchorSideBottom.Control = descriptionEdit
+    EditLabel.Left = 9
+    EditLabel.Height = 17
+    EditLabel.Top = 53
+    EditLabel.Width = 80
+    EditLabel.Caption = 'Descripcion:'
+    EditLabel.ParentColor = False
+    TabOrder = 5
+    Text = 'descriptionEdit'
   end
 end

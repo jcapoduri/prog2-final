@@ -28,7 +28,7 @@
       <Unit2>
         <Filename Value="libs\lib.tree.avl.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="1"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="323"/>
         <CursorPos X="37" Y="336"/>
         <UsageCount Value="60"/>
@@ -163,7 +163,7 @@
       </Unit15>
       <Unit16>
         <Filename Value="C:\lazarus\lcl\include\control.inc"/>
-        <EditorIndex Value="6"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="3483"/>
         <CursorPos Y="3500"/>
         <UsageCount Value="22"/>
@@ -178,7 +178,7 @@
         <UsageCount Value="10"/>
       </Unit17>
     </Units>
-    <JumpHistory Count="30" HistoryIndex="29">
+    <JumpHistory Count="14" HistoryIndex="13">
       <Position1>
         <Filename Value="libs\lib.hash.open.pas"/>
         <Caret Line="90" TopLine="73"/>

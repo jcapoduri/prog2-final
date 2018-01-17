@@ -17,20 +17,23 @@ type
 
   TForm1 = class(TForm)
     MainMenu1: TMainMenu;
-    MenuItem1: TMenuItem;
-    MenuItem2: TMenuItem;
+    userBaseMenuItem: TMenuItem;
+    newPublicationMenuItem: TMenuItem;
+    publicationBaseMenuItem: TMenuItem;
     categoryMenuItem: TMenuItem;
-    MenuItem4: TMenuItem;
-    MenuItem5: TMenuItem;
-    MenuItem6: TMenuItem;
-    MenuItem7: TMenuItem;
-    MenuItem8: TMenuItem;
+    categoryCRUDMenuItem: TMenuItem;
+    sellsBaseMenuItem: TMenuItem;
+    advanceBaseMenuItem: TMenuItem;
+    userEditMenuItem: TMenuItem;
+    quitMenuItem: TMenuItem;
+    publicationAllMenuItem: TMenuItem;
+    myPublicationMenuItem: TMenuItem;
     Panel1: TPanel;
     login : TLoginForm;
     catBase : TCategoryBase;
     procedure FormCreate(Sender: TObject);
-    procedure MenuItem1Click(Sender: TObject);
-    procedure categoryMenuItemClick(Sender: TObject);
+    procedure categoryCRUDMenuItemClick(Sender: TObject);
+    procedure quitMenuItemClick(Sender: TObject);
   private
     { private declarations }
   public
@@ -55,15 +58,15 @@ begin
   login.ShowModal;
 end;
 
-procedure TForm1.MenuItem1Click(Sender: TObject);
-begin
-
-end;
-
-procedure TForm1.categoryMenuItemClick(Sender: TObject);
+procedure TForm1.categoryCRUDMenuItemClick(Sender: TObject);
 begin
    Application.CreateForm(TCategoryBase, self.catBase);
    self.catBase.Show;
+end;
+
+procedure TForm1.quitMenuItemClick(Sender: TObject);
+begin
+  Application.Terminate;
 end;
 
 end.

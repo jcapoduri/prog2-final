@@ -7,16 +7,16 @@ object Form1: TForm1
   ChildSizing.ShrinkHorizontal = crsHomogenousChildResize
   ChildSizing.ShrinkVertical = crsHomogenousChildResize
   ChildSizing.Layout = cclLeftToRightThenTopToBottom
-  ClientHeight = 453
+  ClientHeight = 473
   ClientWidth = 979
   Menu = MainMenu1
   OnCreate = FormCreate
   LCLVersion = '1.8.0.6'
   object Panel1: TPanel
-    Left = 0
-    Height = 476
-    Top = -10
-    Width = 976
+    Left = 440
+    Height = 1
+    Top = 195
+    Width = 1
     Anchors = []
     AutoSize = True
     Caption = 'Panel1'
@@ -25,29 +25,39 @@ object Form1: TForm1
   end
   object MainMenu1: TMainMenu
     top = 4
-    object MenuItem1: TMenuItem
+    object userBaseMenuItem: TMenuItem
       Caption = 'Usuario'
-      object MenuItem6: TMenuItem
+      object userEditMenuItem: TMenuItem
         Caption = 'Editar'
       end
-      object MenuItem7: TMenuItem
+      object quitMenuItem: TMenuItem
         Caption = 'Salir'
+        OnClick = quitMenuItemClick
       end
     end
-    object MenuItem2: TMenuItem
+    object publicationBaseMenuItem: TMenuItem
       Caption = 'Publicaciones'
-      object MenuItem8: TMenuItem
+      object publicationAllMenuItem: TMenuItem
         Caption = 'Ver Todas'
+      end
+      object myPublicationMenuItem: TMenuItem
+        Caption = 'Ver mias'
+      end
+      object newPublicationMenuItem: TMenuItem
+        Caption = 'Nueva publicacion'
       end
     end
     object categoryMenuItem: TMenuItem
       Caption = 'Cateogorias'
-      OnClick = categoryMenuItemClick
+      object categoryCRUDMenuItem: TMenuItem
+        Caption = 'Editar Categorias'
+        OnClick = categoryCRUDMenuItemClick
+      end
     end
-    object MenuItem4: TMenuItem
+    object sellsBaseMenuItem: TMenuItem
       Caption = 'Ventas'
     end
-    object MenuItem5: TMenuItem
+    object advanceBaseMenuItem: TMenuItem
       Caption = 'Avanzado'
     end
   end
