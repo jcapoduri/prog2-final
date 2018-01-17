@@ -5,8 +5,8 @@ unit categorybase;
 interface
 
 uses
-  Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ComCtrls,
-  Buttons, metru.core, categoryform;
+  Classes, SysUtils, FileUtil, RTTIGrids, Forms, Controls, Graphics, Dialogs,
+  ComCtrls, Buttons, PairSplitter, ExtCtrls, metru.core, categoryform;
 
 type
 
@@ -14,6 +14,7 @@ type
 
   TCategoryBase = class(TForm)
     addButton: TBitBtn;
+    Panel1: TPanel;
     treeView: TTreeView;
     procedure addButtonClick(Sender: TObject);
     procedure FormActivate(Sender: TObject);

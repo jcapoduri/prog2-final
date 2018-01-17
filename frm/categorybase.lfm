@@ -1,28 +1,47 @@
 object CategoryBase: TCategoryBase
-  Left = 416
-  Height = 600
-  Top = 141
-  Width = 800
+  Left = 576
+  Height = 597
+  Top = 210
+  Width = 664
+  BorderStyle = bsSingle
+  BorderWidth = 6
   Caption = 'Categorias'
-  ClientHeight = 600
-  ClientWidth = 800
+  ClientHeight = 597
+  ClientWidth = 664
   OnActivate = FormActivate
   Position = poDesktopCenter
   LCLVersion = '1.8.0.6'
   object treeView: TTreeView
-    Left = 9
-    Height = 540
-    Top = 12
-    Width = 777
+    Left = 6
+    Height = 556
+    Top = 6
+    Width = 652
+    Align = alClient
+    Anchors = [akTop, akLeft, akRight]
+    AutoExpand = True
+    ScrollBars = ssAutoBoth
     TabOrder = 0
+    Options = [tvoAutoExpand, tvoAutoItemHeight, tvoHideSelection, tvoKeepCollapsedNodes, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoThemedDraw]
   end
-  object addButton: TBitBtn
-    Left = 711
-    Height = 30
-    Top = 560
-    Width = 75
-    Caption = 'Agregar'
-    OnClick = addButtonClick
+  object Panel1: TPanel
+    Left = 6
+    Height = 29
+    Top = 562
+    Width = 652
+    Align = alBottom
+    ClientHeight = 29
+    ClientWidth = 652
     TabOrder = 1
+    object addButton: TBitBtn
+      Left = 575
+      Height = 27
+      Top = 1
+      Width = 76
+      Align = alRight
+      Anchors = [akBottom]
+      Caption = 'Agregar'
+      OnClick = addButtonClick
+      TabOrder = 0
+    end
   end
 end
