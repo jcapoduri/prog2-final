@@ -22,6 +22,7 @@ type
     Label1: TLabel;
     Label2: TLabel;
     nameEdit: TLabeledEdit;
+    procedure cancelButtonClick(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure saveButtonClick(Sender: TObject);
   private
@@ -43,7 +44,7 @@ implementation
 
 procedure TCategoryForm.saveButtonClick(Sender: TObject);
 begin
-  self.category.categoryName := self.nameEdit.Text;Text;
+  self.category.categoryName := self.nameEdit.Text;
   self.category.description  := self.descriptionEdit.Text;
   self.category.VAT          := self.comisionEdit.Value;
   self.category.parent       := -1;
@@ -51,6 +52,7 @@ begin
     metru.core.createCateogry(metruApp, self.category)
   else
     metru.core.editCateogry(metruApp, self.category);
+  close;
 end;
 
 procedure TCategoryForm.FormActivate(Sender: TObject);
@@ -63,6 +65,11 @@ begin
     begin
       self.categoryCombobox.Items.Add(list[i].categoryName);
     end;
+end;
+
+procedure TCategoryForm.cancelButtonClick(Sender: TObject);
+begin
+  close;
 end;
 
 constructor TCategoryForm.CreateWithCategory(TheOwner: TComponent;

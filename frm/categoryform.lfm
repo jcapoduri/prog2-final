@@ -1,16 +1,16 @@
 object CategoryForm: TCategoryForm
-  Left = 662
-  Height = 285
-  Top = 1287
+  Left = 749
+  Height = 272
+  Top = 337
   Width = 320
   Caption = 'Categoría'
-  ClientHeight = 285
+  ClientHeight = 272
   ClientWidth = 320
   OnActivate = FormActivate
   LCLVersion = '1.8.0.6'
   object nameEdit: TLabeledEdit
     Left = 8
-    Height = 27
+    Height = 23
     Top = 24
     Width = 304
     EditLabel.AnchorSideLeft.Control = nameEdit
@@ -18,8 +18,8 @@ object CategoryForm: TCategoryForm
     EditLabel.AnchorSideRight.Side = asrBottom
     EditLabel.AnchorSideBottom.Control = nameEdit
     EditLabel.Left = 8
-    EditLabel.Height = 17
-    EditLabel.Top = 4
+    EditLabel.Height = 15
+    EditLabel.Top = 6
     EditLabel.Width = 304
     EditLabel.Caption = 'Nombre:'
     EditLabel.ParentColor = False
@@ -28,16 +28,16 @@ object CategoryForm: TCategoryForm
   end
   object Label1: TLabel
     Left = 9
-    Height = 17
-    Top = 136
-    Width = 68
+    Height = 15
+    Top = 104
+    Width = 54
     Caption = 'Comision:'
     ParentColor = False
   end
   object comisionEdit: TFloatSpinEdit
     Left = 9
-    Height = 27
-    Top = 160
+    Height = 23
+    Top = 128
     Width = 56
     Increment = 1
     MaxValue = 100
@@ -47,25 +47,27 @@ object CategoryForm: TCategoryForm
   end
   object categoryCombobox: TComboBox
     Left = 9
-    Height = 29
-    Top = 214
+    Height = 23
+    Top = 182
     Width = 303
-    ItemHeight = 0
+    AutoComplete = True
+    AutoCompleteText = [cbactEnabled, cbactEndOfLineComplete, cbactSearchAscending]
+    ItemHeight = 15
+    Style = csDropDownList
     TabOrder = 2
-    Text = 'categoryCombobox'
   end
   object Label2: TLabel
     Left = 8
-    Height = 17
-    Top = 190
-    Width = 123
+    Height = 15
+    Top = 158
+    Width = 94
     Caption = 'Cateogoría padre:'
     ParentColor = False
   end
   object saveButton: TBitBtn
     Left = 237
     Height = 30
-    Top = 248
+    Top = 224
     Width = 75
     Caption = 'Salvar'
     OnClick = saveButtonClick
@@ -74,27 +76,27 @@ object CategoryForm: TCategoryForm
   object cancelButton: TBitBtn
     Left = 9
     Height = 30
-    Top = 248
+    Top = 224
     Width = 75
     Caption = 'Cancelar'
+    OnClick = cancelButtonClick
     TabOrder = 4
   end
   object descriptionEdit: TLabeledEdit
-    Left = 9
-    Height = 27
-    Top = 73
-    Width = 80
+    Left = 8
+    Height = 23
+    Top = 72
+    Width = 304
     EditLabel.AnchorSideLeft.Control = descriptionEdit
     EditLabel.AnchorSideRight.Control = descriptionEdit
     EditLabel.AnchorSideRight.Side = asrBottom
     EditLabel.AnchorSideBottom.Control = descriptionEdit
-    EditLabel.Left = 9
-    EditLabel.Height = 17
-    EditLabel.Top = 53
-    EditLabel.Width = 80
-    EditLabel.Caption = 'Descripcion:'
+    EditLabel.Left = 8
+    EditLabel.Height = 15
+    EditLabel.Top = 54
+    EditLabel.Width = 304
+    EditLabel.Caption = 'Descripcion: '
     EditLabel.ParentColor = False
     TabOrder = 5
-    Text = 'descriptionEdit'
   end
 end
