@@ -37,6 +37,8 @@ type
                  isAdmin : boolean;
                end;
 
+  operator + (a, b : tCategoryList) c: tCategoryList;
+
   { start up functions }
   procedure setup   (var this : tMetruCore);
   procedure kickoff (var this : tMetruCore);
@@ -63,6 +65,17 @@ var
   metruApp : tMetruCore;
 
 implementation
+  operator + (a, b : tCategoryList) c: tCategoryList;
+  var
+    i :longint;
+  begin
+    SetLength(c, Length(a) + Length(b));
+    for i := 0 to High(a) do
+        c[i] := a[i];
+    for i := 0 to High(b) do
+        c[i + Length(a)] := b[i];
+  end;
+
   procedure setup   (var this : tMetruCore);
   begin
     lib.hash.open.loadHash(this.io.users, BASEPATH, USERFILE);
@@ -90,6 +103,7 @@ implementation
     user.photoUrl   := '';
     user.status     := false;
     user.utimestamp := Now;
+    user.blocked    := false;
     lib.hash.open.insert(this.io.users, user);
 
     { setup categories }
@@ -154,7 +168,8 @@ implementation
     user.id         := 0; 
     user.ctimestamp := Now;
     user.status     := false;
-    user.utimestamp := Now;  
+    user.utimestamp := Now;
+    user.blocked    := false;
     ok              := not lib.hash.open.search(this.io.users, user.email, pos);
     if ok then
       lib.hash.open.insert(this.io.users, user);        
@@ -272,7 +287,7 @@ implementation
         auxCat  := list[i];
         auxList := retrieveChildCateogies(this, auxCat);
         if (Length(auxList) > 0) then
-            Move(auxList[0], list[Length(list)], Length(auxList) * SizeOf(tCategory));
+          list := list + auxList;
         i       := i + 1;
       end;
     retrieveAllCateogies := list;
