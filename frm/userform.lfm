@@ -1,11 +1,11 @@
 object UserForm: TUserForm
   Left = 626
-  Height = 480
+  Height = 462
   Top = 272
-  Width = 400
+  Width = 401
   Caption = 'Usuario'
-  ClientHeight = 480
-  ClientWidth = 400
+  ClientHeight = 462
+  ClientWidth = 401
   OnCreate = FormCreate
   Position = poDesktopCenter
   LCLVersion = '1.8.0.6'
@@ -67,16 +67,16 @@ object UserForm: TUserForm
   object saveButton: TBitBtn
     Left = 317
     Height = 30
-    Top = 446
+    Top = 424
     Width = 75
     Caption = 'Guardar'
     OnClick = saveButtonClick
     TabOrder = 3
   end
   object cancelButton: TBitBtn
-    Left = 8
+    Left = 7
     Height = 30
-    Top = 446
+    Top = 424
     Width = 75
     Caption = 'Cancelar'
     OnClick = cancelButtonClick
@@ -125,10 +125,10 @@ object UserForm: TUserForm
     ParentColor = False
   end
   object State: TComboBox
-    Left = 10
+    Left = 8
     Height = 29
     Top = 265
-    Width = 380
+    Width = 384
     AutoComplete = True
     AutoCompleteText = [cbactEnabled, cbactEndOfLineComplete, cbactSearchAscending]
     ItemHeight = 0
@@ -158,5 +158,42 @@ object UserForm: TUserForm
       'Tucuman'
     )
     TabOrder = 7
+  end
+  object Label2: TLabel
+    Left = 7
+    Height = 15
+    Top = 298
+    Width = 73
+    Caption = 'Foto de perfil:'
+    ParentColor = False
+  end
+  object previewWidget: TImage
+    Left = 93
+    Height = 90
+    Top = 299
+    Width = 90
+    Stretch = True
+  end
+  object addPictureButton: TBitBtn
+    Left = 192
+    Height = 30
+    Top = 299
+    Width = 75
+    Caption = 'Agregar'
+    OnClick = addPictureButtonClick
+    TabOrder = 8
+  end
+  object errorLabel: TLabel
+    Left = 9
+    Height = 1
+    Top = 390
+    Width = 1
+    Font.Color = clRed
+    ParentColor = False
+    ParentFont = False
+  end
+  object pictureDialog: TOpenPictureDialog
+    left = 328
+    top = 296
   end
 end
