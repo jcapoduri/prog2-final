@@ -22,6 +22,7 @@ type
   { expose data records only }
   tCategoryList = lib.tree.lcrs.tCategoryList;
   tCategory     = lib.tree.lcrs.tCategory;
+  tUser         = lib.hash.open.tUser;
 
   tMetruIO =   record
                  users      : tOpenHash;
@@ -148,7 +149,11 @@ implementation
     pos : tHashValue;
     ok  : boolean;
   begin
-    ok := not lib.hash.open.search(this.io.users, user.email, pos);
+    user.id         := 0; 
+    user.ctimestamp := Now;
+    user.status     := false;
+    user.utimestamp := Now;  
+    ok              := not lib.hash.open.search(this.io.users, user.email, pos);
     if ok then
       lib.hash.open.insert(this.io.users, user);        
     createUser := ok;

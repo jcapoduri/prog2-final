@@ -202,7 +202,7 @@ implementation
                 if (node.email = email) then
                   found := true
                 else
-                  auxPos := _nextPos(pos);
+                  auxPos := _nextPos(auxPos);
               end;
           end;
       end;
