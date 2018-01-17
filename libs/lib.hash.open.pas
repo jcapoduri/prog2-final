@@ -22,9 +22,9 @@ type
                      fullname   : string[255];
                      address    : string[255];
                      providence : 0..25;
+                     status     : boolean;
                      ctimestamp : TDateTime; {creation timestamp}
                      photoUrl   : string[255];
-                     status     : boolean;
                      blocked    : boolean;
                      utimestamp : TDateTime; {login timestamp}                     
                    end;
