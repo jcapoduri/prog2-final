@@ -41,7 +41,7 @@ type
   procedure kickoff (var this : tMetruCore);
 
   { User functions }
-  function  login      (var this : tMetruCore; email, pass : string) : boolean;
+  function  login      (var this : tMetruCore; email, pass : string; var blocked : boolean) : boolean;
   function  isLogedIn  (var this : tMetruCore) : boolean;
   function  loggedUser (var this : tMetruCore) : tUser;
   procedure logoff     (var this : tMetruCore);
@@ -92,8 +92,8 @@ implementation
     lib.hash.open.insert(this.io.users, user);
 
     { setup categories }
-    cat.categoryName := 'ROOT';
-    cat.description  := 'ROOT';
+    cat.categoryName := 'RAIZ';
+    cat.description  := 'RAIZ';
     cat.VAT          := 0;
     cat.parent       := NULLIDX;
     cat.leftChild    := NULLIDX;
@@ -101,17 +101,19 @@ implementation
     lib.tree.lcrs.addSibling(this.io.categories, NULLIDX, cat);
   end;
 
-  function  login      (var this : tMetruCore; email, pass : string) : boolean;
+  function  login      (var this : tMetruCore; email, pass : string; var blocked : boolean) : boolean;
   var
     found : boolean;
     pos   : tHashValue;
     user  : tUser;
   begin
-    found := lib.hash.open.search(this.io.users, email, pos);
+    blocked := false;
+    found   := lib.hash.open.search(this.io.users, email, pos);
     if (found) then
       begin
-        user := lib.hash.open.fetch(this.io.users, email);
-        if (user.password = pass) then
+        user    := lib.hash.open.fetch(this.io.users, email);
+        blocked := user.blocked;
+        if (not blocked) and (user.password = pass) then
           begin
             user.status := true;
             lib.hash.open.insert(this.io.users, user);

@@ -11,7 +11,7 @@ object UserForm: TUserForm
   LCLVersion = '1.8.0.6'
   object emailEdit: TLabeledEdit
     Left = 8
-    Height = 23
+    Height = 27
     Top = 24
     Width = 384
     EditLabel.AnchorSideLeft.Control = emailEdit
@@ -19,8 +19,8 @@ object UserForm: TUserForm
     EditLabel.AnchorSideRight.Side = asrBottom
     EditLabel.AnchorSideBottom.Control = emailEdit
     EditLabel.Left = 8
-    EditLabel.Height = 15
-    EditLabel.Top = 6
+    EditLabel.Height = 17
+    EditLabel.Top = 4
     EditLabel.Width = 384
     EditLabel.Caption = 'Email:'
     EditLabel.ParentColor = False
@@ -28,7 +28,7 @@ object UserForm: TUserForm
   end
   object pass1Edit: TLabeledEdit
     Left = 8
-    Height = 23
+    Height = 27
     Top = 72
     Width = 384
     EchoMode = emPassword
@@ -37,8 +37,8 @@ object UserForm: TUserForm
     EditLabel.AnchorSideRight.Side = asrBottom
     EditLabel.AnchorSideBottom.Control = pass1Edit
     EditLabel.Left = 8
-    EditLabel.Height = 15
-    EditLabel.Top = 54
+    EditLabel.Height = 17
+    EditLabel.Top = 52
     EditLabel.Width = 384
     EditLabel.Caption = 'Contraseña:'
     EditLabel.ParentColor = False
@@ -47,7 +47,7 @@ object UserForm: TUserForm
   end
   object pass2Edit: TLabeledEdit
     Left = 8
-    Height = 23
+    Height = 27
     Top = 120
     Width = 384
     EchoMode = emPassword
@@ -56,8 +56,8 @@ object UserForm: TUserForm
     EditLabel.AnchorSideRight.Side = asrBottom
     EditLabel.AnchorSideBottom.Control = pass2Edit
     EditLabel.Left = 8
-    EditLabel.Height = 15
-    EditLabel.Top = 102
+    EditLabel.Height = 17
+    EditLabel.Top = 100
     EditLabel.Width = 384
     EditLabel.Caption = 'Repetir constraseña:'
     EditLabel.ParentColor = False
@@ -84,7 +84,7 @@ object UserForm: TUserForm
   end
   object nameEdit: TLabeledEdit
     Left = 8
-    Height = 23
+    Height = 27
     Top = 168
     Width = 384
     EditLabel.AnchorSideLeft.Control = nameEdit
@@ -92,8 +92,8 @@ object UserForm: TUserForm
     EditLabel.AnchorSideRight.Side = asrBottom
     EditLabel.AnchorSideBottom.Control = nameEdit
     EditLabel.Left = 8
-    EditLabel.Height = 15
-    EditLabel.Top = 150
+    EditLabel.Height = 17
+    EditLabel.Top = 148
     EditLabel.Width = 384
     EditLabel.Caption = 'Apellido y Nombre'
     EditLabel.ParentColor = False
@@ -101,7 +101,7 @@ object UserForm: TUserForm
   end
   object addressEdit: TLabeledEdit
     Left = 8
-    Height = 23
+    Height = 27
     Top = 216
     Width = 384
     EditLabel.AnchorSideLeft.Control = addressEdit
@@ -109,8 +109,8 @@ object UserForm: TUserForm
     EditLabel.AnchorSideRight.Side = asrBottom
     EditLabel.AnchorSideBottom.Control = addressEdit
     EditLabel.Left = 8
-    EditLabel.Height = 15
-    EditLabel.Top = 198
+    EditLabel.Height = 17
+    EditLabel.Top = 196
     EditLabel.Width = 384
     EditLabel.Caption = 'Domicilio'
     EditLabel.ParentColor = False
@@ -118,20 +118,20 @@ object UserForm: TUserForm
   end
   object Label1: TLabel
     Left = 8
-    Height = 15
+    Height = 17
     Top = 248
-    Width = 49
+    Width = 64
     Caption = 'Provincia'
     ParentColor = False
   end
   object State: TComboBox
     Left = 10
-    Height = 23
+    Height = 29
     Top = 265
     Width = 380
     AutoComplete = True
     AutoCompleteText = [cbactEnabled, cbactEndOfLineComplete, cbactSearchAscending]
-    ItemHeight = 15
+    ItemHeight = 0
     Items.Strings = (
       'Buenos Aires'
       'Capital Federal'

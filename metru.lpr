@@ -15,8 +15,8 @@ uses
 {$R *.res}
 
 begin
-  //metru.core.kickoff(metruApp);
-  metru.core.setup(metruApp);
+  metru.core.kickoff(metruApp);
+  //metru.core.setup(metruApp);
   RequireDerivedFormResource:=True;
   Application.Initialize;
   Application.CreateForm(TForm1, Form1);

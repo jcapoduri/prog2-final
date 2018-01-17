@@ -25,6 +25,7 @@ type
                      ctimestamp : TDateTime; {creation timestamp}
                      photoUrl   : string[255];
                      status     : boolean;
+                     blocked    : boolean;
                      utimestamp : TDateTime; {login timestamp}                     
                    end;
   tUser          = tNode;

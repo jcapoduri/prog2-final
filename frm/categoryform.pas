@@ -14,6 +14,7 @@ type
   { TCategoryForm }
 
   TCategoryForm = class(TForm)
+    descriptionEdit: TLabeledEdit;
     saveButton: TBitBtn;
     cancelButton: TBitBtn;
     categoryCombobox: TComboBox;
@@ -43,12 +44,13 @@ implementation
 procedure TCategoryForm.saveButtonClick(Sender: TObject);
 begin
   self.category.categoryName := self.nameEdit.Text;Text;
-  self.category.description  := '';
+  self.category.description  := self.descriptionEdit.Text;
   self.category.VAT          := self.comisionEdit.Value;
+  self.category.parent       := -1;
   if self.category.id = 0 then
-    metru.core.createCateogry(metruApp, category)
+    metru.core.createCateogry(metruApp, self.category)
   else
-    metru.core.editCateogry(metruApp, category);
+    metru.core.editCateogry(metruApp, self.category);
 end;
 
 procedure TCategoryForm.FormActivate(Sender: TObject);
