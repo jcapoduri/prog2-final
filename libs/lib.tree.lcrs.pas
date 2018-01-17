@@ -369,7 +369,6 @@ implementation
     auxIdx       : idxRange;
   begin
     _openTree(this);
-    //item.id    := key;
     item.parent := pos;
     auxIdx      := _append(this, item);
 
