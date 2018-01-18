@@ -16,39 +16,50 @@ uses
   //io.helpers       in 'libs\io.helpers.pas'
   ;
 
+procedure dumpCategoryTree();
+var
+  category            : lib.tree.lcrs.tCategory;
+  catDB               : lib.tree.lcrs.tLCRStree;
+  idx, maxIdx         : idxRange;
+begin
+  lib.tree.lcrs.loadTree(catDB, 'data/', 'categories');
+  reset(catDB.data);
+  maxIdx := filesize(catDB.data);
+  close(catDB.data);
+
+  write('pos | ');
+  write('name | ');
+  write('desc | ');
+  write('VAT | ');
+  write('parent | ');
+  write('leftChild | ');
+  write('rightChild | ');
+  writeln;
+  for idx := 0 to maxIdx do
+    begin
+      category := lib.tree.lcrs.fetch(catDB, idx);
+      write(idx, ' | ');
+      write(category.categoryName, ' | ');
+      write(category.description, ' | ');
+      write(category.VAT, ' | ');
+      write(category.parent, ' | ');
+      write(category.leftChild, ' | ');
+      write(category.rightSibling, ' | ');
+      writeln;
+    end;
+end;
+
 var
   user1, user2, user3 : lib.hash.open.tUser; 
   userDB              : lib.hash.open.tOpenHash;
   found               : boolean;
   userPointer         : lib.hash.open.tHashValue;
+  catDB               : lib.tree.lcrs.tLCRStree;
+  category            : lib.tree.lcrs.tCategory;
+  idx, maxIdx         : idxRange;
 
 begin
-  lib.hash.open.loadHash(userDB, 'data/', 'users');
-
-  user1.email := 'jcapoduri@gmail.com';
-
-  lib.hash.open.insert(userDB, user1);  
-
-  user2.email := 'natalia.vallone87@gmail.com';
-
-  lib.hash.open.insert(userDB, user2);
-
-  user3.email := 'cletonko@gmail.com';
-
-  lib.hash.open.insert(userDB, user3);
-
-  user1.email := 'pepito';
-
-  found := lib.hash.open.search(userDB, 'jcapoduri@gmail.com', userPointer);
-
-  if found then
-    WriteLn('encontrado')
-  else
-    WriteLn('nop');
-
-  user1 := lib.hash.open.fetch(userDB, 'jcapoduri@gmail.com');
-
-  Write(user1.email);
-
+  dumpCategoryTree();
+  readln;
 end.
 

@@ -12,8 +12,6 @@ const
 type
   idxRange       = NULLIDX..MAXINT;
   tKey           = longint;
-  tItemType      = (New, Used);
-  tStatus        = (Publish, Paused, Sold, Void, Blocked);
   tNode          = record
                      id           : longint;
                      categoryName : string[255];

@@ -114,6 +114,39 @@ implementation
     cat.leftChild    := NULLIDX;
     cat.rightSibling := NULLIDX;
     lib.tree.lcrs.addSibling(this.io.categories, NULLIDX, cat);
+
+
+    cat.categoryName := 'Tecnologia';
+    cat.description  := 'Tecnologia';
+    cat.VAT          := 10;
+    cat.parent       := 1;
+    cat.leftChild    := NULLIDX;
+    cat.rightSibling := NULLIDX;
+    createCateogry(metruApp, cat);
+
+    cat.categoryName := 'Electrodomestico';
+    cat.description  := 'Electrodomestico';
+    cat.VAT          := 10;
+    cat.parent       := 1;
+    cat.leftChild    := NULLIDX;
+    cat.rightSibling := NULLIDX;
+    createCateogry(metruApp, cat);
+
+    cat.categoryName := 'Computadoras';
+    cat.description  := 'Computadoras';
+    cat.VAT          := 10;
+    cat.parent       := 2;
+    cat.leftChild    := NULLIDX;
+    cat.rightSibling := NULLIDX;
+    createCateogry(metruApp, cat);
+
+    cat.categoryName := 'Aires';
+    cat.description  := 'Aires';
+    cat.VAT          := 10;
+    cat.parent       := 3;
+    cat.leftChild    := NULLIDX;
+    cat.rightSibling := NULLIDX;
+    createCateogry(metruApp, cat);
   end;
 
   function  login      (var this : tMetruCore; email, pass : string; var blocked : boolean) : boolean;
@@ -204,8 +237,10 @@ implementation
     pos : idxRange;
   begin
     if (category.parent = NULLIDX) then
-      category.parent := lib.tree.lcrs.root(this.io.categories);
-
+      pos := lib.tree.lcrs.root(this.io.categories)
+    else
+      lib.tree.lcrs.search(this.io.categories, category.parent, pos);
+    category.parent := pos;
     lib.tree.lcrs.addChild(this.io.categories, pos, category);
   end;
 
@@ -234,6 +269,8 @@ implementation
     auxPos  : idxRange;
   begin
     auxPos  := lib.tree.lcrs.root(this.io.categories);
+    auxCat  := lib.tree.lcrs.fetch(this.io.categories, auxPos);
+    auxPos  := lib.tree.lcrs.firstChild(this.io.categories, auxPos);
     i := 0;
     while (auxPos <> NULLIDX) do
       begin

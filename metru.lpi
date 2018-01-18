@@ -107,7 +107,7 @@
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
-      <OtherUnitFiles Value="frm"/>
+      <OtherUnitFiles Value="frm;models"/>
       <UnitOutputDirectory Value="obj\$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Linking>
