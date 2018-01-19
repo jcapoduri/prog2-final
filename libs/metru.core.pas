@@ -5,9 +5,10 @@ interface
 uses
   sysutils
   ,lib.tree.lcrs    in 'libs\lib.tree.lcrs.pas'
+  ,lib.avl.lcrs     in 'libs\lib.tree.avl.pas'
+  ,lib.tree.trinary in 'libs\lib.tree.trinary.pas'
   ,lib.hash.open    in 'libs\lib.hash.open.pas'
   ,lib.hash.close   in 'libs\lib.hash.close.pas'
-  ,lib.tree.trinary in 'libs\lib.tree.trinary.pas'
   ;
 
 const
@@ -22,6 +23,7 @@ type
   { expose data records only }
   tCategoryList = lib.tree.lcrs.tCategoryList;
   tCategory     = lib.tree.lcrs.tCategory;
+  tPublication  = lib.tree.avl.tPublication;
   tUser         = lib.hash.open.tUser;
 
   tMetruIO =   record
