@@ -1,4 +1,4 @@
-{Published files}
+{Published publications}
 unit lib.tree.avl;
 
 interface
@@ -52,27 +52,22 @@ type
                      control       : tControl;
                    end;
 
-  procedure loadTree         (var this : tAVLtree; path, filename : string);
-  procedure newEmptyTree     (var this : tAVLtree; path, filename : string);
-  function  isEmpty          (var this : tAVLtree) : boolean;
-  function  searchByUser     (var this : tAVLtree; key : tKey; var pos: idxRange) : boolean;
-  function  searchByCategory (var this : tAVLtree; key : tKey; var pos: idxRange) : boolean;
-  procedure append           (var this : tAVLtree; publication : tPublish);
-  procedure remove           (var this : tAVLtree; publication : tPublish);
-  function  fetch            (var this : tAVLtree; pos: idxRange) : tPublish;
-  function  root             (var this : tAVLtree) : idxRange;
-  function  leftChild        (var this : tAVLtree; pos: idxRange) : idxRange;
-  function  rightChild       (var this : tAVLtree; pos: idxRange) : idxRange;
-  function  parent           (var this : tAVLtree; pos: idxRange) : idxRange;
-  {
-  procedure insert           (var this : tAVLtree; pos: idxRange; key : tKey);
-  procedure remove           (var this : tAVLtree; pos: idxRange);
-  function  fetch            (var this : tAVLtree; pos: idxRange) : tPublish;
-  function  root             (var this : tAVLtree) : idxRange;
-  function  leftChild        (var this : tAVLtree; pos: idxRange) : idxRange;
-  function  rightChild       (var this : tAVLtree; pos: idxRange) : idxRange;
-  function  parent           (var this : tAVLtree; pos: idxRange) : idxRange;
-  }
+  procedure loadTree           (var this : tAVLtree; path, filename : string);
+  procedure newEmptyTree       (var this : tAVLtree; path, filename : string);
+  function  isEmpty            (var this : tAVLtree) : boolean;
+  function  searchByUser       (var this : tAVLtree; key : tKey; var pos: idxRange) : boolean;
+  function  searchByCategory   (var this : tAVLtree; key : tKey; var pos: idxRange) : boolean;
+  procedure append             (var this : tAVLtree; publication : tPublish);
+  procedure remove             (var this : tAVLtree; publication : tPublish);
+  function  fetch              (var this : tAVLtree; pos: idxRange) : tPublish;
+  function  rootOfUsers        (var this : tAVLtree) : idxRange;
+  function  rootOfCategories   (var this : tAVLtree) : idxRange;
+  function  leftUserChild      (var this : tAVLtree; pos: idxRange) : idxRange;
+  function  rightUserChild     (var this : tAVLtree; pos: idxRange) : idxRange;
+  function  leftCategoryChild  (var this : tAVLtree; pos: idxRange) : idxRange;
+  function  rightCategoryChild (var this : tAVLtree; pos: idxRange) : idxRange;
+  function  parentByUser       (var this : tAVLtree; pos: idxRange) : idxRange;
+  function  parentByCategory   (var this : tAVLtree; pos: idxRange) : idxRange;
 
 implementation
   { Helpers }
@@ -119,6 +114,15 @@ implementation
     seek(this.data, idx.index);
     read(this.data, node);
     _getCategoryByNode := node;
+  end;
+
+  function  _getCategoryByPos (var this : tAVLtree; pos : idxRange) : tPublish;
+  var
+    node : tPublish;
+  begin
+    seek(this.data, pos);
+    read(this.data, node);
+    _getCategoryByPos := node;
   end;
 
   { setters }
@@ -212,6 +216,152 @@ implementation
   end;
 
   { ---------------------------------------------------------------------------------------------------------------- }
+  function _parent(var this : tIdxFile; var idx : idxRange) : idxRange; Overload;
+  var
+    node : tNode;
+  begin
+    node    := _getByReference(this, idx);
+    _parent := node.parent;
+  end;
+
+  procedure _updateParent(var this : tAVLtree; var index : tIdxFile; parentIdx, old, new : idxRange);
+  var
+    rc         : tControlRecord;
+    parentNode : tNode;
+  begin
+    if parentIdx = NULLIDX then // pivot was root, update
+      begin
+        rc      := _getControl(this);
+        if (rc.root1 = old) then
+          rc.root1 := new
+        else
+          rc.root2 := new;
+        _setControl(this, rc);
+      end
+    else
+      begin
+        parentNode := _getByReference(index, parentIdx);
+        if parentNode.left = old then
+          parentNode.left  := new
+        else
+          parentNode.right := new;
+        _setByReference(index, parentIdx, parentNode);
+      end;
+  end;
+
+  procedure _balanceRight (var this : tAVLtree; var index : tIdxFile; var pivot : idxRange); forward;
+
+  procedure _balanceLeft(var this : tAVLtree; var index : tIdxFile; var pivot : idxRange);
+  var
+    pivotNode, newBranchRoot, auxNode : tNode;
+    newBranchRootIdx, parentIdx          : idxRange;
+    rc                                   : tControlRecord;
+    hLeft, hRight                        : integer;
+  begin
+    pivotNode        := _getByReference(index, pivot);
+    parentIdx        := pivotNode.parent;
+    newBranchRootIdx := pivotNode.right;
+    newBranchRoot    := _getByReference(index, newBranchRootIdx);
+
+    {check if need to re-balance}
+    hLeft            := _heightByReference(index, newBranchRoot.left);
+    hRight           := _heightByReference(index, newBranchRoot.right);
+    if (hLeft > hRight) then
+      begin
+        _balanceRight(this, index, newBranchRootIdx);
+        pivotNode        := _getByReference(index, pivot);
+        newBranchRootIdx := pivotNode.right;
+        newBranchRoot    := _getByReference(index, newBranchRootIdx);
+      end;
+
+    pivotNode.right      := newBranchRoot.left;
+    newBranchRoot.left   := pivot;
+    newBranchRoot.parent := parentIdx;
+    pivotNode.parent     := newBranchRootIdx;
+
+    _updateParent(this, index, parentIdx, pivot, newBranchRootIdx);
+
+    if pivotNode.right <> NULLIDX then
+      begin
+        auxNode          := _getByReference(index, pivotNode.right);
+        auxNode.parent   := pivot;
+        _setByReference(index, pivotNode.right, auxNode);
+      end;
+
+    _setByReference(index, pivot, pivotNode);
+    _setByReference(index, newBranchRootIdx, newBranchRoot);
+
+    pivot := newBranchRootIdx;
+  end;
+
+  procedure _balanceRight (var this : tAVLtree; var index : tIdxFile; var pivot : idxRange);
+  var
+    pivotNode, newBranchRoot, auxNode : tNode;
+    newBranchRootIdx, parentIdx       : idxRange;
+    hLeft, hRight                     : integer;
+  begin
+    pivotNode        := _getByReference(index, pivot);
+    parentIdx        := pivotNode.parent;
+    newBranchRootIdx := pivotNode.left;
+    newBranchRoot    := _getByReference(index, newBranchRootIdx);
+
+    {check if need to re-balance}
+    hLeft            := _heightByReference(index, newBranchRoot.left);
+    hRight           := _heightByReference(index, newBranchRoot.right);
+    if (hRight > hLeft) then
+      begin
+        _balanceLeft(this, index, newBranchRootIdx);
+        pivotNode        := _getByReference(index, pivot);
+        newBranchRootIdx := pivotNode.left;
+        newBranchRoot    := _getByReference(index, newBranchRootIdx);
+      end;
+
+    pivotNode.left       := newBranchRoot.right;
+    newBranchRoot.right  := pivot;
+    newBranchRoot.parent := parentIdx;
+    pivotNode.parent     := newBranchRootIdx;
+
+    _updateParent(this, index, parentIdx, pivot, newBranchRootIdx);
+
+    if pivotNode.left <> NULLIDX then
+      begin
+        auxNode          := _getByReference(index, pivotNode.left);
+        auxNode.parent   := pivot;
+        _setByReference(index, pivotNode.left, auxNode);
+      end;
+
+    _setByReference(index, pivot, pivotNode);
+    _setByReference(index, newBranchRootIdx, newBranchRoot);
+
+    pivot := newBranchRootIdx;
+  end;
+
+  procedure _balanceBranch (var this : tAVLtree; var index : tIdxFile; var pivot : idxRange);
+  var
+    hLeft, hRight  : integer;
+    node           : tNode;
+  begin
+    node   := _getByReference(index, pivot);
+    hLeft  := _heightByReference(index, node.left);
+    hRight := _heightByReference(index, node.right);
+    if abs(hLeft - hRight) > 1 then
+      if hLeft > hRight then
+        _balanceRight (this, index, pivot)
+      else
+        _balanceLeft  (this, index, pivot);
+  end;
+
+  procedure _balanceIfNeeded (var this : tAVLtree; var index : tIdxFile; pivot : idxRange);
+  var
+    currentIdx  : idxRange;
+  begin
+    currentIdx  := pivot;
+    while currentIdx <> NULLIDX do
+      begin
+        _balanceBranch(this, index, currentIdx);
+        currentIdx := _parent(index, currentIdx);
+      end;
+  end;
 
   function _appendData (var this : tAVLtree; var item : tPublish) : idxRange;
   var
@@ -280,8 +430,8 @@ implementation
     _appendByCategory := pos;
   end;
 
-  function _append (var this : tAVLtree; var publication : tPublish) : idxRange;
-   var
+  procedure _append (var this : tAVLtree; var publication : tPublish);
+  var
     nodeUser, nodeCat, parent : tNode;
     rc                        : tControlRecord;
     auxIdxUser, auxIdxCat, posUser, posCat   : idxRange;
@@ -341,21 +491,60 @@ implementation
       end;
 
     
-    _balanceIfNeeded(this, pos);
+    _balanceIfNeeded(this, this.idxByUser, posUser);
+    _balanceIfNeeded(this, this.idxByCategory, posCat);
     {_closeTree(this);}
   end;
 
   { todo }
-  procedure _detach (var this : tAVLtree; pos : idxRange; var node : tNode);
+  procedure _detach (var this : tAVLtree; posUser, posCat : idxRange; var nodeUser, nodeCat : tNode);
   var
     rc : tControlRecord;
   begin
-    rc          := _getControl(this);
+    rc              := _getControl(this);
+    
+    nodeUser.right  := NULLIDX;
+    nodeUser.left   := NULLIDX;
+    nodeUser.parent := rc.erased1;
+    rc.erased1      := posUser;
+    _setByReference(this.idxByUser, posUser, nodeUser);
+    
+    nodeCat.right   := NULLIDX;
+    nodeCat.left    := NULLIDX;
+    nodeCat.parent  := rc.erased2;
+    rc.erased1      := posCat;
+    _setByReference(this.idxByUser, posCat, nodeCat);
+
+    _setControl(this, rc);
+  end;
+
+  procedure _detachByUser (var this : tAVLtree; pos : idxRange; var node : tNode);
+  var
+    rc : tControlRecord;
+  begin
+    rc              := _getControl(this);
+    
     node.right  := NULLIDX;
     node.left   := NULLIDX;
-    node.parent := rc.erased;
-    rc.erased   := pos;
-    _set(this, pos, node);
+    node.parent := rc.erased1;
+    rc.erased1  := pos;
+    _setByReference(this.idxByUser, pos, node);
+
+    _setControl(this, rc);
+  end;
+
+  procedure _detachByCategory (var this : tAVLtree; pos : idxRange; var node : tNode);
+  var
+    rc : tControlRecord;
+  begin
+    rc              := _getControl(this);
+    
+    node.right  := NULLIDX;
+    node.left   := NULLIDX;
+    node.parent := rc.erased1;
+    rc.erased2  := pos;
+    _setByReference(this.idxByCategory, pos, node);
+
     _setControl(this, rc);
   end;
 
@@ -364,174 +553,30 @@ implementation
     _isLeaf := (node.left = NULLIDX) and (node.right = NULLIDX);
   end;
 
-  function _parent(var this : tAVLtree; var idx : idxRange) : idxRange;
+  function _getBiggerFromBranch (var this : tIdxFile; var pivot : idxRange) : tKey;
   var
     node : tNode;
   begin
-    node    := _get(this, idx);
-    _parent := node.parent;
-  end;
-
-  procedure _updateParent(var this : tAVLtree; parentIdx, old, new : idxRange);
-  var
-    rc         : tControlRecord;
-    parentNode : tNode;
-  begin
-    if parentIdx = NULLIDX then // pivot was root, update
-      begin
-        rc      := _getControl(this);
-        rc.root := new;
-        _setControl(this, rc);
-      end
-    else
-      begin
-        parentNode := _get(this, parentIdx);
-        if parentNode.left = old then
-          parentNode.left  := new
-        else
-          parentNode.right := new;
-        _set(this, parentIdx, parentNode);
-      end;
-  end;
-
-  function _getBiggerFromBranch (var this : tAVLtree; var pivot : idxRange) : tKey;
-  var
-    node : tNode;
-  begin
-    node := _get(this, pivot);
+    node := _getByReference(this, pivot);
     while (node.right <> NULLIDX) do
       begin
         pivot := node.right;
-        node  := _get(this, pivot);
+        node  := _getByReference(this, pivot);
       end;
     _getBiggerFromBranch := node.key;
   end;
 
-  function _getSmallerFromBranch (var this : tAVLtree; var pivot : idxRange) : tKey;
+  function _getSmallerFromBranch (var this : tIdxFile; var pivot : idxRange) : tKey;
   var
     node : tNode;
   begin
-    node := _get(this, pivot);
+    node := _getByReference(this, pivot);
     while (node.left <> NULLIDX) do
       begin
         pivot := node.left;
-        node  := _get(this, pivot);
+        node  := _getByReference(this, pivot);
       end;
     _getSmallerFromBranch := node.key;
-  end;
-
-  procedure _balanceRight (var this : tAVLtree; var pivot : idxRange); forward;
-
-  procedure _balanceLeft(var this : tAVLtree; var pivot : idxRange);
-  var
-    pivotNode, newBranchRoot, auxNode : tNode;
-    newBranchRootIdx, parentIdx          : idxRange;
-    rc                                   : tControlRecord;
-    hLeft, hRight                        : integer;
-  begin
-    pivotNode        := _get(this, pivot);
-    parentIdx        := pivotNode.parent;
-    newBranchRootIdx := pivotNode.right;
-    newBranchRoot    := _get(this, newBranchRootIdx);
-
-    {check if need to re-balance}
-    hLeft            := _height(this, newBranchRoot.left);
-    hRight           := _height(this, newBranchRoot.right);
-    if (hLeft > hRight) then
-      begin
-        _balanceRight(this, newBranchRootIdx);
-        pivotNode        := _get(this, pivot);
-        newBranchRootIdx := pivotNode.right;
-        newBranchRoot    := _get(this, newBranchRootIdx);
-      end;
-
-    pivotNode.right      := newBranchRoot.left;
-    newBranchRoot.left   := pivot;
-    newBranchRoot.parent := parentIdx;
-    pivotNode.parent     := newBranchRootIdx;
-
-    _updateParent(this, parentIdx, pivot, newBranchRootIdx);
-
-    if pivotNode.right <> NULLIDX then
-      begin
-        auxNode          := _get(this, pivotNode.right);
-        auxNode.parent   := pivot;
-        _set(this, pivotNode.right, auxNode);
-      end;
-
-    _set(this, pivot, pivotNode);
-    _set(this, newBranchRootIdx, newBranchRoot);
-
-    pivot := newBranchRootIdx;
-  end;
-
-  procedure _balanceRight (var this : tAVLtree; var pivot : idxRange);
-  var
-    pivotNode, newBranchRoot, auxNode : tNode;
-    newBranchRootIdx, parentIdx       : idxRange;
-    hLeft, hRight                     : integer;
-  begin
-    pivotNode        := _get(this, pivot);
-    parentIdx        := pivotNode.parent;
-    newBranchRootIdx := pivotNode.left;
-    newBranchRoot    := _get(this, newBranchRootIdx);
-
-    {check if need to re-balance}
-    hLeft            := _height(this, newBranchRoot.left);
-    hRight           := _height(this, newBranchRoot.right);
-    if (hRight > hLeft) then
-      begin
-        _balanceLeft(this, newBranchRootIdx);
-        pivotNode        := _get(this, pivot);
-        newBranchRootIdx := pivotNode.left;
-        newBranchRoot    := _get(this, newBranchRootIdx);
-      end;
-
-    pivotNode.left       := newBranchRoot.right;
-    newBranchRoot.right  := pivot;
-    newBranchRoot.parent := parentIdx;
-    pivotNode.parent     := newBranchRootIdx;
-
-    _updateParent(this, parentIdx, pivot, newBranchRootIdx);
-
-    if pivotNode.left <> NULLIDX then
-      begin
-        auxNode          := _get(this, pivotNode.left);
-        auxNode.parent   := pivot;
-        _set(this, pivotNode.left, auxNode);
-      end;
-
-    _set(this, pivot, pivotNode);
-    _set(this, newBranchRootIdx, newBranchRoot);
-
-    pivot := newBranchRootIdx;
-  end;
-
-  procedure _balanceBranch (var this : tAVLtree; var pivot : idxRange);
-  var
-    hLeft, hRight  : integer;
-    node           : tNode;
-  begin
-    node   := _get(this, pivot);
-    hLeft  := _height(this, node.left);
-    hRight := _height(this, node.right);
-    if abs(hLeft - hRight) > 1 then
-      if hLeft > hRight then
-        _balanceRight (this, pivot)
-      else
-        _balanceLeft  (this, pivot);
-  end;
-
-  procedure _balanceIfNeeded (var this : tAVLtree; pivot : idxRange);
-  var
-    currentIdx  : idxRange;
-  begin
-    currentIdx  := pivot;
-    while currentIdx <> NULLIDX do
-      begin
-        _balanceBranch(this, currentIdx);
-        currentIdx := _parent(this, currentIdx);
-      end;
   end;
 
   {Public}
@@ -557,8 +602,11 @@ implementation
       begin
         rewrite(this.data);
         rewrite(this.control);
-        rc.root := NULLIDX;
-        rc.erased := NULLIDX;
+        rc.lastID  := 0;
+        rc.root1   := NULLIDX;
+        rc.erased1 := NULLIDX;
+        rc.root2   := NULLIDX;
+        rc.erased2 := NULLIDX;
         _setControl(this, rc);
       end;
 
@@ -599,7 +647,7 @@ implementation
   begin
     _openTree(this);
     rc    := _getControl(this);
-    empty := rc.root = NULLIDX;
+    empty := rc.root1 = NULLIDX;
     _closeTree(this);
     isEmpty := empty;
   end;
@@ -670,83 +718,104 @@ implementation
     searchByCategory := found;
   end;
 
-  function append           (var this : tAVLtree; key : tPublish) : boolean;
-  var
-    nodeUser, nodeCat, parent : tNode;
-    rc                        : tControlRecord;
-    auxIdx, posUser, posCat   : idxRange;
+  procedure append           (var this : tAVLtree; publication : tPublish);
   begin
     _openTree(this);
-    pos         := _search(this, tPublish);
-    node.key    := key;
-    node.parent := pos;
-    auxIdx      := _append(this, node);
-
-    if pos = NULLIDX then //empty tree, insert at root
-      begin
-        rc      := _getControl(this);
-        rc.root := auxIdx;
-        _setControl(this, rc);
-      end
-    else
-      begin
-        parent := _get(this, pos);
-        if keyGt(key, parent.key) then
-          parent.right := auxIdx
-        else
-          parent.left  := auxIdx;
-        _set(this, pos, parent);
-      end;
-
-
-    //_balanceIfNeeded(this, pos);
+    _append(this, publication);
     _closeTree(this);
   end;
 
-  procedure _remove          (var this: tAVLtree; pos: idxRange);
+  procedure _removeByUser         (var this: tAVLtree; pos: idxRange);
   var
     node, parent   : tNode;
     rc             : tControlRecord;
     auxIdx         : idxRange;
     replacementKey : tKey;
   begin
-    node        := _get(this, pos);
+    node        := _getByReference(this.idxByUser, pos);
 
     if _isLeaf(node) then //easy
       begin
         if node.parent = NULLIDX then // is the root
           begin
-            rc      := _getControl(this);
-            rc.root := NULLIDX;
+            rc       := _getControl(this);
+            rc.root1 := NULLIDX;
             _setControl(this, rc);
           end
         else
           begin
             auxIdx := node.parent;
-            parent := _get(this, auxIdx);
+            parent := _getByReference(this.idxByUser, auxIdx);
             if parent.right = pos then
               parent.right := NULLIDX
             else
               parent.left  := NULLIDX;
-            _set(this, auxIdx, parent);
+            _setByReference(this.idxByUser, auxIdx, parent);
           end;
-        _detach(this, pos, node);
+        _detachByUser(this, pos, node);
       end
     else
       begin
         if node.right = NULLIDX then
           begin
             auxIdx         := node.left;
-            replacementKey := _getBiggerFromBranch(this, auxIdx);
+            replacementKey := _getBiggerFromBranch(this.idxByUser, auxIdx);
           end
         else
           begin
             auxIdx         := node.right;
-            replacementKey := _getSmallerFromBranch(this, auxIdx);
+            replacementKey := _getSmallerFromBranch(this.idxByUser, auxIdx);
           end;
         node.key := replacementKey;
-        _set(this, pos, node);
-        _remove(this, auxIdx);
+        _setByReference(this.idxByUser, pos, node);
+        _removeByUser(this, auxIdx);
+      end;
+  end;
+
+  procedure _removeByCategory         (var this: tAVLtree; pos: idxRange);
+  var
+    node, parent   : tNode;
+    rc             : tControlRecord;
+    auxIdx         : idxRange;
+    replacementKey : tKey;
+  begin
+    node        := _getByReference(this.idxByCategory, pos);
+
+    if _isLeaf(node) then //easy
+      begin
+        if node.parent = NULLIDX then // is the root
+          begin
+            rc       := _getControl(this);
+            rc.root2 := NULLIDX;
+            _setControl(this, rc);
+          end
+        else
+          begin
+            auxIdx := node.parent;
+            parent := _getByReference(this.idxByCategory, auxIdx);
+            if parent.right = pos then
+              parent.right := NULLIDX
+            else
+              parent.left  := NULLIDX;
+            _setByReference(this.idxByCategory, auxIdx, parent);
+          end;
+        _detachByCategory(this, pos, node);
+      end
+    else
+      begin
+        if node.right = NULLIDX then
+          begin
+            auxIdx         := node.left;
+            replacementKey := _getBiggerFromBranch(this.idxByCategory, auxIdx);
+          end
+        else
+          begin
+            auxIdx         := node.right;
+            replacementKey := _getSmallerFromBranch(this.idxByCategory, auxIdx);
+          end;
+        node.key := replacementKey;
+        _setByReference(this.idxByCategory, pos, node);
+        _removeByCategory(this, auxIdx);
       end;
   end;
 
@@ -755,61 +824,106 @@ implementation
     pos : idxRange;
   begin
     _openTree(this);
-    searchByUser(this, publication.idUser, pos)
-    _remove(this, pos);
-    _balanceIfNeeded(this, pos);
+    searchByUser(this, publication.idUser, pos);
+    _removeByUser(this, pos);
+    _balanceIfNeeded(this, this.idxByUser, pos);
+    searchByCategory(this, publication.idCategory, pos);
+    _removeByCategory(this, pos);
+    _balanceIfNeeded(this, this.idxByCategory, pos);
     _closeTree(this);
   end;
 
   function  fetch            (var this : tAVLtree; pos: idxRange) : tPublish;
   var
-    node : tNode;
+    node : tPublish;
   begin
     _openTree(this);
-    node := _get(this, pos);
+    node := _getCategoryByPos(this, pos);
     _closeTree(this);
     fetch := node;
   end;
 
-  function  root             (var this : tAVLtree) : idxRange;
+  function  rootOfUsers      (var this : tAVLtree) : idxRange;
   var
     rc : tControlRecord;
   begin
     _openTree(this);
     rc := _getControl(this);
     _closeTree(this);
-    root := rc.root;
+    rootOfUsers := rc.root1;
   end;
 
-  function  leftChild        (var this : tAVLtree; pos: idxRange) : idxRange;
+  function  rootOfCategories (var this : tAVLtree) : idxRange;
+  var
+    rc : tControlRecord;
+  begin
+    _openTree(this);
+    rc := _getControl(this);
+    _closeTree(this);
+    rootOfCategories := rc.root2;
+  end;
+
+  function  _leftChild        (var this : tIdxFile; pos: idxRange) : idxRange;
   var
     node : tNode;
   begin
-    _openTree(this);
-    node := _get(this, pos);
-    _closeTree(this);
-    leftChild := node.left;
+    node := _getByReference(this, pos);
+    _leftChild := node.left;
   end;
 
-  function  rightChild       (var this : tAVLtree; pos: idxRange) : idxRange;
+  function  _rightChild       (var this : tIdxFile; pos: idxRange) : idxRange;
   var
     node : tNode;
   begin
-    _openTree(this);
-    node := _get(this, pos);
-    _closeTree(this);
-    rightChild := node.right;
+    node := _getByReference(this, pos);
+    _rightChild := node.right;
   end;
 
-  function  parent           (var this : tAVLtree; pos: idxRange) : idxRange;
+  function  leftUserChild      (var this : tAVLtree; pos: idxRange) : idxRange;
+  begin
+    _openTree(this);
+    leftUserChild := _leftChild(this.idxByUser, pos);
+    _closeTree(this);
+  end;
+
+  function  rightUserChild     (var this : tAVLtree; pos: idxRange) : idxRange;
+  begin
+    _openTree(this);
+    rightUserChild := _rightChild(this.idxByUser, pos);
+    _closeTree(this);
+  end;
+
+  function  leftCategoryChild  (var this : tAVLtree; pos: idxRange) : idxRange;
+  begin
+    _openTree(this);
+    leftCategoryChild := _leftChild(this.idxByCategory, pos);
+    _closeTree(this);
+  end;
+  function  rightCategoryChild (var this : tAVLtree; pos: idxRange) : idxRange;
+  begin
+    _openTree(this);
+    rightCategoryChild := _rightChild(this.idxByCategory, pos);
+    _closeTree(this);
+  end;
+
+  function  parentByUser     (var this : tAVLtree; pos: idxRange) : idxRange;
   var
     idx : idxRange;
   begin
     _openTree(this);
-    idx := _parent(this, pos);
+    idx := _parent(this.idxByUser, pos);
     _closeTree(this);
-    parent := idx;
+    parentByUser := idx;
   end;
 
+  function  parentByCategory (var this : tAVLtree; pos: idxRange) : idxRange;
+  var
+    idx : idxRange;
+  begin
+    _openTree(this);
+    idx := _parent(this.idxByCategory, pos);
+    _closeTree(this);
+    parentByCategory := idx;
+  end;
 
 end.
