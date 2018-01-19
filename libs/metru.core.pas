@@ -5,32 +5,36 @@ interface
 uses
   sysutils
   ,lib.tree.lcrs    in 'libs\lib.tree.lcrs.pas'
-  ,lib.avl.lcrs     in 'libs\lib.tree.avl.pas'
+  ,lib.tree.avl     in 'libs\lib.tree.avl.pas'
   ,lib.tree.trinary in 'libs\lib.tree.trinary.pas'
   ,lib.hash.open    in 'libs\lib.hash.open.pas'
   ,lib.hash.close   in 'libs\lib.hash.close.pas'
   ;
 
 const
-  NULLIDX      = -1;
-  BASEPATH     = 'data/';
-  USERFILE     = 'users';
-  CATEGORYFILE = 'categories';
-  SELLSFILE    = 'sells';
-  MESSAGEFILE  = 'messages';
+  NULLIDX          = -1;
+  BASEPATH         = 'data/';
+  USERFILE         = 'users';
+  CATEGORYFILE     = 'categories';
+  SELLSFILE        = 'sells';
+  MESSAGEFILE      = 'messages';
+  PUBLICATIONFILE  = 'publication';
 
 type
   { expose data records only }
   tCategoryList = lib.tree.lcrs.tCategoryList;
   tCategory     = lib.tree.lcrs.tCategory;
-  tPublication  = lib.tree.avl.tPublication;
+  tPublish      = lib.tree.avl.tPublish;
+  tItemType     = lib.tree.avl.tItemType;
+  tStatus       = lib.tree.avl.tStatus;
   tUser         = lib.hash.open.tUser;
 
   tMetruIO =   record
-                 users      : tOpenHash;
-                 categories : tLCRStree;
-                 messages   : tTrinaryTree;
-                 sells      : tCloseHash;
+                 users        : tOpenHash;
+                 categories   : tLCRStree;
+                 messages     : tTrinaryTree;
+                 sells        : tCloseHash;
+                 publications : tAVLtree;
                end;
 
   tMetruCore = record
@@ -62,6 +66,13 @@ type
   function  retrieveChildCateogies (var this : tMetruCore; category : tCategory) : tCategoryList;
   function  retrieveAllCateogies   (var this : tMetruCore) : tCategoryList;
 
+  { publication functions }
+  function createPublication         (var this : tMetruCore; publication : tPublish) : boolean;
+  function editPublication           (var this : tMetruCore; publication : tPublish) : boolean;
+  function deletePublication         (var this : tMetruCore; publication : tPublish) : boolean;
+  function retrieveAllPublication    (var this : tMetruCore) : tPublishList;
+  function retrievePublicationByUser (var this : tMetruCore; var user : tUser) : tPublishList;
+
 
 var
   metruApp : tMetruCore;
@@ -84,6 +95,7 @@ implementation
     lib.tree.lcrs.loadTree(this.io.categories, BASEPATH, CATEGORYFILE);
     lib.tree.trinary.loadTree(this.io.messages, BASEPATH, MESSAGEFILE);
     lib.hash.close.loadHash(this.io.sells, BASEPATH, SELLSFILE);
+    lib.tree.avl.loadTree(this.io.publications, BASEPATH, PUBLICATIONFILE);
   end;
 
   procedure kickoff (var this : tMetruCore);
@@ -95,6 +107,7 @@ implementation
     lib.tree.lcrs.newEmptyTree(this.io.categories, BASEPATH, CATEGORYFILE);
     lib.tree.trinary.newEmptyTree(this.io.messages, BASEPATH, MESSAGEFILE);
     lib.hash.close.newEmptyHash(this.io.sells, BASEPATH, SELLSFILE);
+    lib.tree.avl.newEmptyTree(this.io.publications, BASEPATH, PUBLICATIONFILE);
     { setup users}
     user.email      := 'admistrador@mercatrucho.com';
     user.password   := 'palo_y_a_la_bolsa';
@@ -330,6 +343,27 @@ implementation
         i       := i + 1;
       end;
     retrieveAllCateogies := list;
+  end;
+
+  function createPublication         (var this : tMetruCore; publication : tPublish) : boolean;
+  begin
+    lib.tree.avl.append(this.io.publications, publication);
+  end;
+
+  function editPublication           (var this : tMetruCore; publication : tPublish) : boolean;
+  begin
+  end;
+  
+  function deletePublication         (var this : tMetruCore; publication : tPublish) : boolean;
+  begin
+  end;
+
+  function retrieveAllPublication    (var this : tMetruCore) : tPublishList;
+  begin
+  end;
+
+  function retrievePublicationByUser (var this : tMetruCore; var user : tUser) : tPublishList;
+  begin
   end;
   
 end.

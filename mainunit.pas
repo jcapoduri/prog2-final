@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, Menus,
   ExtCtrls,
-  loginform    in 'frm\loginform',
+  loginform    in 'frm\loginform', publicationForm,
   categorybase in 'frm\cateogorybase.pas',
   metru.core   in 'libs\metru.core.pas';
 
@@ -33,6 +33,7 @@ type
     catBase : TCategoryBase;
     procedure FormCreate(Sender: TObject);
     procedure categoryCRUDMenuItemClick(Sender: TObject);
+    procedure newPublicationMenuItemClick(Sender: TObject);
     procedure quitMenuItemClick(Sender: TObject);
   private
     { private declarations }
@@ -62,6 +63,16 @@ procedure TForm1.categoryCRUDMenuItemClick(Sender: TObject);
 begin
    Application.CreateForm(TCategoryBase, self.catBase);
    self.catBase.Show;
+end;
+
+procedure TForm1.newPublicationMenuItemClick(Sender: TObject);
+var
+  form : tPublicationForm;
+  user : tUser;
+begin
+  user := metru.core.loggedUser(metruApp);
+  form := tPublicationForm.Create(self, user);
+  form.showModal;
 end;
 
 procedure TForm1.quitMenuItemClick(Sender: TObject);

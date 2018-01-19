@@ -4,13 +4,13 @@
     <PathDelim Value="\"/>
     <Version Value="10"/>
     <BuildModes Active="Default"/>
-    <Units Count="18">
+    <Units Count="14">
       <Unit0>
         <Filename Value="metru.lpr"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="9"/>
-        <CursorPos X="3" Y="18"/>
-        <UsageCount Value="75"/>
+        <EditorIndex Value="1"/>
+        <CursorPos X="21" Y="8"/>
+        <UsageCount Value="26"/>
         <Loaded Value="True"/>
       </Unit0>
       <Unit1>
@@ -19,53 +19,43 @@
         <ComponentName Value="Form1"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="2"/>
-        <TopLine Value="37"/>
-        <CursorPos X="21" Y="66"/>
-        <UsageCount Value="75"/>
+        <TopLine Value="49"/>
+        <CursorPos X="42" Y="61"/>
+        <UsageCount Value="26"/>
         <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
       </Unit1>
       <Unit2>
         <Filename Value="libs\lib.tree.avl.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="323"/>
-        <CursorPos X="37" Y="336"/>
-        <UsageCount Value="60"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="3"/>
+        <TopLine Value="389"/>
+        <CursorPos X="7" Y="406"/>
+        <UsageCount Value="26"/>
         <Loaded Value="True"/>
       </Unit2>
       <Unit3>
         <Filename Value="libs\lib.hash.close.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="161"/>
-        <CursorPos Y="71"/>
-        <UsageCount Value="60"/>
+        <UsageCount Value="26"/>
       </Unit3>
       <Unit4>
         <Filename Value="libs\lib.hash.open.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="12"/>
-        <TopLine Value="206"/>
-        <CursorPos Y="226"/>
-        <UsageCount Value="60"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="26"/>
       </Unit4>
       <Unit5>
         <Filename Value="libs\lib.tree.trinary.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="-1"/>
-        <WindowIndex Value="-1"/>
-        <TopLine Value="-1"/>
-        <CursorPos X="-1" Y="-1"/>
-        <UsageCount Value="60"/>
+        <UsageCount Value="26"/>
       </Unit5>
       <Unit6>
         <Filename Value="libs\lib.tree.lcrs.pas"/>
         <IsPartOfProject Value="True"/>
-        <TopLine Value="379"/>
-        <CursorPos X="22" Y="379"/>
-        <UsageCount Value="60"/>
+        <EditorIndex Value="4"/>
+        <CursorPos X="40" Y="11"/>
+        <UsageCount Value="26"/>
         <Loaded Value="True"/>
       </Unit6>
       <Unit7>
@@ -74,20 +64,15 @@
         <ComponentName Value="LoginForm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="4"/>
-        <TopLine Value="32"/>
-        <CursorPos X="30" Y="41"/>
-        <UsageCount Value="57"/>
-        <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
+        <UsageCount Value="26"/>
       </Unit7>
       <Unit8>
         <Filename Value="libs\metru.core.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="7"/>
-        <TopLine Value="246"/>
-        <CursorPos X="24" Y="268"/>
-        <UsageCount Value="57"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="333"/>
+        <CursorPos Y="350"/>
+        <UsageCount Value="26"/>
         <Loaded Value="True"/>
       </Unit8>
       <Unit9>
@@ -96,12 +81,7 @@
         <ComponentName Value="UserForm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="3"/>
-        <TopLine Value="64"/>
-        <CursorPos X="53" Y="78"/>
-        <UsageCount Value="48"/>
-        <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
+        <UsageCount Value="26"/>
       </Unit9>
       <Unit10>
         <Filename Value="frm\categoryform.pas"/>
@@ -109,12 +89,7 @@
         <ComponentName Value="CategoryForm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="10"/>
-        <TopLine Value="42"/>
-        <CursorPos Y="59"/>
-        <UsageCount Value="44"/>
-        <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
+        <UsageCount Value="26"/>
       </Unit10>
       <Unit11>
         <Filename Value="frm\categorybase.pas"/>
@@ -122,183 +97,180 @@
         <ComponentName Value="CategoryBase"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="5"/>
-        <TopLine Value="28"/>
-        <CursorPos X="41" Y="37"/>
-        <UsageCount Value="30"/>
-        <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
+        <UsageCount Value="26"/>
       </Unit11>
       <Unit12>
-        <Filename Value="C:\lazarus\lcl\interfaces\win32\interfaces.pp"/>
-        <UnitName Value="Interfaces"/>
-        <EditorIndex Value="-1"/>
-        <CursorPos X="6" Y="19"/>
-        <UsageCount Value="5"/>
+        <Filename Value="frm\publicationform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="tPublicationForm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="publicationForm"/>
+        <EditorIndex Value="5"/>
+        <TopLine Value="94"/>
+        <CursorPos Y="106"/>
+        <UsageCount Value="26"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
       </Unit12>
       <Unit13>
-        <Filename Value="C:\lazarus\fpc\3.0.4\source\packages\hash\src\md5.pp"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="148"/>
-        <CursorPos X="18" Y="183"/>
-        <UsageCount Value="9"/>
-      </Unit13>
-      <Unit14>
-        <Filename Value="C:\lazarus\lcl\forms.pp"/>
-        <UnitName Value="Forms"/>
-        <EditorIndex Value="11"/>
-        <TopLine Value="718"/>
-        <CursorPos X="44" Y="746"/>
-        <UsageCount Value="15"/>
-        <Loaded Value="True"/>
-      </Unit14>
-      <Unit15>
-        <Filename Value="C:\lazarus\lcl\include\customform.inc"/>
-        <EditorIndex Value="8"/>
-        <TopLine Value="663"/>
-        <CursorPos Y="680"/>
-        <UsageCount Value="10"/>
-        <Loaded Value="True"/>
-      </Unit15>
-      <Unit16>
         <Filename Value="C:\lazarus\lcl\include\control.inc"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="3483"/>
-        <CursorPos Y="3500"/>
-        <UsageCount Value="22"/>
+        <EditorIndex Value="6"/>
+        <TopLine Value="3486"/>
+        <CursorPos Y="3503"/>
+        <UsageCount Value="11"/>
         <Loaded Value="True"/>
-      </Unit16>
-      <Unit17>
-        <Filename Value="C:\lazarus\fpc\3.0.4\source\packages\regexpr\src\regexpr.pas"/>
-        <UnitName Value="RegExpr"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="195"/>
-        <CursorPos X="2" Y="212"/>
-        <UsageCount Value="10"/>
-      </Unit17>
+      </Unit13>
     </Units>
-    <JumpHistory Count="14" HistoryIndex="13">
+    <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
-        <Filename Value="libs\lib.hash.open.pas"/>
-        <Caret Line="90" TopLine="73"/>
+        <Filename Value="frm\publicationform.pas"/>
+        <Caret Line="119" TopLine="94"/>
       </Position1>
       <Position2>
-        <Filename Value="libs\lib.hash.open.pas"/>
-        <Caret Line="91" TopLine="73"/>
+        <Filename Value="frm\publicationform.pas"/>
+        <Caret Line="120" TopLine="94"/>
       </Position2>
       <Position3>
-        <Filename Value="libs\lib.hash.open.pas"/>
-        <Caret Line="92" TopLine="73"/>
+        <Filename Value="libs\metru.core.pas"/>
+        <Caret Line="350" TopLine="333"/>
       </Position3>
       <Position4>
-        <Filename Value="libs\lib.hash.open.pas"/>
-        <Caret Line="223" TopLine="206"/>
+        <Filename Value="libs\lib.tree.avl.pas"/>
+        <Caret Line="724" TopLine="709"/>
       </Position4>
       <Position5>
-        <Filename Value="libs\lib.hash.open.pas"/>
-        <Caret Line="224" TopLine="206"/>
+        <Filename Value="libs\lib.tree.avl.pas"/>
+        <Caret Line="77" TopLine="60"/>
       </Position5>
       <Position6>
-        <Filename Value="libs\lib.hash.open.pas"/>
-        <Caret Line="225" TopLine="206"/>
+        <Filename Value="libs\lib.tree.avl.pas"/>
+        <Caret Line="78" TopLine="60"/>
       </Position6>
       <Position7>
-        <Filename Value="libs\lib.hash.open.pas"/>
-        <Caret Line="226" TopLine="206"/>
+        <Filename Value="libs\lib.tree.avl.pas"/>
+        <Caret Line="79" TopLine="60"/>
       </Position7>
       <Position8>
-        <Filename Value="libs\metru.core.pas"/>
-        <Caret Line="159" TopLine="136"/>
+        <Filename Value="libs\lib.tree.avl.pas"/>
+        <Caret Line="80" TopLine="60"/>
       </Position8>
       <Position9>
-        <Filename Value="frm\userform.pas"/>
-        <Caret Line="90" TopLine="64"/>
+        <Filename Value="libs\lib.tree.avl.pas"/>
+        <Caret Line="725" TopLine="709"/>
       </Position9>
       <Position10>
-        <Filename Value="frm\userform.pas"/>
-        <Caret Line="91" TopLine="64"/>
+        <Filename Value="libs\lib.tree.avl.pas"/>
+        <Caret Line="159" Column="23" TopLine="142"/>
       </Position10>
       <Position11>
-        <Filename Value="frm\categorybase.pas"/>
-        <Caret Line="45" Column="82" TopLine="36"/>
+        <Filename Value="frm\publicationform.pas"/>
+        <Caret Line="106" TopLine="94"/>
       </Position11>
       <Position12>
-        <Filename Value="frm\categorybase.pas"/>
-        <Caret Line="46" Column="82" TopLine="37"/>
+        <Filename Value="libs\lib.tree.avl.pas"/>
+        <Caret Line="159" Column="9" TopLine="142"/>
       </Position12>
       <Position13>
-        <Filename Value="frm\categorybase.pas"/>
-        <Caret Line="45" Column="82" TopLine="36"/>
+        <Filename Value="libs\lib.tree.avl.pas"/>
+        <Caret Line="382" TopLine="365"/>
       </Position13>
       <Position14>
-        <Filename Value="frm\categorybase.pas"/>
-        <Caret Line="48" Column="44" TopLine="36"/>
+        <Filename Value="libs\lib.tree.avl.pas"/>
+        <Caret Line="731" TopLine="714"/>
       </Position14>
       <Position15>
-        <Filename Value="frm\categorybase.pas"/>
-        <Caret Line="49" Column="44" TopLine="37"/>
+        <Filename Value="libs\lib.tree.avl.pas"/>
+        <Caret Line="444" TopLine="427"/>
       </Position15>
       <Position16>
-        <Filename Value="frm\categorybase.pas"/>
-        <Caret Line="48" Column="44" TopLine="36"/>
+        <Filename Value="frm\publicationform.pas"/>
+        <Caret Line="106" TopLine="94"/>
       </Position16>
       <Position17>
-        <Filename Value="frm\categorybase.pas"/>
-        <Caret Line="64" TopLine="36"/>
+        <Filename Value="libs\lib.tree.avl.pas"/>
+        <Caret Line="159" TopLine="142"/>
       </Position17>
       <Position18>
-        <Filename Value="libs\metru.core.pas"/>
-        <Caret Line="277" TopLine="246"/>
+        <Filename Value="libs\lib.tree.avl.pas"/>
+        <Caret Line="382" TopLine="365"/>
       </Position18>
       <Position19>
-        <Filename Value="frm\categoryform.pas"/>
-        <Caret Line="59" TopLine="42"/>
+        <Filename Value="libs\lib.tree.avl.pas"/>
+        <Caret Line="444" TopLine="427"/>
       </Position19>
       <Position20>
-        <Filename Value="libs\metru.core.pas"/>
-        <Caret Line="277" TopLine="246"/>
+        <Filename Value="libs\lib.tree.avl.pas"/>
+        <Caret Line="721" Column="30" TopLine="714"/>
       </Position20>
       <Position21>
-        <Filename Value="C:\lazarus\lcl\include\customform.inc"/>
-        <Caret Line="680" TopLine="663"/>
+        <Filename Value="frm\publicationform.pas"/>
+        <Caret Line="106" TopLine="94"/>
       </Position21>
       <Position22>
-        <Filename Value="frm\categoryform.pas"/>
-        <Caret Line="59" TopLine="42"/>
+        <Filename Value="libs\lib.tree.avl.pas"/>
+        <Caret Line="159" TopLine="142"/>
       </Position22>
       <Position23>
-        <Filename Value="libs\metru.core.pas"/>
-        <Caret Line="268" Column="8" TopLine="246"/>
+        <Filename Value="libs\lib.tree.avl.pas"/>
+        <Caret Line="444" TopLine="427"/>
       </Position23>
       <Position24>
-        <Filename Value="frm\categorybase.pas"/>
-        <Caret Line="34" Column="38" TopLine="27"/>
+        <Filename Value="libs\lib.tree.avl.pas"/>
+        <Caret Line="382" TopLine="365"/>
       </Position24>
       <Position25>
-        <Filename Value="frm\categorybase.pas"/>
-        <Caret Line="37" Column="38" TopLine="30"/>
+        <Filename Value="libs\lib.tree.avl.pas"/>
+        <Caret Line="444" TopLine="427"/>
       </Position25>
       <Position26>
-        <Filename Value="frm\categorybase.pas"/>
-        <Caret Line="36" Column="38" TopLine="29"/>
+        <Filename Value="libs\lib.tree.avl.pas"/>
+        <Caret Line="718" Column="28" TopLine="714"/>
       </Position26>
       <Position27>
-        <Filename Value="frm\categorybase.pas"/>
-        <Caret Line="60" Column="45" TopLine="31"/>
+        <Filename Value="libs\lib.tree.avl.pas"/>
+        <Caret Line="441" Column="5" TopLine="424"/>
       </Position27>
       <Position28>
-        <Filename Value="frm\categorybase.pas"/>
-        <Caret Line="59" Column="45" TopLine="30"/>
+        <Filename Value="libs\lib.tree.avl.pas"/>
+        <Caret Line="477" Column="8" TopLine="460"/>
       </Position28>
       <Position29>
-        <Filename Value="frm\categorybase.pas"/>
-        <Caret Line="58" Column="45" TopLine="29"/>
+        <Filename Value="libs\lib.tree.avl.pas"/>
+        <Caret Line="441" Column="5" TopLine="425"/>
       </Position29>
       <Position30>
-        <Filename Value="frm\categorybase.pas"/>
-        <Caret Line="57" Column="45" TopLine="28"/>
+        <Filename Value="libs\lib.tree.avl.pas"/>
+        <Caret Line="406" Column="6" TopLine="389"/>
       </Position30>
     </JumpHistory>
   </ProjectSession>
+  <Debugging>
+    <BreakPoints Count="2">
+      <Item1>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="frm\publicationform.pas"/>
+        <Line Value="106"/>
+      </Item1>
+      <Item2>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="libs\lib.tree.avl.pas"/>
+        <Line Value="732"/>
+      </Item2>
+    </BreakPoints>
+    <Watches Count="2">
+      <Item1>
+        <Expression Value="self.categoryCombobox.ItemIndex"/>
+        <DisplayStyle Value="wdfStructure"/>
+      </Item1>
+      <Item2 ClassAutoCast="True">
+        <Expression Value="self.categoryComboBox.Items"/>
+        <DisplayStyle Value="wdfStructure"/>
+      </Item2>
+    </Watches>
+  </Debugging>
 </CONFIG>

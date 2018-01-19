@@ -1,17 +1,18 @@
 object tPublicationForm: tPublicationForm
   Left = 501
-  Height = 365
+  Height = 400
   Top = 264
-  Width = 615
+  Width = 627
   Caption = 'Publicacion'
-  ClientHeight = 365
-  ClientWidth = 615
+  ClientHeight = 400
+  ClientWidth = 627
+  OnActivate = FormActivate
   LCLVersion = '1.8.0.6'
   object titleEdit: TLabeledEdit
     Left = 16
     Height = 23
     Top = 24
-    Width = 362
+    Width = 374
     Anchors = [akTop, akLeft, akRight]
     EditLabel.AnchorSideLeft.Control = titleEdit
     EditLabel.AnchorSideRight.Control = titleEdit
@@ -20,7 +21,7 @@ object tPublicationForm: tPublicationForm
     EditLabel.Left = 16
     EditLabel.Height = 15
     EditLabel.Top = 6
-    EditLabel.Width = 362
+    EditLabel.Width = 374
     EditLabel.Caption = 'Nombre del producto:'
     EditLabel.ParentColor = False
     TabOrder = 0
@@ -37,7 +38,7 @@ object tPublicationForm: tPublicationForm
     Left = 16
     Height = 124
     Top = 80
-    Width = 361
+    Width = 373
     Anchors = [akTop, akLeft, akRight]
     Lines.Strings = (
       'Memo1'
@@ -56,7 +57,7 @@ object tPublicationForm: tPublicationForm
     Left = 120
     Height = 23
     Top = 216
-    Width = 257
+    Width = 269
     Anchors = [akTop, akLeft, akRight]
     ItemHeight = 15
     Style = csDropDownList
@@ -87,6 +88,7 @@ object tPublicationForm: tPublicationForm
     Top = 291
     Width = 103
     CalendarDisplaySettings = [dsShowHeadings, dsShowDayNames]
+    DefaultToday = True
     DateOrder = doDMY
     ButtonWidth = 23
     NumGlyphs = 1
@@ -111,38 +113,51 @@ object tPublicationForm: tPublicationForm
     TabOrder = 5
   end
   object Image1: TImage
-    Left = 399
+    Left = 411
     Height = 196
     Top = 8
     Width = 202
     Anchors = [akTop, akRight]
   end
   object addPhotoButton: TBitBtn
-    Left = 527
+    Left = 539
     Height = 30
     Top = 216
     Width = 75
     Anchors = [akTop, akRight]
     Caption = 'Agregar foto'
+    OnClick = addPictureButtonClick
     TabOrder = 6
   end
   object saveButton: TBitBtn
-    Left = 531
+    Left = 543
     Height = 30
-    Top = 326
+    Top = 361
     Width = 75
     Anchors = [akRight, akBottom]
     Caption = 'Salvar'
+    OnClick = saveButtonClick
     TabOrder = 7
   end
   object closeButton: TBitBtn
-    Left = 449
+    Left = 461
     Height = 30
-    Top = 326
+    Top = 361
     Width = 75
     Anchors = [akRight, akBottom]
     Caption = 'Cerrar'
+    OnClick = CloseForm
     TabOrder = 8
+  end
+  object errorLabel: TLabel
+    Left = 13
+    Height = 1
+    Top = 337
+    Width = 1
+    Anchors = [akRight, akBottom]
+    Font.Color = clRed
+    ParentColor = False
+    ParentFont = False
   end
   object pictureDialog: TOpenPictureDialog
     left = 488

@@ -33,7 +33,7 @@
         <PackageName Value="LCL"/>
       </Item2>
     </RequiredPackages>
-    <Units Count="12">
+    <Units Count="13">
       <Unit0>
         <Filename Value="metru.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -97,6 +97,14 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
       </Unit11>
+      <Unit12>
+        <Filename Value="frm\publicationform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="tPublicationForm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="publicationForm"/>
+      </Unit12>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

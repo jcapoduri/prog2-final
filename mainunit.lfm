@@ -7,7 +7,7 @@ object Form1: TForm1
   ChildSizing.ShrinkHorizontal = crsHomogenousChildResize
   ChildSizing.ShrinkVertical = crsHomogenousChildResize
   ChildSizing.Layout = cclLeftToRightThenTopToBottom
-  ClientHeight = 473
+  ClientHeight = 453
   ClientWidth = 979
   Menu = MainMenu1
   OnCreate = FormCreate
@@ -15,7 +15,7 @@ object Form1: TForm1
   object Panel1: TPanel
     Left = 440
     Height = 1
-    Top = 195
+    Top = 187
     Width = 1
     Anchors = []
     AutoSize = True
@@ -45,6 +45,7 @@ object Form1: TForm1
       end
       object newPublicationMenuItem: TMenuItem
         Caption = 'Nueva publicacion'
+        OnClick = newPublicationMenuItemClick
       end
     end
     object categoryMenuItem: TMenuItem
