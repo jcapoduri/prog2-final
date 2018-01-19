@@ -1,27 +1,28 @@
 object LoginForm: TLoginForm
   Left = 656
-  Height = 178
+  Height = 169
   Top = 352
-  Width = 450
+  Width = 437
   Caption = 'MercaTrucho::Login'
-  ClientHeight = 178
-  ClientWidth = 450
+  ClientHeight = 169
+  ClientWidth = 437
   PopupMode = pmAuto
   Position = poDesktopCenter
   LCLVersion = '1.8.0.6'
   object emailEdit: TLabeledEdit
     Left = 17
     Height = 23
-    Top = 19
-    Width = 415
+    Top = 21
+    Width = 402
+    Anchors = [akTop, akLeft, akRight]
     EditLabel.AnchorSideLeft.Control = emailEdit
     EditLabel.AnchorSideRight.Control = emailEdit
     EditLabel.AnchorSideRight.Side = asrBottom
     EditLabel.AnchorSideBottom.Control = emailEdit
     EditLabel.Left = 17
     EditLabel.Height = 15
-    EditLabel.Top = 1
-    EditLabel.Width = 415
+    EditLabel.Top = 3
+    EditLabel.Width = 402
     EditLabel.Caption = 'Email:'
     EditLabel.ParentColor = False
     TabOrder = 0
@@ -30,8 +31,9 @@ object LoginForm: TLoginForm
   object passwordEdit: TLabeledEdit
     Left = 18
     Height = 23
-    Top = 64
-    Width = 414
+    Top = 70
+    Width = 401
+    Anchors = [akTop, akLeft, akRight]
     EchoMode = emPassword
     EditLabel.AnchorSideLeft.Control = passwordEdit
     EditLabel.AnchorSideRight.Control = passwordEdit
@@ -39,8 +41,8 @@ object LoginForm: TLoginForm
     EditLabel.AnchorSideBottom.Control = passwordEdit
     EditLabel.Left = 18
     EditLabel.Height = 15
-    EditLabel.Top = 46
-    EditLabel.Width = 414
+    EditLabel.Top = 52
+    EditLabel.Width = 401
     EditLabel.Caption = 'Contraseña:'
     EditLabel.ParentColor = False
     PasswordChar = '*'
@@ -48,10 +50,11 @@ object LoginForm: TLoginForm
     TextHint = 'password'
   end
   object loginButton: TBitBtn
-    Left = 248
+    Left = 235
     Height = 30
-    Top = 128
+    Top = 119
     Width = 82
+    Anchors = [akRight, akBottom]
     Caption = 'Login'
     OnClick = loginButtonClick
     TabOrder = 2
@@ -59,17 +62,19 @@ object LoginForm: TLoginForm
   object cancelButton: TBitBtn
     Left = 17
     Height = 30
-    Top = 128
+    Top = 119
     Width = 75
+    Anchors = [akLeft, akBottom]
     Caption = 'Cancelar'
     OnClick = cancelButtonClick
     TabOrder = 3
   end
   object newUserButton: TBitBtn
-    Left = 357
+    Left = 344
     Height = 30
-    Top = 128
+    Top = 119
     Width = 75
+    Anchors = [akRight, akBottom]
     Caption = 'Soy nuevo'
     OnClick = newUserButtonClick
     TabOrder = 4
