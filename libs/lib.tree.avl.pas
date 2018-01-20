@@ -61,6 +61,8 @@ type
   procedure append             (var this : tAVLtree; publication : tPublish);
   procedure remove             (var this : tAVLtree; publication : tPublish);
   function  fetch              (var this : tAVLtree; pos: idxRange) : tPublish;
+  function  fetchByUser        (var this : tAVLtree; pos: idxRange) : tPublish;
+  function  fetchByCategory    (var this : tAVLtree; pos: idxRange) : tPublish;
   function  rootOfUsers        (var this : tAVLtree) : idxRange;
   function  rootOfCategories   (var this : tAVLtree) : idxRange;
   function  leftUserChild      (var this : tAVLtree; pos: idxRange) : idxRange;
@@ -366,10 +368,10 @@ implementation
 
   function _searchByUser      (var this : tAVLtree; key : tKey; var pos: idxRange) : boolean;
   var
-    found      : boolean;
-    curNodeIdx : idxRange;
-    curNode    : tNode;
-    rc         : tControlRecord;
+    found, searchNext : boolean;
+    curNodeIdx        : idxRange;
+    curNode           : tNode;
+    rc                : tControlRecord;
   begin
     found      := false;
     rc         := _getControl(this);
@@ -377,14 +379,16 @@ implementation
     pos        := NULLIDX;
     while (curNodeIdx <> NULLIDX) and (not found) do
       begin
-        curNode := _getByUser(this, curNodeIdx);
-        if keyEq(curNode.key, key) then
+        curNode := _getByCategory(this, curNodeIdx);
+        if keyEq(curNode.key, key) and not searchNext then
           begin
             found := true;
             pos   := curNodeIdx;
           end
         else
           begin
+            if searchNext and (pos = curNodeIdx) then
+              searchNext := false;
             pos := curNodeIdx;
             if keyGt(key, curNode.key) then
               curNodeIdx := curNode.right
@@ -407,25 +411,28 @@ implementation
 
   function  _searchByCategory    (var this : tAVLtree; key : tKey; var pos: idxRange) : boolean;
   var
-    found      : boolean;
-    curNodeIdx : idxRange;
-    curNode    : tNode;
-    rc         : tControlRecord;
+    found, searchNext : boolean;
+    curNodeIdx        : idxRange;
+    curNode           : tNode;
+    rc                : tControlRecord;
   begin
     found      := false;
     rc         := _getControl(this);
     curNodeIdx := rc.root2;
-    pos        := NULLIDX;
+    searchNext := not (pos = NULLIDX);
+
     while (curNodeIdx <> NULLIDX) and (not found) do
       begin
         curNode := _getByCategory(this, curNodeIdx);
-        if keyEq(curNode.key, key) then
+        if keyEq(curNode.key, key) and not searchNext then
           begin
             found := true;
             pos   := curNodeIdx;
           end
         else
           begin
+            if searchNext and (pos = curNodeIdx) then
+              searchNext := false;
             pos := curNodeIdx;
             if keyGt(key, curNode.key) then
               curNodeIdx := curNode.right
@@ -864,6 +871,30 @@ implementation
     node := _getCategoryByPos(this, pos);
     _closeTree(this);
     fetch := node;
+  end;
+
+  function  fetchByUser        (var this : tAVLtree; pos: idxRange) : tPublish;
+  var
+    publish : tPublish;
+    node    : tNode;
+  begin
+    _openTree(this);
+    node    := _getByUser(this, pos);
+    publish := _getCategoryByPos(this, node.index);
+    _closeTree(this);
+    fetchByUser := publish;
+  end;
+
+  function  fetchByCategory    (var this : tAVLtree; pos: idxRange) : tPublish;
+  var
+    publish : tPublish;
+    node    : tNode;
+  begin
+    _openTree(this);
+    node    := _getByCategory(this, pos);
+    publish := _getCategoryByPos(this, node.index);
+    _closeTree(this);
+    fetchByCategory := publish;
   end;
 
   function  rootOfUsers      (var this : tAVLtree) : idxRange;

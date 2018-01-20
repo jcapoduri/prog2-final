@@ -67,11 +67,11 @@ type
   function  retrieveAllCateogies   (var this : tMetruCore) : tCategoryList;
 
   { publication functions }
-  function createPublication         (var this : tMetruCore; publication : tPublish) : boolean;
-  function editPublication           (var this : tMetruCore; publication : tPublish) : boolean;
-  function deletePublication         (var this : tMetruCore; publication : tPublish) : boolean;
-  function retrieveAllPublication    (var this : tMetruCore) : tPublishList;
-  function retrievePublicationByUser (var this : tMetruCore; var user : tUser) : tPublishList;
+  function createPublication             (var this : tMetruCore; publication : tPublish) : boolean;
+  function editPublication               (var this : tMetruCore; publication : tPublish) : boolean;
+  function deletePublication             (var this : tMetruCore; publication : tPublish) : boolean;
+  function retrievePublicationByCategory (var this : tMetruCore; var category : tCategory) : tPublishList;
+  function retrievePublicationByUser     (var this : tMetruCore; var user : tUser) : tPublishList;
 
 
 var
@@ -358,12 +358,42 @@ implementation
   begin
   end;
 
-  function retrieveAllPublication    (var this : tMetruCore) : tPublishList;
+  function retrievePublicationByCategory (var this : tMetruCore; var category : tCategory) : tPublishList;
+  var
+    list : tPublishList;
+    item : tPublish;
+    idx  : idxRange;
+    i    : integer;
   begin
+    idx := NULLIDX;
+    i   := 0;
+    while lib.tree.avl.searchByCategory(this.io.publications, category.id, idx) do
+      begin
+        item := lib.tree.avl.fetchByCategory(this.io.publications, idx);
+        i    := i + 1;
+        SetLength(list, i);
+        list[i - 1] := item;
+      end;
+    retrievePublicationByCategory := list;
   end;
 
   function retrievePublicationByUser (var this : tMetruCore; var user : tUser) : tPublishList;
+  var
+    list : tPublishList;
+    item : tPublish;
+    idx  : idxRange;
+    i    : integer;
   begin
+    idx := NULLIDX;
+    i   := 0;
+    while lib.tree.avl.searchByUser(this.io.publications, user.id, idx) do
+      begin
+        item := lib.tree.avl.fetchByUser(this.io.publications, idx);
+        i    := i + 1;
+        SetLength(list, i);
+        list[i - 1] := item;
+      end;
+    retrievePublicationByUser := list;
   end;
   
 end.
