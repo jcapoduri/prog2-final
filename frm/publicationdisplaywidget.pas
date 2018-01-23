@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ExtCtrls,
-  StdCtrls, Buttons, metru.core, publicationsellwidget;
+  StdCtrls, Buttons, metru.core;
 
 type
 
@@ -21,6 +21,7 @@ type
     titleLabel: TLabel;
     constructor Create(var _owner : TComponent; publication: tPublish; isOwn : boolean); overload;
     procedure FormActivate(Sender: TObject);
+    function GetPublication() : tPublish;
   private
     publication : tPublish;
     isOwn       : boolean;
@@ -43,6 +44,7 @@ begin
   Create(_owner);
   self.publication := publication;
   self.isOwn       := isOwn;
+  FormActivate(nil);
 end;
 
 procedure tPublicationDisplayWidget.FormActivate(Sender: TObject);
@@ -50,6 +52,12 @@ begin
   descriptionLabel.Caption := publication.details;
   titleLabel.Caption       := publication.itemName;
   priceLabel.Caption       := FloatToStr(publication.price);
+  editButton.Visible       := self.isOwn;
+end;
+
+function tPublicationDisplayWidget.GetPublication(): tPublish;
+begin
+  GetPublication := self.publication;
 end;
 
 end.

@@ -44,6 +44,7 @@ implementation
 constructor tPublicationSellWidget.Create(parentComponent: TComponent;
   var User: tUser; var publication : tPublish);
 begin
+  inherited Create(parentComponent);
   self.publication       := publication;
   self.user              := user;
   self.isSelfPublication := user.id = publication.idUser;

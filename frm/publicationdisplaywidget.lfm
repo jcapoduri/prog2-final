@@ -54,6 +54,7 @@ object tPublicationDisplayWidget: tPublicationDisplayWidget
     Height = 30
     Top = 48
     Width = 75
+    Anchors = [akRight, akBottom]
     Caption = 'Editar'
     TabOrder = 1
   end

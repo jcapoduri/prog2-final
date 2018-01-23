@@ -122,7 +122,8 @@
       <Unit15>
         <Filename Value="frm\publicationsellwidget.pas"/>
         <IsPartOfProject Value="True"/>
-        <ComponentName Value="Form2"/>
+        <ComponentName Value="tPublicationSellWidget"/>
+        <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
       </Unit15>
       <Unit16>

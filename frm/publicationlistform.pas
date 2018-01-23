@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
-  Menus, metru.core, model.categoryitem, publicationdisplaywidget
+  Menus, metru.core, model.categoryitem, publicationdisplaywidget, publicationsellwidget
   ;
 
 type
@@ -28,12 +28,13 @@ type
     Label3: TLabel;
     publicationContainer: TScrollBox;
     procedure FormActivate(Sender: TObject);
-    procedure FormCreate(Sender: TObject);
     procedure searchButtonClick(Sender: TObject);
     constructor Create(theOwner : TComponent; user : tUser; isOwn : boolean); overload;
   private
     user  : tUser;
     isOwn : boolean;
+    procedure loadPublicationList(list : tPublishList);
+    procedure openPublication(Sender : TObject);
   public
 
   end;
@@ -49,33 +50,44 @@ implementation
 
 procedure tPublicationListForm.FormActivate(Sender: TObject);
 var
-  list : tCategoryList;
-  i    : integer;
-  item : TCategoryItem;
+  list   : tCategoryList;
+  i      : integer;
+  item   : TCategoryItem;
+  result : tPublishList;
 begin
-  list     := metru.core.retrieveAllLeafCateogies(metruApp);
-  for i := Low(list) to High(list) do
+  if self.isOwn then
     begin
-      item := TCategoryItem.Create(list[i]);
-      self.categoryCombobox.Items.AddObject(item.displayName, item);
-    end;
-end;
-
-procedure tPublicationListForm.FormCreate(Sender: TObject);
-begin
-
+      self.GroupBox1.Visible := false;
+      result := metru.core.retrievePublicationByUser(metruApp, self.user);
+      loadPublicationList(result)
+    end
+  else
+    begin
+      list     := metru.core.retrieveAllLeafCateogies(metruApp);
+      for i := Low(list) to High(list) do
+        begin
+          item := TCategoryItem.Create(list[i]);
+          self.categoryCombobox.Items.AddObject(item.displayName, item);
+        end;
+     end;
 end;
 
 procedure tPublicationListForm.searchButtonClick(Sender: TObject);
 var
   list   : tPublishList;
   item   : tCategoryItem;
+begin
+  item := TCategoryItem(self.categoryCombobox.Items.Objects[self.categoryCombobox.ItemIndex]);
+  list := metru.core.retrievePublicationByCategory(metruApp, item.category);
+  loadPublicationList(list);
+end;
+
+procedure tPublicationListForm.loadPublicationList(list : tPublishList);
+var
   widget : tPublicationDisplayWidget;
   i      : integer;
   par    : TComponent;
 begin
-  item := TCategoryItem(self.categoryCombobox.Items.Objects[self.categoryCombobox.ItemIndex]);
-  list := metru.core.retrievePublicationByCategory(metruApp, item.category);
   for i := low(list) to high(list) do
     begin
       par := self.publicationContainer as TComponent;
@@ -86,7 +98,23 @@ begin
       widget.width   := self.publicationContainer.Width;
       widget.Height  := 100;
       widget.Visible := true;
+      widget.openButton.OnClick := @openPublication;
     end;
+  self.publicationContainer.Refresh;
+end;
+
+procedure tPublicationListForm.openPublication(Sender : TObject);
+var
+  form        : tPublicationSellWidget;
+  publication : tPublish;
+  widget      : tPublicationDisplayWidget;
+  button      : tButton;
+begin
+  button      := Sender as TButton;
+  widget      := button.Parent as tPublicationDisplayWidget;
+  publication := widget.GetPublication();
+  form        := tPublicationSellWidget.Create(self, user, publication);
+  form.Show;
 end;
 
 constructor tPublicationListForm.Create(theOwner: TComponent; user: tUser;

@@ -65,16 +65,14 @@ end;
 procedure tPublicationForm.FormActivate(Sender: TObject);
 var
   list     : tCategoryList;
-  i, j     : integer;
+  i        : integer;
   item     : TCategoryItem;
-  selected : longint;
 begin
   list     := metru.core.retrieveAllLeafCateogies(metruApp);
-  selected := -1;
   for i := Low(list) to High(list) do
     begin
       item := TCategoryItem.Create(list[i]);
-      j    := self.categoryComboBox.Items.AddObject(item.displayName, item);
+      self.categoryComboBox.Items.AddObject(item.displayName, item);
       {if (item.category.id = self.category.parent) then
         selected := j;}
     end;
