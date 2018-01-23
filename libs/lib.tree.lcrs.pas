@@ -48,6 +48,7 @@ type
   function  firstChild       (var this : tLCRStree; pos: idxRange) : idxRange;
   function  nextSibling      (var this : tLCRStree; pos: idxRange) : idxRange;
   function  parent           (var this : tLCRStree; pos: idxRange) : idxRange;
+  function  isLeaf           (var this : tLCRStree; var node : tNode) : boolean;
 
 implementation
   { Helpers }
@@ -90,6 +91,16 @@ implementation
   function _isLeaf(var node : tNode) : boolean;
   begin
     _isLeaf := (node.leftChild = NULLIDX) and (node.rightSibling = NULLIDX);
+  end;
+
+  function isLeaf(var this : tLCRStree; var node : tNode) : boolean;
+  var
+    itIs : boolean;
+  begin
+    _openTree(this);
+    itIs   := (node.leftChild = NULLIDX) and (node.rightSibling = NULLIDX);
+    _closeTree(this);
+    isLeaf := itIs;
   end;
 
   function _parent(var this : tLCRStree; var idx : idxRange) : idxRange;

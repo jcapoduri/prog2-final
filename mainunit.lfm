@@ -1,25 +1,24 @@
 object Form1: TForm1
   Left = 313
-  Height = 473
+  Height = 471
   Top = 200
-  Width = 979
+  Width = 1060
   Caption = 'Form1'
   ChildSizing.ShrinkHorizontal = crsHomogenousChildResize
   ChildSizing.ShrinkVertical = crsHomogenousChildResize
   ChildSizing.Layout = cclLeftToRightThenTopToBottom
-  ClientHeight = 453
-  ClientWidth = 979
+  ClientHeight = 451
+  ClientWidth = 1060
   Menu = MainMenu1
   OnCreate = FormCreate
   LCLVersion = '1.8.0.6'
-  object Panel1: TPanel
-    Left = 440
-    Height = 1
-    Top = 187
-    Width = 1
-    Anchors = []
+  object displayPanel: TPanel
+    Left = 0
+    Height = 454
+    Top = 0
+    Width = 1065
+    Anchors = [akTop, akLeft, akRight, akBottom]
     AutoSize = True
-    Caption = 'Panel1'
     ChildSizing.Layout = cclLeftToRightThenTopToBottom
     TabOrder = 0
   end
@@ -39,9 +38,11 @@ object Form1: TForm1
       Caption = 'Publicaciones'
       object publicationAllMenuItem: TMenuItem
         Caption = 'Ver Todas'
+        OnClick = publicationAllMenuItemClick
       end
       object myPublicationMenuItem: TMenuItem
         Caption = 'Ver mias'
+        OnClick = myPublicationMenuItemClick
       end
       object newPublicationMenuItem: TMenuItem
         Caption = 'Nueva publicacion'

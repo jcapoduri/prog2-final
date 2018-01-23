@@ -6,8 +6,8 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, Menus,
-  ExtCtrls,
-  loginform    in 'frm\loginform', publicationForm,
+  ExtCtrls, publicationlistform, publicationForm,
+  loginform    in 'frm\loginform',
   categorybase in 'frm\cateogorybase.pas',
   metru.core   in 'libs\metru.core.pas';
 
@@ -28,13 +28,16 @@ type
     quitMenuItem: TMenuItem;
     publicationAllMenuItem: TMenuItem;
     myPublicationMenuItem: TMenuItem;
-    Panel1: TPanel;
+    displayPanel: TPanel;
     login : TLoginForm;
     catBase : TCategoryBase;
     procedure FormCreate(Sender: TObject);
     procedure categoryCRUDMenuItemClick(Sender: TObject);
+    procedure myPublicationMenuItemClick(Sender: TObject);
     procedure newPublicationMenuItemClick(Sender: TObject);
+    procedure publicationAllMenuItemClick(Sender: TObject);
     procedure quitMenuItemClick(Sender: TObject);
+    procedure EmbedForm(ArgParent : TWinControl; ArgForm : TCustomForm);
   private
     { private declarations }
   public
@@ -49,6 +52,13 @@ implementation
 {$R *.lfm}
 
 { TForm1 }
+
+procedure TForm1.EmbedForm(ArgParent: TWinControl; ArgForm: TCustomForm);
+begin
+  while ArgForm.MDIChildCount > 0 do
+    ArgForm.MDIChildren[0].Parent := ArgParent;
+  ArgForm.Parent:= ArgParent;
+end;
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
@@ -65,6 +75,14 @@ begin
    self.catBase.Show;
 end;
 
+procedure TForm1.myPublicationMenuItemClick(Sender: TObject);
+var
+  form : tPublicationListForm;
+begin
+  form := tPublicationListForm.Create(self, metru.core.loggedUser(metruApp), true);
+  form.Show;
+end;
+
 procedure TForm1.newPublicationMenuItemClick(Sender: TObject);
 var
   form : tPublicationForm;
@@ -73,6 +91,14 @@ begin
   user := metru.core.loggedUser(metruApp);
   form := tPublicationForm.Create(self, user);
   form.showModal;
+end;
+
+procedure TForm1.publicationAllMenuItemClick(Sender: TObject);
+var
+  form : tPublicationListForm;
+begin
+  form := tPublicationListForm.Create(self, metru.core.loggedUser(metruApp), false);
+  form.show;
 end;
 
 procedure TForm1.quitMenuItemClick(Sender: TObject);

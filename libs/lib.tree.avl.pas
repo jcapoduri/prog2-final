@@ -376,10 +376,11 @@ implementation
     found      := false;
     rc         := _getControl(this);
     curNodeIdx := rc.root1;
-    pos        := NULLIDX;
+    searchNext := not (pos = NULLIDX);
+
     while (curNodeIdx <> NULLIDX) and (not found) do
       begin
-        curNode := _getByCategory(this, curNodeIdx);
+        curNode := _getByUser(this, curNodeIdx);
         if keyEq(curNode.key, key) and not searchNext then
           begin
             found := true;
@@ -526,6 +527,8 @@ implementation
     rc                        : tControlRecord;
     auxIdxUser, auxIdxCat, posUser, posCat   : idxRange;
   begin
+    posUser := NULLIDX;
+    posCat  := NULLIDX;
     { add user node }
     _searchByUser(this, publication.idUser, posUser);
     nodeUser.key    := publication.idUser;
@@ -535,14 +538,16 @@ implementation
     { add category node }
     _searchByCategory(this, publication.idCategory, posCat);
     nodeCat.key    := publication.idCategory;
-    nodeCat.parent := posUser;
-    auxIdxCat      := _appendByUser(this, nodeCat);
+    nodeCat.parent := posCat;
+    auxIdxCat      := _appendByCategory(this, nodeCat);
 
     { set index for publication }
     if nodeUser.index = NULLIDX then { we need to create a new publication }
       begin
         nodeUser.index := _appendData(this, publication);
         nodeCat.index  := nodeUser.index;
+        _setByUser(this, auxIdxUser, nodeUser);
+        _setByCategory(this, auxIdxCat, nodeCat);
       end
     else
       _setPublication(this, nodeUser.index, publication);

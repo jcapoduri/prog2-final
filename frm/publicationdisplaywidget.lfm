@@ -1,0 +1,60 @@
+object tPublicationDisplayWidget: tPublicationDisplayWidget
+  Left = 640
+  Height = 119
+  Top = 366
+  Width = 696
+  Anchors = [akTop, akLeft, akRight]
+  BorderStyle = bsNone
+  Caption = 'Form2'
+  ClientHeight = 119
+  ClientWidth = 696
+  OnActivate = FormActivate
+  LCLVersion = '1.8.0.6'
+  object imagePreview: TImage
+    Left = 7
+    Height = 103
+    Top = 8
+    Width = 99
+  end
+  object titleLabel: TLabel
+    Left = 114
+    Height = 1
+    Top = 8
+    Width = 1
+    ParentColor = False
+  end
+  object descriptionLabel: TLabel
+    Left = 114
+    Height = 79
+    Top = 32
+    Width = 494
+    AutoSize = False
+    ParentColor = False
+    WordWrap = True
+  end
+  object priceLabel: TLabel
+    Left = 685
+    Height = 1
+    Top = 8
+    Width = 1
+    Anchors = [akTop, akRight]
+    ParentColor = False
+  end
+  object openButton: TButton
+    Left = 615
+    Height = 25
+    Top = 86
+    Width = 75
+    Anchors = [akRight, akBottom]
+    Caption = 'Abrir'
+    TabOrder = 0
+  end
+  object editButton: TBitBtn
+    Left = 615
+    Height = 30
+    Top = 48
+    Width = 75
+    Caption = 'Editar'
+    TabOrder = 1
+  end
+end

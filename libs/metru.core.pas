@@ -25,9 +25,11 @@ type
   tCategoryList = lib.tree.lcrs.tCategoryList;
   tCategory     = lib.tree.lcrs.tCategory;
   tPublish      = lib.tree.avl.tPublish;
+  tPublishList  = array of tPublish;
   tItemType     = lib.tree.avl.tItemType;
   tStatus       = lib.tree.avl.tStatus;
   tUser         = lib.hash.open.tUser;
+  tMessage      = lib.tree.trinary.tMessage;
 
   tMetruIO =   record
                  users        : tOpenHash;
@@ -62,6 +64,7 @@ type
   function  createCateogry         (var this : tMetruCore; category : tCategory) : boolean;
   function  editCateogry           (var this : tMetruCore; category : tCategory) : boolean;
   function  deleteCateogry         (var this : tMetruCore; category : tCategory) : boolean;
+  function  retrieveAllLeafCateogies   (var this : tMetruCore) : tCategoryList;
   function  retrieveBaseCateogies  (var this : tMetruCore) : tCategoryList;
   function  retrieveChildCateogies (var this : tMetruCore; category : tCategory) : tCategoryList;
   function  retrieveAllCateogies   (var this : tMetruCore) : tCategoryList;
@@ -343,6 +346,49 @@ implementation
         i       := i + 1;
       end;
     retrieveAllCateogies := list;
+  end;
+
+  function  _retrieveAllLeafCateogies  (var this : tMetruCore; pos : idxRange) : tCategoryList;
+  var
+    list    : tCategoryList;
+    auxList : tCategoryList;
+    auxCat  : tCategory;
+    i       : integer;
+    auxPos  : idxRange;
+  begin
+    SetLength(list, 0);
+    auxCat  := lib.tree.lcrs.fetch(this.io.categories, pos); 
+    i       := 0;
+    if (lib.tree.lcrs.isLeaf(this.io.categories, auxCat)) then
+      begin
+        SetLength(list, 1);
+        list[0] := auxCat;
+      end
+    else
+      begin
+        auxPos := lib.tree.lcrs.firstChild(this.io.categories, pos);
+        if (auxPos <> NULLIDX) then
+          begin
+            auxList := _retrieveAllLeafCateogies(this, auxPos);
+            list    := list + auxList;
+          end;
+        auxPos := lib.tree.lcrs.nextSibling(this.io.categories, pos);  
+        if (auxPos <> NULLIDX) then
+          begin
+            auxList := _retrieveAllLeafCateogies(this, auxPos);
+            list    := list + auxList;
+          end;
+      end;
+    _retrieveAllLeafCateogies := list;
+  end;  
+
+  function  retrieveAllLeafCateogies   (var this : tMetruCore) : tCategoryList;
+  var
+    auxPos  : idxRange;
+  begin
+    auxPos  := lib.tree.lcrs.root(this.io.categories);
+    retrieveAllLeafCateogies := _retrieveAllLeafCateogies(this, auxPos);
+
   end;
 
   function createPublication         (var this : tMetruCore; publication : tPublish) : boolean;

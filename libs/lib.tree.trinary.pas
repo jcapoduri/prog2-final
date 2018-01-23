@@ -23,6 +23,12 @@ type
                      root   : idxRange;
                      erased : idxRange;
                    end;
+  tMessage       = record
+                     number   : integer;
+                     question : string[255];
+                     answer   : string[255];
+                     next     : idxRange;
+                   end;
   tControl       = file of tControlRecord;
   tData          = file of tNode;
   tTrinaryTree   = record

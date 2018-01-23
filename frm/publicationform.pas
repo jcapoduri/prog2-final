@@ -69,7 +69,7 @@ var
   item     : TCategoryItem;
   selected : longint;
 begin
-  list     := metru.core.retrieveAllCateogies(metruApp);
+  list     := metru.core.retrieveAllLeafCateogies(metruApp);
   selected := -1;
   for i := Low(list) to High(list) do
     begin
