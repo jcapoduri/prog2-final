@@ -12,7 +12,7 @@ const
 
 type
   idxRange       = NULLIDX..MAXINT;
-  tKey           = integer;
+  tKey           = longint;
   tPercentage    = 0..100;  
   tNode          = record
                      id       : tKey;
@@ -52,12 +52,19 @@ type
                      levels  : tLevels;
                    end;
 
-  procedure loadTree         (var this : tTrinaryTree; path, filename : string);
-  procedure newEmptyTree     (var this : tTrinaryTree; path, filename : string);
-  function  isEmpty          (var this : tTrinaryTree) : boolean;
+  procedure loadTree            (var this : tTrinaryTree; path, filename : string);
+  procedure newEmptyTree        (var this : tTrinaryTree; path, filename : string);
+  function  isEmpty             (var this : tTrinaryTree) : boolean;
+   
+  procedure insertMessage       (var this : tTrinaryTree; pk, sk : tKey; msg : tMessage);
+  procedure updateMessage       (var this : tTrinaryTree; pos : idxRange; msg : tMessage);
+  function  fetchMessage        (var this : tTrinaryTree; pos : idxRange) : tMessage;
+
+  function  retrieveFirstMsgIdx (var this : tTrinaryTree; pk, sk : tKey; var idxMsg : idxRange) : boolean;
+  function  retrieveNextMsgIdx  (var this : tTrinaryTree; pk, sk : tKey; var idxMsg : idxRange) : boolean;
 
   { check below here}
-  function  search           (var this : tTrinaryTree; key : tKey; var pos: idxRange) : boolean;
+  {function  search           (var this : tTrinaryTree; key : tKey; var pos: idxRange) : boolean;
   procedure insert           (var this : tTrinaryTree; pos: idxRange; key : tKey);
   procedure remove           (var this : tTrinaryTree; pos: idxRange);
   function  fetch            (var this : tTrinaryTree; pos: idxRange) : tNode;
@@ -65,7 +72,7 @@ type
   function  leftChild        (var this : tTrinaryTree; pos: idxRange) : idxRange;
   function  rightChild       (var this : tTrinaryTree; pos: idxRange) : idxRange;
   function  parent           (var this : tTrinaryTree; pos: idxRange) : idxRange;
-  function  nextItem         (var this : tTrinaryTree; node: tNode) : tNode;
+  function  nextItem         (var this : tTrinaryTree; node: tNode) : tNode;}
 
 
 
@@ -333,7 +340,128 @@ implementation
     keyEq := key1 = key2;
   end;
 
-  {Public}
+  function _searchNodeByPk(var this : tTrinaryTree; key : tKey; var pos : idxRange) : boolean;
+  var
+    found      : boolean;
+    curNodeIdx : idxRange;
+    curNode    : tNode;
+    rc         : tControlRecord;
+  begin
+    found      := false;
+    rc         := _getControl(this);
+    curNodeIdx := rc.root;
+
+    while (curNodeIdx <> NULLIDX) and (not found) do
+      begin
+        curNode := _get(this, curNodeIdx);
+        if keyEq(curNode.id, key) then
+          begin
+            found := true;
+            pos   := curNodeIdx;
+          end
+        else
+          begin
+            pos := curNodeIdx;
+            if keyGt(key, curNode.id) then
+              curNodeIdx := curNode.right
+            else
+              curNodeIdx := curNode.left;
+          end;
+      end;
+    _searchNodeByPk := found;
+  end;
+
+  function _searchNodeBySk(var this : tTrinaryTree; key : tKey; var pos : idxRange) : boolean;
+  var
+    found      : boolean;
+    curNodeIdx : idxRange;
+    curNode    : tNode;
+  begin
+    found      := false;
+    curNodeIdx := pos;
+
+    while (curNodeIdx <> NULLIDX) and (not found) do
+      begin
+        curNode := _get(this, curNodeIdx);
+        if keyEq(curNode.idUser, key) then
+          begin
+            found := true;
+            pos   := curNodeIdx;
+          end
+        else
+          begin
+            pos := curNodeIdx;
+            if keyGt(key, curNode.idUser) then
+              curNodeIdx := curNode.right
+            else
+              curNodeIdx := curNode.left;
+          end;
+      end;
+    _searchNodeBySk := found;
+  end;
+
+  procedure _insertByPk(var this : tTrinaryTree; key : tKey; parentPos, childPos : idxRange);
+  var
+    node   : tNode;
+  begin
+    node := _get(this, parentPos);
+    if keyGt(node.id, key) then
+      node.right := childPos
+    else
+      node.left := childPos;
+    _set(this, parentPos, node);
+  end;
+
+  procedure _insertBySk(var this : tTrinaryTree; key : tKey; parentPos, childPos : idxRange);
+  var
+    node   : tNode;
+  begin
+    node := _get(this, parentPos);
+    if keyGt(node.id, key) then
+      node.right := childPos
+    else
+      node.left := childPos;
+    _set(this, parentPos, node);
+  end;
+
+  function _retrieveOrCreate(var this : tTrinaryTree; pk, sk : tKey) : idxRange;
+  var
+    found       : boolean;
+    pos, auxPos : idxRange;
+    node, auxNode : tNode;
+  begin
+    found := _searchNodeByPk(this, pk, pos);
+    if not found then
+      begin
+        node.id     := pk;
+        node.idUser := sk;
+        node.parent := pos;
+        auxPos      := _appendNode(this, node);
+        _insertByPk(this, pk, pos, auxPos);
+        pos         := auxPos;
+      end
+    else
+      begin
+        node := _get(this, pos);
+        if (node.idUser <> sk) then
+          begin
+            pos := node.center;
+            found  := _searchNodeBySk(this, sk, pos);
+            if not found then
+              begin
+                auxNode.id     := pk;
+                auxNode.idUser := sk;
+                auxPos         := _appendNode(this, auxNode);
+                _insertBySk(this, sk, pos, auxPos);
+                pos            := auxPos
+              end;
+          end;        
+      end;
+    _retrieveOrCreate := pos;
+  end;
+
+{-------------------------------------------------------- Public --------------------------------------------------------}
+
   procedure loadTree         (var this : tTrinaryTree; path, filename : string);
   var
     controlError, dataError : boolean;
@@ -412,184 +540,103 @@ implementation
     isEmpty := empty;
   end;
 
-  function  search           (var this : tTrinaryTree; key : tKey; var pos: idxRange) : boolean;
+  procedure insertMessage       (var this : tTrinaryTree; pk, sk : tKey; msg : tMessage);
   var
-    found      : boolean;
-    curNodeIdx : idxRange;
-    curNode    : tNode;
-    rc         : tControlRecord;
+    pos    : idxRange;
+    node   : tNode;
+    auxMsg : tMessage;
+    idxMsg : idxRange;
   begin
     _openTree(this);
-    found      := false;
-    rc         := _getControl(this);
-    curNodeIdx := rc.root;
-    pos        := NULLIDX;
-    while (curNodeIdx <> NULLIDX) and (not found) do
+    msg.next := NULLIDX;
+    pos      := _retrieveOrCreate(this, pk, sk);
+    node     := _get(this, pos);
+    idxMsg   := _appendData(this, msg);
+    if node.first = NULLIDX then { first message}
       begin
-        curNode := _get(this, curNodeIdx);
-        if keyEq(curNode.id, key) then
-          begin
-            found := true;
-            pos   := curNodeIdx;
-          end
-        else
-          begin
-            pos := curNodeIdx;
-            if keyGt(key, curNode.id) then
-              curNodeIdx := curNode.right
-            else
-              curNodeIdx := curNode.left;
-          end;
-      end;
-    _closeTree(this);
-    search := found;
-  end;
-
-  procedure insert           (var this : tTrinaryTree; pos: idxRange; key : tKey);
-  var
-    node, parent : tNode;
-    rc           : tControlRecord;
-    auxIdx       : idxRange;
-  begin
-    _openTree(this);
-    node.id     := key;
-    node.parent := pos;
-    auxIdx      := _append(this, node);
-
-    if pos = NULLIDX then //empty tree, insert at root
-      begin
-        rc      := _getControl(this);
-        rc.root := auxIdx;
-        _setControl(this, rc);
+        node.first := idxMsg;
+        node.last  := idxMsg;        
       end
     else
       begin
-        parent := _get(this, pos);
-        if keyEq(key, parent.id) then
-          begin
-          end
-        else
-          if keyGt(key, parent.id) then
-            parent.right := auxIdx
-          else
-            parent.left  := auxIdx;
-          _set(this, pos, parent);
+        auxMsg      := _getMessage(this, node.last);
+        auxMsg.next := idxMsg;
+        _setMessage(this, node.last, auxMsg);
+        node.last   := idxMsg;        
       end;
-
+    _set(this, pos, node);
     _closeTree(this);
   end;
 
-  procedure _remove          (var this: tTrinaryTree; pos: idxRange);
+  procedure updateMessage       (var this : tTrinaryTree; pos : idxRange; msg : tMessage);
   var
-    node, parent   : tNode;
-    rc             : tControlRecord;
-    auxIdx         : idxRange;
-    replacementKey : tKey;
+    auxMsg : tMessage;
   begin
-    node        := _get(this, pos);
+    _openTree(this);
+    auxMsg           := _getMessage(this, pos);
+    auxMsg.question  := msg.question;
+    auxMsg.answer    := msg.answer;
+    auxMsg.timestamp := msg.timestamp;
+    _setMessage(this, pos, auxMsg);
+    _closeTree(this);
+  end;
 
-    if _isLeaf(node) then //easy
+  function  fetchMessage        (var this : tTrinaryTree; pos : idxRange) : tMessage;
+  var
+    auxMsg : tMessage;
+  begin
+    _openTree(this);
+    auxMsg       := _getMessage(this, pos);
+    _closeTree(this);
+    fetchMessage := auxMsg;
+  end;
+
+  function  retrieveFirstMsgIdx (var this : tTrinaryTree; pk, sk : tKey; var idxMsg : idxRange) : boolean;
+  var
+    found  : boolean;
+    node   : tNode;
+    pos    : idxRange;
+  begin
+    _openTree(this);
+    idxMsg := NULLIDX;
+    found  := _searchNodeByPk(this, pk, pos);
+    if found then 
+      found := _searchNodeBySk(this, sk, pos);
+
+    if found then
       begin
-        if node.parent = NULLIDX then // is the root
-          begin
-            rc      := _getControl(this);
-            rc.root := NULLIDX;
-            _setControl(this, rc);
-          end
-        else
-          begin
-            auxIdx := node.parent;
-            parent := _get(this, auxIdx);
-            if parent.right = pos then
-              parent.right := NULLIDX
-            else
-              parent.left  := NULLIDX;
-            _set(this, auxIdx, parent);
-          end;
-        _detach(this, pos, node);
-      end
-    else
-      begin
-        if node.right = NULLIDX then
-          begin
-            auxIdx         := node.left;
-            replacementKey := _getBiggerFromBranch(this, auxIdx);
-          end
-        else
-          begin
-            auxIdx         := node.right;
-            replacementKey := _getSmallerFromBranch(this, auxIdx);
-          end;
-        node.key := replacementKey;
-        _set(this, pos, node);
-        _remove(this, auxIdx);
+        node   := _get(this, pos);
+        idxMsg := node.first;
       end;
-  end;
-
-  procedure remove          (var this: tTrinaryTree; pos: idxRange);
-  begin
-    _openTree(this);
-    _remove(this, pos);
     _closeTree(this);
+    retrieveFirstMsgIdx := found;
   end;
 
-  function  fetch            (var this : tTrinaryTree; pos: idxRange) : tNode;
+  function  retrieveNextMsgIdx  (var this : tTrinaryTree; pk, sk : tKey; var idxMsg : idxRange) : boolean;
   var
-    node : tNode;
+    found  : boolean;
+    node   : tNode;
+    auxMsg : tMessage;
+    pos    : idxRange;
   begin
     _openTree(this);
-    node := _get(this, pos);
-    _closeTree(this);
-    fetch := node;
-  end;
+    idxMsg := NULLIDX;
+    found  := _searchNodeByPk(this, pk, pos);
+    if found then 
+      found := _searchNodeBySk(this, sk, pos);
 
-  function  root             (var this : tTrinaryTree) : idxRange;
-  var
-    rc : tControlRecord;
-  begin
-    _openTree(this);
-    rc := _getControl(this);
+    if found then
+      begin
+        node   := _get(this, pos);
+        if pos = node.last then
+          found := false
+        else
+          begin
+            auxMsg := _getMessage(this, pos);
+            idxMsg := auxMsg.next;
+          end;
+      end;
     _closeTree(this);
-    root := rc.root;
-  end;
-
-  function  leftChild        (var this : tTrinaryTree; pos: idxRange) : idxRange;
-  var
-    node : tNode;
-  begin
-    _openTree(this);
-    node := _get(this, pos);
-    _closeTree(this);
-    leftChild := node.left;
-  end;
-
-  function  rightChild       (var this : tTrinaryTree; pos: idxRange) : idxRange;
-  var
-    node : tNode;
-  begin
-    _openTree(this);
-    node := _get(this, pos);
-    _closeTree(this);
-    rightChild := node.right;
-  end;
-
-  function  parent           (var this : tTrinaryTree; pos: idxRange) : idxRange;
-  var
-    idx : idxRange;
-  begin
-    _openTree(this);
-    idx := _parent(this, pos);
-    _closeTree(this);
-    parent := idx;
-  end;
-
-  function  nextItem         (var this : tTrinaryTree; node: tNode) : tNode;
-   var
-    auxNode : tNode;
-  begin
-    _openTree(this);
-    auxNode := _get(this, node.center);
-    _closeTree(this);
-    nextItem := auxNode;
+    retrieveNextMsgIdx := found;
   end;
 end.
