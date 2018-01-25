@@ -3,6 +3,7 @@ program metru.test;
 {$mode objfpc}{$H+}
 
 uses
+  sysutils,
   {$IFDEF UNIX}{$IFDEF UseCThreads}
   cthreads,
   {$ENDIF}{$ENDIF}
@@ -159,8 +160,123 @@ begin
   end;
 end;
 
-
 { end user menu block }
+
+{ message menu block }
+
+procedure insertMessage();
+var
+  message     : lib.tree.trinary.tMessage;
+  io          : lib.tree.trinary.tTrinaryTree;
+  idx, maxIdx : idxRange;
+begin
+  lib.tree.trinary.newEmptyTree(io, 'data/', 'messages');
+  message.question  := 'usted es el rey de los minisupers?';
+  message.answer    := 'asi es';
+  message.timestamp := Now;
+  lib.tree.trinary.insertMessage(io, 1, 1, message);
+  lib.tree.trinary.insertMessage(io, 2, 1, message);
+  lib.tree.trinary.insertMessage(io, 1, 1, message);
+  lib.tree.trinary.insertMessage(io, 1, 2, message);
+end;
+
+procedure dumpMessageData();
+var
+  message     : lib.tree.trinary.tMessage;
+  io          : lib.tree.trinary.tTrinaryTree;
+  idx, maxIdx : idxRange;
+begin
+  lib.tree.trinary.loadTree(io, 'data/', 'messages');
+  reset(io.data);
+  maxIdx := filesize(io.data) - 1;
+  close(io.data);
+  write('pos | ');
+  write('number | ');
+  write('question | ');
+  write('answer | ');
+  write('timestamp | ');
+  write('next');
+  writeln;
+  for idx := 0 to maxIdx do
+    begin
+      message := lib.tree.trinary.fetchMessage(io, idx);
+      write(idx, ' | ');
+      write(message.number, ' | ');
+      write(message.question, ' | ');
+      write(message.answer, ' | ');
+      write(message.timestamp, ' | ');
+      write(message.next);
+      writeln;
+    end;
+  readln;
+end;
+
+procedure dumpMessageControl();
+begin
+end;
+
+procedure dumpMessageTree();
+var
+  node        : lib.tree.trinary.tNode;
+  io          : lib.tree.trinary.tTrinaryTree;
+  idx, maxIdx : idxRange;
+begin
+  lib.tree.trinary.loadTree(io, 'data/', 'messages');
+  reset(io.index);
+  maxIdx := filesize(io.index) - 1;
+  write('pos | ');
+  write('id | ');
+  write('idUser | ');
+  write('parent | ');
+  write('first | ');
+  write('last | ');
+  write('left | ');
+  write('center | ');
+  write('right');
+  writeln;
+  for idx := 0 to maxIdx do
+    begin
+      seek(io.index, idx);
+      read(io.index, node);
+      write(idx, ' | ');
+      write(node.id, ' | ');
+      write(node.idUser, ' | ');
+      write(node.parent, ' | ');
+      write(node.first, ' | ');
+      write(node.last, ' | ');
+      write(node.left, ' | ');
+      write(node.center, ' | ');
+      write(node.right, ' | ');
+      writeln;
+    end;
+  close(io.index);  
+  readln;
+end;
+
+
+function messagemenu() : integer;
+begin
+  ClrScr;
+  writeln('Menu Message (1-3)');
+  writeln('1- Dump de estructura de datos');
+  writeln('2- Dump de estructura de control');
+  writeln('3- Dump de estructura de arbol');
+  writeln('4- Emular mensajes');
+  writeln('0- Salir');
+  messagemenu := readValidNumber(0, 4);
+end;
+
+procedure messagemenuAct(op : integer);
+begin
+  case op of
+    1: dumpMessageData;
+    2: dumpMessageControl;
+    3: dumpMessageTree;
+    4: insertMessage;
+  end;
+end;
+
+{ end message menu block }
 
 {main menu block}
 function mainmenu() : integer;
@@ -180,9 +296,10 @@ procedure mainmenuAct(op : integer);
 begin
   case op of
     1: actMenu(@usermenu, @usermenuAct);
+    4: actMenu(@messagemenu, @messagemenuAct);
   end;
 end;
-{end main menu block}
+{end main menu block }
 
 begin
   actMenu(@mainmenu, @mainmenuAct);
