@@ -17,6 +17,7 @@ type
   tNode          = record
                      id       : tKey;
                      idUser   : tKey;
+                     lastID   : longint;
                      parent   : idxRange;
                      first    : idxRange;
                      last     : idxRange;
@@ -56,8 +57,8 @@ type
   procedure newEmptyTree        (var this : tTrinaryTree; path, filename : string);
   function  isEmpty             (var this : tTrinaryTree) : boolean;
    
-  procedure insertMessage       (var this : tTrinaryTree; pk, sk : tKey; msg : tMessage);
-  procedure updateMessage       (var this : tTrinaryTree; pos : idxRange; msg : tMessage);
+  procedure insertMessage       (var this : tTrinaryTree; pk, sk : tKey; var msg : tMessage);
+  procedure updateMessage       (var this : tTrinaryTree; pos : idxRange; var msg : tMessage);
   function  fetchMessage        (var this : tTrinaryTree; pos : idxRange) : tMessage;
 
   function  retrieveFirstMsgIdx (var this : tTrinaryTree; pk, sk : tKey; var idxMsg : idxRange) : boolean;
@@ -208,13 +209,14 @@ implementation
   begin
     rc          := _getControl(this);
     pos         := NULLIDX;
+    node.lastID := 0;
     node.first  := NULLIDX;
     node.last   := NULLIDX;
     node.right  := NULLIDX;
     node.center := NULLIDX;
     node.left   := NULLIDX;
     if rc.erasedIndexes = NULLIDX then
-      pos          := filesize(this.data)
+      pos          := filesize(this.index)
     else
       begin
         pos              := rc.erasedIndexes;
@@ -349,6 +351,7 @@ implementation
   begin
     found      := false;
     rc         := _getControl(this);
+    pos        := NULLIDX;
     curNodeIdx := rc.root;
 
     while (curNodeIdx <> NULLIDX) and (not found) do
@@ -403,13 +406,23 @@ implementation
   procedure _insertByPk(var this : tTrinaryTree; key : tKey; parentPos, childPos : idxRange);
   var
     node   : tNode;
+    rc   : tControlRecord;
   begin
-    node := _get(this, parentPos);
-    if keyGt(node.id, key) then
-      node.right := childPos
+    rc := _getControl(this);
+    if (parentPos = NULLIDX) and (rc.root = NULLIDX) then
+      begin
+        rc.root := childPos;
+        _setControl(this, rc);
+      end
     else
-      node.left := childPos;
-    _set(this, parentPos, node);
+      begin
+        node := _get(this, parentPos);
+        if keyGt(node.id, key) then
+          node.right := childPos
+        else
+          node.left := childPos;
+        _set(this, parentPos, node)
+      end;
   end;
 
   procedure _insertBySk(var this : tTrinaryTree; key : tKey; parentPos, childPos : idxRange);
@@ -417,7 +430,7 @@ implementation
     node   : tNode;
   begin
     node := _get(this, parentPos);
-    if keyGt(node.id, key) then
+    if keyGt(node.idUser, key) then
       node.right := childPos
     else
       node.left := childPos;
@@ -445,16 +458,17 @@ implementation
         node := _get(this, pos);
         if (node.idUser <> sk) then
           begin
-            pos := node.center;
-            found  := _searchNodeBySk(this, sk, pos);
+            auxPos := node.center;
+            found  := _searchNodeBySk(this, sk, auxPos);
             if not found then
               begin
                 auxNode.id     := pk;
                 auxNode.idUser := sk;
+                auxNode.parent := pos;
                 auxPos         := _appendNode(this, auxNode);
                 _insertBySk(this, sk, pos, auxPos);
-                pos            := auxPos
               end;
+            pos := auxPos
           end;        
       end;
     _retrieveOrCreate := pos;
@@ -540,7 +554,7 @@ implementation
     isEmpty := empty;
   end;
 
-  procedure insertMessage       (var this : tTrinaryTree; pk, sk : tKey; msg : tMessage);
+  procedure insertMessage       (var this : tTrinaryTree; pk, sk : tKey; var msg : tMessage);
   var
     pos    : idxRange;
     node   : tNode;
@@ -548,10 +562,12 @@ implementation
     idxMsg : idxRange;
   begin
     _openTree(this);
-    msg.next := NULLIDX;
-    pos      := _retrieveOrCreate(this, pk, sk);
-    node     := _get(this, pos);
-    idxMsg   := _appendData(this, msg);
+    msg.next    := NULLIDX;
+    pos         := _retrieveOrCreate(this, pk, sk);
+    node        := _get(this, pos);
+    node.lastID := node.lastID + 1;
+    msg.number  := node.lastID;
+    idxMsg      := _appendData(this, msg);    
     if node.first = NULLIDX then { first message}
       begin
         node.first := idxMsg;
@@ -568,7 +584,7 @@ implementation
     _closeTree(this);
   end;
 
-  procedure updateMessage       (var this : tTrinaryTree; pos : idxRange; msg : tMessage);
+  procedure updateMessage       (var this : tTrinaryTree; pos : idxRange; var msg : tMessage);
   var
     auxMsg : tMessage;
   begin
