@@ -6,6 +6,7 @@ object tPublicationSellWidget: tPublicationSellWidget
   Caption = 'Venta'
   ClientHeight = 600
   ClientWidth = 954
+  OnActivate = FormActivate
   LCLVersion = '1.8.0.6'
   Visible = True
   object imageDisplay: TImage
@@ -83,11 +84,9 @@ object tPublicationSellWidget: tPublicationSellWidget
   object questionEdit: TMemo
     Left = 8
     Height = 66
+    Hint = 'Mensaje...'
     Top = 520
     Width = 592
-    Lines.Strings = (
-      'questionEdit'
-    )
     TabOrder = 3
   end
 end

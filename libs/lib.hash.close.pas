@@ -17,17 +17,18 @@ type
   tHashValue     = NULLIDX..MAX;
   tKey           = longint;
   tNode          = record
-                     idBuyer      : longint;
-                     idItem       : tKey;
-                     itemName     : string[255];
-                     price        : Currency;
-                     publishDate  : TDateTime;
-                     sellDate     : TDateTime;
-                     itemType     : tItemType;
-                     calification : tCalification;
-                     tax          : double;
-                     previous     : idxRange;
-                     next         : idxRange;
+                     idBuyer          : longint;
+                     idItem           : tKey;
+                     itemName         : string[255];
+                     price            : Currency;
+                     publishDate      : TDateTime;
+                     sellDate         : TDateTime;
+                     itemType         : tItemType;
+                     calification     : tCalification;
+                     tax              : double;
+                     alreadyCollected : boolean;
+                     previous         : idxRange;
+                     next             : idxRange;
                    end;
   tSell          = tNode;
   tControlRecord = record

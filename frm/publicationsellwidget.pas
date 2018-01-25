@@ -24,6 +24,7 @@ type
     Label5: TLabel;
     messagesContainer: TScrollBox;
     constructor Create(parentComponent : TComponent; var User : tUser; var publication : tPublish); overload;
+    procedure FormActivate(Sender: TObject);
   private
     user              : tUser;
     publication       : tPublish;
@@ -48,6 +49,13 @@ begin
   self.publication       := publication;
   self.user              := user;
   self.isSelfPublication := user.id = publication.idUser;
+end;
+
+procedure tPublicationSellWidget.FormActivate(Sender: TObject);
+begin
+  self.titleLabel.Caption := self.publication.itemName;
+  self.descriptionLabel.Caption := self.publication.details;
+  self.priceLabel.Caption:= FloatToStr(self.publication.price);
 end;
 
 end.

@@ -30,6 +30,7 @@ type
   tStatus       = lib.tree.avl.tStatus;
   tUser         = lib.hash.open.tUser;
   tMessage      = lib.tree.trinary.tMessage;
+  tMessageList  = array of tMessage;
 
   tMetruIO =   record
                  users        : tOpenHash;
@@ -76,6 +77,9 @@ type
   function retrievePublicationByCategory (var this : tMetruCore; var category : tCategory) : tPublishList;
   function retrievePublicationByUser     (var this : tMetruCore; var user : tUser) : tPublishList;
 
+  { message related functions }
+  function postMessage  (var this : tMetruCore; publication : tPublish; user : tUser; msg : string) : boolean;
+  function postResponse (var this : tMetruCore; var message : tMessage, response : string) : boolean;
 
 var
   metruApp : tMetruCore;
@@ -442,4 +446,15 @@ implementation
     retrievePublicationByUser := list;
   end;
   
+  function postMessage  (var this : tMetruCore; publication : tPublish; user : tUser; msg : string) : boolean;
+  var
+    message : tMessage;
+  begin
+
+  end;
+
+  function postResponse (var this : tMetruCore; var message : tMessage, response : string) : boolean;
+  begin
+  end;  
+
 end.
