@@ -13,6 +13,7 @@ const
 type
   idxRange       = NULLIDX..MAXINT;
   tKey           = longint;
+  tLinkedKeys    = array of tKey;
   tPercentage    = 0..100;  
   tNode          = record
                      id       : tKey;
@@ -61,8 +62,11 @@ type
   procedure updateMessage       (var this : tTrinaryTree; pos : idxRange; var msg : tMessage);
   function  fetchMessage        (var this : tTrinaryTree; pos : idxRange) : tMessage;
 
-  function  retrieveFirstMsgIdx (var this : tTrinaryTree; pk, sk : tKey; var idxMsg : idxRange) : boolean;
-  function  retrieveNextMsgIdx  (var this : tTrinaryTree; pk, sk : tKey; var idxMsg : idxRange) : boolean;
+  function  retrieveFirstMsgIdx   (var this : tTrinaryTree; pk, sk : tKey; var idxMsg : idxRange) : boolean; overload;
+  function  retrieveFirstMsgIdx   (var this : tTrinaryTree; pk : tKey; var idxMsg : idxRange) : boolean; overload;
+  function  retrieveNextMsgIdx    (var this : tTrinaryTree; pk, sk : tKey; var idxMsg : idxRange) : boolean; overload;
+  function  retrieveNextMsgIdx    (var this : tTrinaryTree; pk : tKey; var idxMsg : idxRange) : boolean; overload;
+  function  retrieveAllLinkedKeys (var this : tTrinaryTree; pk : tKey) : tLinkedKeys;
 
   { check below here}
   {function  search           (var this : tTrinaryTree; key : tKey; var pos: idxRange) : boolean;
@@ -607,7 +611,7 @@ implementation
     fetchMessage := auxMsg;
   end;
 
-  function  retrieveFirstMsgIdx (var this : tTrinaryTree; pk, sk : tKey; var idxMsg : idxRange) : boolean;
+  function  retrieveFirstMsgIdx (var this : tTrinaryTree; pk, sk : tKey; var idxMsg : idxRange) : boolean; overload;
   var
     found  : boolean;
     node   : tNode;
@@ -628,7 +632,7 @@ implementation
     retrieveFirstMsgIdx := found;
   end;
 
-  function  retrieveNextMsgIdx  (var this : tTrinaryTree; pk, sk : tKey; var idxMsg : idxRange) : boolean;
+  function  retrieveNextMsgIdx  (var this : tTrinaryTree; pk, sk : tKey; var idxMsg : idxRange) : boolean; overload;
   var
     found  : boolean;
     node   : tNode;
@@ -654,5 +658,133 @@ implementation
       end;
     _closeTree(this);
     retrieveNextMsgIdx := found;
+  end;
+
+  function  retrieveFirstMsgIdx   (var this : tTrinaryTree; pk : tKey; var idxMsg : idxRange) : boolean; overload;
+  var
+    found  : boolean;
+    node   : tNode;
+    pos    : idxRange;
+  begin
+    _openTree(this);
+    idxMsg := NULLIDX;
+    found  := _searchNodeByPk(this, pk, pos);
+    if found then 
+      begin
+        node := _get(this, pos);
+        while node.left <> NULLIDX do;
+          begin
+            pos  := node.left;
+            node := _get(this, pos);
+          end;
+      end;
+
+    if found then
+        idxMsg := node.first;
+    _closeTree(this);
+    retrieveFirstMsgIdx := found;
+  end;
+
+  function _retrieveNextNodeFromLastMessage (var this : tTrinaryTree; pos : idxRange; var idxMsg : idxRange) : boolean;
+  var
+    found   : boolean;
+    auxNode : tNode;
+    parent  : tNode;
+    auxMsg  : tMessage;
+  begin
+    found   := false;
+    if pos <> NULLIDX then
+      begin
+        auxNode := _get(this, pos);
+        if (auxNode.last = idxMsg) then { current is the node with the last }
+          begin
+            found  := true;
+            parent := _get(this, auxNode.parent);
+            if parent.center <> pos then
+              begin
+                if parent.left = pos then { my parent is next}
+                  idxMsg := parent.first
+                else { my parent neither is the next}
+                  found := false;
+              end
+            else
+              begin
+                pos     := parent.right;
+                auxNode := _get(this, pos);
+                idxMsg  := auxNode.first;
+              end;
+          end
+        else
+          begin
+            found := _retrieveNextNodeFromLastMessage(this, auxNode.left, idxRange);
+            if not found then
+              found := _retrieveNextNodeFromLastMessage(this, auxNode.right, idxRange);
+          end;
+      end;
+    _retrieveNextNodeFromLastMessage := found;
+  end;
+
+  function  retrieveNextMsgIdx    (var this : tTrinaryTree; pk : tKey; var idxMsg : idxRange) : boolean; overload;
+  var
+    found  : boolean;
+    node   : tNode;
+    auxMsg : tMessage;
+    pos    : idxRange;
+  begin
+    _openTree(this);
+    auxMsg := _getMessage(this, idxMsg);
+    if auxMsg.next = NULLIDX then
+      begin
+        found := _retrieveNextNodeFromLastMessage(this, pos, idxMsg);
+      end
+    else
+      idxMsg := auxMsg.next;
+      
+    _closeTree(this);
+    retrieveNextMsgIdx := found;
+    
+  end;
+
+  operator + (a, b : tLinkedKeys) c: tLinkedKeys;
+  var
+    i :longint;
+  begin
+    SetLength(c, Length(a) + Length(b));
+    for i := 0 to High(a) do
+        c[i] := a[i];
+    for i := 0 to High(b) do
+        c[i + Length(a)] := b[i];
+  end;
+
+  function _retrieveAllLinkedKeys (var this : tTrinaryTree; pk : tKey) : tLinkedKeys;
+  var
+    node          : tNode;
+    pos           : idxRange;
+    list, auxList : tLinkedKeys;
+  begin
+    SetLength(list, 1);
+    node                   := _get(this, pos);
+    list[0]                := node.idUser;
+    auxList                := _retrieveAllLinkedKeys(this, node.left);
+    list                   := list + auxList;
+    auxList                := _retrieveAllLinkedKeys(this, node.right);
+    _retrieveAllLinkedKeys := list + auxList;
+  end;
+
+  function  retrieveAllLinkedKeys (var this : tTrinaryTree; pk : tKey) : tLinkedKeys;
+  var
+    node  : tNode;
+    pos   : idxRange;
+    list  : tLinkedKeys;
+    found : boolean;
+  begin
+    SetLength(list, 0);
+    found := _searchNodeByPk(this, pk, pos);
+    if found then
+      begin
+        node := _get(this, pos);
+        list := _retrieveAllLinkedKeys(this, node.center)
+      end;
+    retrieveAllLinkedKeys := list;
   end;
 end.

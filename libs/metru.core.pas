@@ -30,7 +30,8 @@ type
   tStatus       = lib.tree.avl.tStatus;
   tUser         = lib.hash.open.tUser;
   tMessage      = lib.tree.trinary.tMessage;
-  tMessageList  = array of tMessage;
+  tMessageIdx   = lib.tree.trinary.idxRange;
+  tMessageList  = array of tMessageIdx;
 
   tMetruIO =   record
                  users        : tOpenHash;
@@ -62,30 +63,42 @@ type
   function  banUser    (var this : tMetruCore; user : tUser) : boolean;
 
   { category functions }
-  function  createCateogry         (var this : tMetruCore; category : tCategory) : boolean;
-  function  editCateogry           (var this : tMetruCore; category : tCategory) : boolean;
-  function  deleteCateogry         (var this : tMetruCore; category : tCategory) : boolean;
+  procedure createCateogry         (var this : tMetruCore; category : tCategory);
+  procedure editCateogry           (var this : tMetruCore; category : tCategory);
+  procedure deleteCateogry         (var this : tMetruCore; category : tCategory);
   function  retrieveAllLeafCateogies   (var this : tMetruCore) : tCategoryList;
   function  retrieveBaseCateogies  (var this : tMetruCore) : tCategoryList;
   function  retrieveChildCateogies (var this : tMetruCore; category : tCategory) : tCategoryList;
   function  retrieveAllCateogies   (var this : tMetruCore) : tCategoryList;
 
   { publication functions }
-  function createPublication             (var this : tMetruCore; publication : tPublish) : boolean;
-  function editPublication               (var this : tMetruCore; publication : tPublish) : boolean;
-  function deletePublication             (var this : tMetruCore; publication : tPublish) : boolean;
-  function retrievePublicationByCategory (var this : tMetruCore; var category : tCategory) : tPublishList;
-  function retrievePublicationByUser     (var this : tMetruCore; var user : tUser) : tPublishList;
+  procedure createPublication             (var this : tMetruCore; publication : tPublish);
+  procedure editPublication               (var this : tMetruCore; publication : tPublish);
+  procedure deletePublication             (var this : tMetruCore; publication : tPublish);
+  function  retrievePublicationByCategory (var this : tMetruCore; var category : tCategory) : tPublishList;
+  function  retrievePublicationByUser     (var this : tMetruCore; var user : tUser) : tPublishList;
 
   { message related functions }
-  function postMessage  (var this : tMetruCore; publication : tPublish; user : tUser; msg : string) : boolean;
-  function postResponse (var this : tMetruCore; var message : tMessage, response : string) : boolean;
+  function postMessage     (var this : tMetruCore; publication : tPublish; user : tUser; msg : string) : boolean;
+  function postResponse    (var this : tMetruCore; var message : tMessageIdx; response : string) : boolean;
+  function retrieveMessage (var this : tMetruCore; publication : tPublish) : tMessageList;
 
 var
   metruApp : tMetruCore;
 
 implementation
   operator + (a, b : tCategoryList) c: tCategoryList;
+  var
+    i :longint;
+  begin
+    SetLength(c, Length(a) + Length(b));
+    for i := 0 to High(a) do
+        c[i] := a[i];
+    for i := 0 to High(b) do
+        c[i + Length(a)] := b[i];
+  end;
+
+  operator + (a, b : tMessageList) c: tMessageList;
   var
     i :longint;
   begin
@@ -206,9 +219,6 @@ implementation
   end;
 
   procedure logoff     (var this : tMetruCore);
-  var 
-    user : tUser;
-    pos  : idxRange;
   begin
     this.user.status := false;
     lib.hash.open.insert(this.io.users, this.user);
@@ -254,7 +264,7 @@ implementation
     banUser := ok;
   end;
 
-  function  createCateogry         (var this : tMetruCore; category : tCategory) : boolean;
+  procedure  createCateogry         (var this : tMetruCore; category : tCategory);
   var
     pos : idxRange;
   begin
@@ -266,7 +276,7 @@ implementation
     lib.tree.lcrs.addChild(this.io.categories, pos, category);
   end;
 
-  function  editCateogry           (var this : tMetruCore; category : tCategory) : boolean;
+  procedure  editCateogry           (var this : tMetruCore; category : tCategory);
   var
     pos : idxRange;
   begin
@@ -274,7 +284,7 @@ implementation
     lib.tree.lcrs.update(this.io.categories, pos, category);
   end;
 
-  function  deleteCateogry         (var this : tMetruCore; category : tCategory) : boolean;
+  procedure  deleteCateogry         (var this : tMetruCore; category : tCategory);
   var
     pos : idxRange;
   begin
@@ -285,7 +295,6 @@ implementation
   function  retrieveBaseCateogies  (var this : tMetruCore) : tCategoryList;
   var
     list    : tCategoryList;
-    auxList : tCategoryList;
     auxCat  : tCategory;
     i       : integer;
     auxPos  : idxRange;
@@ -308,7 +317,6 @@ implementation
   function  retrieveChildCateogies (var this : tMetruCore; category : tCategory) : tCategoryList;
   var
     list    : tCategoryList;
-    auxList : tCategoryList;
     auxCat  : tCategory;
     i       : integer;
     auxPos  : idxRange;
@@ -357,12 +365,10 @@ implementation
     list    : tCategoryList;
     auxList : tCategoryList;
     auxCat  : tCategory;
-    i       : integer;
     auxPos  : idxRange;
   begin
     SetLength(list, 0);
     auxCat  := lib.tree.lcrs.fetch(this.io.categories, pos); 
-    i       := 0;
     if (lib.tree.lcrs.isLeaf(this.io.categories, auxCat)) then
       begin
         SetLength(list, 1);
@@ -395,16 +401,16 @@ implementation
 
   end;
 
-  function createPublication         (var this : tMetruCore; publication : tPublish) : boolean;
+  procedure createPublication         (var this : tMetruCore; publication : tPublish);
   begin
     lib.tree.avl.append(this.io.publications, publication);
   end;
 
-  function editPublication           (var this : tMetruCore; publication : tPublish) : boolean;
+  procedure editPublication           (var this : tMetruCore; publication : tPublish);
   begin
   end;
   
-  function deletePublication         (var this : tMetruCore; publication : tPublish) : boolean;
+  procedure deletePublication         (var this : tMetruCore; publication : tPublish);
   begin
   end;
 
@@ -453,8 +459,38 @@ implementation
 
   end;
 
-  function postResponse (var this : tMetruCore; var message : tMessage, response : string) : boolean;
+  function postResponse (var this : tMetruCore; var message : tMessageIdx; response : string) : boolean;
   begin
   end;  
+
+  function _retrieveAllMessagesByKeys (var this : tMetruCore; pk, sk : lib.tree.trinary.tKey) : tMessageList;
+  var
+    msgIdx : lib.tree.trinary.idxRange;
+    msg    : lib.tree.trinary.tMessage;
+    list   : tMessageList;
+    found  : boolean;
+    i      : integer;
+  begin
+    SetLength(list, 0);
+    i     := 0;
+    found := retrieveFirstMsgIdx(this.io.messages, pk, sk, msgIdx);
+    if found then
+      repeat
+        begin
+          i   := i + 1;
+          SetLength(list, i);
+          list[i] := msgIdx;
+        end;
+      until not retrieveNextMsgIdx(this.io.messages, pk, sk, msgIdx);
+  end;
+
+  function retrieveMessage (var this : tMetruCore; publication : tPublish) : tMessageList;
+  var 
+    linkedKeys : tLinkedKeys;
+    list       : tMessageList;
+  begin
+    linkedKeys := lib.tree.trinary.retrieveAllLinkedKeys(this.io.messages, publication.id);
+
+  end;
 
 end.
