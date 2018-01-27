@@ -144,7 +144,7 @@ end;
 function usermenu() : integer;
 begin
   ClrScr;
-  writeln('Menu Usuarios (1-5)');
+  writeln('Menu Usuarios (1-3)');
   writeln('1- Dump de estructura del hash');
   writeln('2- Dump de estructura de control');
   writeln('3- Test de aglomeracion/dispersion');
@@ -278,6 +278,100 @@ end;
 
 { end message menu block }
 
+
+{ sells menu block }
+
+procedure dumpSellsHash();
+var
+  sell : tSell;
+  io   : tCloseHash;
+  i    : integer;
+begin
+  ClrScr;
+  write('pos | ');
+  write('idBuyer | ');
+  write('idItem | ');
+  write('itemName | ');
+  write('price | ');
+  write('publishDate | ');
+  write('sellDate | ');
+  write('itemType | ');
+  write('calification | ');
+  write('tax | ');
+  write('alreadyCollected | ');
+  write('previous | ');
+  write('next | ');
+  writeln;
+
+  lib.hash.close.loadHash(io, 'data/', 'sells');
+  reset(io.data);
+  for i := 0 to (filesize(io.data) - 1) do
+    begin
+      seek(io.data, i);
+      read(io.data, sell);
+      write(i);
+      //if (sell.id > 0) then
+        //begin
+          write(i, ' | ');
+          write(sell.idBuyer, ' | ');
+          write(sell.idItem, ' | ');
+          write(sell.itemName, ' | ');
+          write(sell.price, ' | ');
+          write(sell.publishDate, ' | ');
+          write(sell.sellDate, ' | ');
+          write(sell.itemType, ' | ');
+          write(sell.calification, ' | ');
+          write(sell.tax, ' | ');
+          write(sell.alreadyCollected, ' | ');
+          write(sell.previous, ' | ');
+          write(sell.next, ' | ');
+          writeln;
+        //end
+      //else
+        //write('VACIO');
+      writeln;
+    end;
+  close(io.data);
+  wait('presione una tecla para continuar');
+end;
+
+procedure dumpSellsControl();
+var
+  ctrl : lib.hash.close.tControlRecord;
+  io   : tCloseHash;
+begin
+  ClrScr;
+  lib.hash.close.loadHash(io, 'data/', 'sells');
+  reset(io.control);
+  seek(io.control, 0);
+  read(io.control, ctrl);
+  close(io.control);
+  writeln('Primer borrado: ' , ctrl.erased);
+  wait('presione una tecla para continuar');
+end;
+
+
+function sellsmenu() : integer;
+begin
+  ClrScr;
+  writeln('Menu Ventas (1-3)');
+  writeln('1- Dump de estructura del hash');
+  writeln('2- Dump de estructura de control');
+  writeln('3- Test de aglomeracion/dispersion');
+  writeln('0- Salir');
+  sellsmenu := readValidNumber(0, 3);
+end;
+
+procedure sellsmenuAct(op : integer);
+begin
+  case op of
+    1: dumpSellsHash;
+    2: dumpSellsControl;
+  end;
+end;
+
+{ end sells menu block }
+
 {main menu block}
 function mainmenu() : integer;
 begin
@@ -297,6 +391,7 @@ begin
   case op of
     1: actMenu(@usermenu, @usermenuAct);
     4: actMenu(@messagemenu, @messagemenuAct);
+    5: actMenu(@sellsmenu, @sellsmenuAct);
   end;
 end;
 {end main menu block }

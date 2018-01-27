@@ -716,9 +716,9 @@ implementation
           end
         else
           begin
-            found := _retrieveNextNodeFromLastMessage(this, auxNode.left, idxRange);
+            found := _retrieveNextNodeFromLastMessage(this, auxNode.left, idxMsg);
             if not found then
-              found := _retrieveNextNodeFromLastMessage(this, auxNode.right, idxRange);
+              found := _retrieveNextNodeFromLastMessage(this, auxNode.right, idxMsg);
           end;
       end;
     _retrieveNextNodeFromLastMessage := found;

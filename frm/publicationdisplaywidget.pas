@@ -52,6 +52,7 @@ begin
   descriptionLabel.Caption := publication.details;
   titleLabel.Caption       := publication.itemName;
   priceLabel.Caption       := FloatToStr(publication.price);
+  editButton.Enabled       := self.isOwn;
   editButton.Visible       := self.isOwn;
 end;
 

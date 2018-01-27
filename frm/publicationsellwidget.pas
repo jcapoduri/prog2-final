@@ -23,6 +23,7 @@ type
     priceLabel: TLabel;
     Label5: TLabel;
     messagesContainer: TScrollBox;
+    procedure buyButtonClick(Sender: TObject);
     constructor Create(parentComponent : TComponent; var User : tUser; var publication : tPublish); overload;
     procedure FormActivate(Sender: TObject);
   private
@@ -51,11 +52,19 @@ begin
   self.isSelfPublication := user.id = publication.idUser;
 end;
 
+procedure tPublicationSellWidget.buyButtonClick(Sender: TObject);
+begin
+  metru.core.doPurchase(metruApp, self.publication, self.user);
+  MessageDlg('Gracias por su compra! por favor acceda a ella para poder abonarla y calificar al vendedor', mtCustom , [mbOK], 0);
+end;
+
 procedure tPublicationSellWidget.FormActivate(Sender: TObject);
 begin
   self.titleLabel.Caption := self.publication.itemName;
   self.descriptionLabel.Caption := self.publication.details;
   self.priceLabel.Caption:= FloatToStr(self.publication.price);
+  if (publication.idUser = user.id) then {if publication is my own, disable purchase}
+     self.buyButton.Enabled := false;
 end;
 
 end.

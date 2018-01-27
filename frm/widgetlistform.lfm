@@ -1,0 +1,30 @@
+object tWidgetListForm: tWidgetListForm
+  Left = 505
+  Height = 428
+  Top = 370
+  Width = 847
+  Caption = 'widgetList'
+  ClientHeight = 428
+  ClientWidth = 847
+  OnActivate = FormActivate
+  LCLVersion = '1.8.0.6'
+  object componentListScrollBox: TScrollBox
+    Left = 8
+    Height = 376
+    Top = 8
+    Width = 830
+    HorzScrollBar.Page = 1
+    VertScrollBar.Page = 1
+    Anchors = [akTop, akLeft, akRight, akBottom]
+    TabOrder = 0
+  end
+  object closeButton: TBitBtn
+    Left = 763
+    Height = 30
+    Top = 392
+    Width = 75
+    Anchors = [akRight, akBottom]
+    Caption = 'Cerrar'
+    TabOrder = 1
+  end
+end

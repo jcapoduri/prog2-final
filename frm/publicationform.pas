@@ -93,7 +93,6 @@ end;
 
 procedure tPublicationForm.saveButtonClick(Sender: TObject);
 var
-  //publication : tPublish;
   item        : TCategoryItem;
 begin
   { assert if valid }
@@ -115,10 +114,8 @@ begin
   else
     publication.itemType := tItemType.Used;
   publication.status     := tStatus.Publish;
-  if metru.core.createPublication(metruApp, publication) then
-    close
-  else
-    errorLabel.Caption := 'El email ya esta registrado';
+  metru.core.createPublication(metruApp, publication);
+
 end;
 
 end.

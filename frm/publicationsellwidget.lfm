@@ -71,6 +71,7 @@ object tPublicationSellWidget: tPublicationSellWidget
     Top = 360
     Width = 75
     Caption = 'Comprar!'
+    OnClick = buyButtonClick
     TabOrder = 1
   end
   object sendQuestionButton: TBitBtn

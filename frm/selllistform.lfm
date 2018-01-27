@@ -1,0 +1,8 @@
+object sellListForm: tSellListForm
+  Left = 429
+  Height = 240
+  Top = 30
+  Width = 320
+  Caption = 'Venta'
+  LCLVersion = '1.8.0.6'
+end

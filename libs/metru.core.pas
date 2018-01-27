@@ -25,6 +25,8 @@ type
   tCategoryList = lib.tree.lcrs.tCategoryList;
   tCategory     = lib.tree.lcrs.tCategory;
   tPublish      = lib.tree.avl.tPublish;
+  tSell         = lib.hash.close.tSell;
+  tSellList     = array of tSell;
   tPublishList  = array of tPublish;
   tItemType     = lib.tree.avl.tItemType;
   tStatus       = lib.tree.avl.tStatus;
@@ -82,6 +84,10 @@ type
   function postMessage     (var this : tMetruCore; publication : tPublish; user : tUser; msg : string) : boolean;
   function postResponse    (var this : tMetruCore; var message : tMessageIdx; response : string) : boolean;
   function retrieveMessage (var this : tMetruCore; publication : tPublish) : tMessageList;
+
+  { sells }
+  procedure doPurchase            (var this : tMetruCore; publication : tPublish; user : tUser);
+  function  retrieveAllMyPurchase (var this : tMetruCore; user : tUser) : tSellList;
 
 var
   metruApp : tMetruCore;
@@ -491,6 +497,36 @@ implementation
   begin
     linkedKeys := lib.tree.trinary.retrieveAllLinkedKeys(this.io.messages, publication.id);
 
+  end;
+
+  procedure doPurchase            (var this : tMetruCore; publication : tPublish; user : tUser);
+  var
+    purchase : tSell;
+    category : tCategory;
+    pos      : lib.tree.lcrs.idxRange;
+  begin
+    lib.tree.lcrs.search(this.io.categories, publication.idCategory, pos);
+    category                  := lib.tree.lcrs.fetch(this.io.categories, pos);
+    purchase.idBuyer          := user.id;
+    purchase.idItem           := publication.id;
+    purchase.itemName         := publication.itemName;
+    purchase.price            := publication.price;
+    purchase.publishDate      := publication.ctimestamp;
+    purchase.sellDate         := Now;
+    if publication.itemType = lib.tree.avl.New then
+      purchase.itemType       := lib.hash.close.New
+    else
+      purchase.itemType       := lib.hash.close.Used;
+    purchase.calification     := lib.hash.close.None;
+    purchase.tax              := category.VAT;
+    purchase.alreadyCollected := false;
+  end;
+
+  function  retrieveAllMyPurchase (var this : tMetruCore; user : tUser) : tSellList;
+  var 
+    list : tSellList;
+  begin
+    retrieveAllMyPurchase := list;
   end;
 
 end.

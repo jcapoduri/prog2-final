@@ -7,8 +7,11 @@ interface
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, Menus,
   ExtCtrls, publicationlistform, publicationForm,
+  Contnrs,
   loginform    in 'frm\loginform',
   categorybase in 'frm\cateogorybase.pas',
+  selllistform,
+  widgetlistform,
   metru.core   in 'libs\metru.core.pas';
 
 type
@@ -17,6 +20,7 @@ type
 
   TForm1 = class(TForm)
     MainMenu1: TMainMenu;
+    mySellsBaseMenuItem: TMenuItem;
     userBaseMenuItem: TMenuItem;
     newPublicationMenuItem: TMenuItem;
     publicationBaseMenuItem: TMenuItem;
@@ -33,6 +37,7 @@ type
     catBase : TCategoryBase;
     procedure FormCreate(Sender: TObject);
     procedure categoryCRUDMenuItemClick(Sender: TObject);
+    procedure mySellsBaseMenuItemClick(Sender: TObject);
     procedure myPublicationMenuItemClick(Sender: TObject);
     procedure newPublicationMenuItemClick(Sender: TObject);
     procedure publicationAllMenuItemClick(Sender: TObject);
@@ -73,6 +78,27 @@ procedure TForm1.categoryCRUDMenuItemClick(Sender: TObject);
 begin
    Application.CreateForm(TCategoryBase, self.catBase);
    self.catBase.Show;
+end;
+
+procedure TForm1.mySellsBaseMenuItemClick(Sender: TObject);
+var
+  list         : tComponentList;
+  item         : tSellListForm;
+  purchaseList : tSellList;
+  user         : tUser;
+  i            : integer;
+  form         : tWidgetListForm;
+begin
+  user         := metru.core.loggedUser(metruApp);
+  purchaseList := metru.core.retrieveAllMyPurchase(metruApp, user);
+  list         := tComponentList.Create;
+  for i := low(purchaseList) to high(purchaseList) do
+    begin
+      item :=  tSellListForm.Create(self, purchaseList[i]);
+      list.Add(item);
+    end;
+  form := tWidgetListForm.Create(self, list);
+  form.Show;
 end;
 
 procedure TForm1.myPublicationMenuItemClick(Sender: TObject);

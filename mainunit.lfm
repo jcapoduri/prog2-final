@@ -57,7 +57,11 @@ object Form1: TForm1
       end
     end
     object sellsBaseMenuItem: TMenuItem
-      Caption = 'Ventas'
+      Caption = 'Compras'
+      object mySellsBaseMenuItem: TMenuItem
+        Caption = 'Ver mis compras'
+        OnClick = mySellsBaseMenuItemClick
+      end
     end
     object advanceBaseMenuItem: TMenuItem
       Caption = 'Avanzado'
