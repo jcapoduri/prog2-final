@@ -27,6 +27,7 @@ type
   tPublish      = lib.tree.avl.tPublish;
   tSell         = lib.hash.close.tSell;
   tSellList     = array of tSell;
+  tCalification = lib.hash.close.tCalification;
   tPublishList  = array of tPublish;
   tItemType     = lib.tree.avl.tItemType;
   tStatus       = lib.tree.avl.tStatus;
@@ -88,6 +89,8 @@ type
 
   { sells }
   procedure doPurchase            (var this : tMetruCore; publication : tPublish; user : tUser);
+  procedure doPayment             (var this : tMetruCore; purchase : tSell);
+  procedure doReviewPurchase      (var this : tMetruCore; purchase : tSell; review : tCalification);
   function  retrieveAllMyPurchase (var this : tMetruCore; user : tUser) : tSellList;
 
 var
@@ -569,6 +572,32 @@ implementation
 
     publication.status        :=  lib.tree.avl.Sold;
     lib.tree.avl.update(this.io.publications, publication);
+  end;
+
+  procedure doPayment             (var this : tMetruCore; purchase : tSell);
+  var
+    auxPurchase : tSell;
+    idxPurchase : lib.hash.close.idxRange;
+  begin
+    if lib.hash.close.search(this.io.sells, purchase.idItem, idxPurchase) then
+      begin
+        auxPurchase := lib.hash.close.fetch(this.io.sells, idxPurchase);
+        auxPurchase.alreadyCollected := true;
+        lib.hash.close.update(this.io.sells, idxPurchase, auxPurchase);
+      end;
+  end;
+
+  procedure doReviewPurchase      (var this : tMetruCore; purchase : tSell; review : tCalification);
+  var
+    auxPurchase : tSell;
+    idxPurchase : lib.hash.close.idxRange;
+  begin
+    if (review > None) and (lib.hash.close.search(this.io.sells, purchase.idItem, idxPurchase)) then
+      begin
+        auxPurchase := lib.hash.close.fetch(this.io.sells, idxPurchase);
+        auxPurchase.calification := review;
+        lib.hash.close.update(this.io.sells, idxPurchase, auxPurchase);
+      end;
   end;
 
   function  retrieveAllMyPurchase (var this : tMetruCore; user : tUser) : tSellList;

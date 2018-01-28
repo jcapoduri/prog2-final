@@ -53,6 +53,7 @@ type
   function  isEmpty          (var this : tCloseHash) : boolean;
   function  search           (var this : tCloseHash; key : tKey; var pos: idxRange) : boolean;
   procedure insert           (var this : tCloseHash; sell : tSell);
+  procedure update           (var this : tCloseHash; pos: idxRange; sell : tSell);
   procedure remove           (var this : tCloseHash; pos: idxRange);
   function  fetch            (var this : tCloseHash; pos: idxRange) : tSell;
 
@@ -260,7 +261,6 @@ implementation
     hashNode         : tHashNode;
     previousSell     : tSell;
   begin
-    {TODO}
     _openHash(this);
     key      := _hash(sell.idItem);
     pos      := _append(this, sell);
@@ -285,6 +285,14 @@ implementation
     _setHash(this, key, hashNode);
     _closeHash(this);
   end;
+
+  procedure update           (var this : tCloseHash; pos: idxRange; sell : tSell);
+  begin
+    _openHash(this);
+    _set(this, pos, sell);
+    _closeHash(this);
+  end;
+
 
   procedure remove           (var this : tCloseHash; pos: idxRange);
   var
