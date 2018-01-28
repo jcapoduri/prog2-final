@@ -77,6 +77,7 @@ type
   procedure createPublication             (var this : tMetruCore; publication : tPublish);
   procedure editPublication               (var this : tMetruCore; publication : tPublish);
   procedure deletePublication             (var this : tMetruCore; publication : tPublish);
+  function  retrieveAllPublication        (var this : tMetruCore) : tPublishList;
   function  retrievePublicationByCategory (var this : tMetruCore; var category : tCategory) : tPublishList;
   function  retrievePublicationByUser     (var this : tMetruCore; var user : tUser) : tPublishList;
 
@@ -94,6 +95,17 @@ var
 
 implementation
   operator + (a, b : tCategoryList) c: tCategoryList;
+  var
+    i :longint;
+  begin
+    SetLength(c, Length(a) + Length(b));
+    for i := 0 to High(a) do
+        c[i] := a[i];
+    for i := 0 to High(b) do
+        c[i + Length(a)] := b[i];
+  end;
+
+  operator + (a, b : tPublishList) c: tPublishList;
   var
     i :longint;
   begin
@@ -469,6 +481,25 @@ implementation
       end;
     retrievePublicationByUser := list;
   end;
+
+  function retrieveAllPublication        (var this : tMetruCore) : tPublishList;
+  var
+    list, auxList : tPublishList;
+    item     : tPublish;
+    i        : integer;
+    category : tCategory;
+    catList  : tCategoryList;
+  begin
+    SetLength(list, 0);
+    catList := retrieveAllLeafCateogies(this);
+    for i := 0 to High(catList) do
+      begin
+        category := catList[i];
+        auxList  := retrievePublicationByCategory(this, category);
+        list     := list + auxList;
+      end;
+    retrieveAllPublication := list;
+  end;
   
   function postMessage  (var this : tMetruCore; publication : tPublish; user : tUser; msg : string) : boolean;
   var
@@ -542,9 +573,30 @@ implementation
 
   function  retrieveAllMyPurchase (var this : tMetruCore; user : tUser) : tSellList;
   var 
-    list : tSellList;
+    list        : tSellList;
+    purchase    : tSell;
+    pubList     : tPublishList;
+    i, j        : integer;
+    publication : tPublish;
+    idxPurchase : lib.hash.close.idxRange;
   begin
+    j := 0;
     SetLength(list, 0);
+    pubList := retrieveAllPublication(this);
+    for i := 0 to high(pubList) do
+      begin
+        publication := pubList[i];
+        if lib.hash.close.search(this.io.sells, publication.id, idxPurchase) then
+          begin
+            purchase := lib.hash.close.fetch(this.io.sells, idxPurchase);
+            if purchase.idBuyer = user.id then
+              begin
+                j := j + 1;
+                SetLength(list, j);
+                list[j - 1] := purchase;
+              end;
+          end;
+      end;
 
     retrieveAllMyPurchase := list;
   end;
