@@ -45,6 +45,7 @@ type
   {function  isEmpty          (var this : tOpenHash) : boolean;}
   function  search           (var this : tOpenHash; email : tKey; var pos: tHashValue) : boolean;
   procedure insert           (var this : tOpenHash; node : tNode);
+  procedure update           (var this : tOpenHash; node : tNode);
   procedure remove           (var this : tOpenHash; node : tNode);
   function  fetch            (var this : tOpenHash; email: tKey) : tNode;
 
@@ -177,14 +178,13 @@ implementation
     _closeHash(this);
   end;
 
-  function  search           (var this : tOpenHash; email : tKey; var pos: tHashValue) : boolean;
+  function  _search          (var this : tOpenHash; email : tKey; var pos: tHashValue) : boolean;
   var
     rc      : tControlRecord;
     found   : boolean;
     auxPos  : tHashValue;
     node    : tNode;
   begin
-    _openHash(this);
     rc      := _getControl(this);
     found   := false;
     pos     := NULLIDX;
@@ -208,6 +208,17 @@ implementation
           end;
       end;
 
+    _search := found;
+  end;
+
+  function  search           (var this : tOpenHash; email : tKey; var pos: tHashValue) : boolean;
+  var
+    rc      : tControlRecord;
+    found   : boolean;
+  begin
+    _openHash(this);
+    rc      := _getControl(this);
+    found   := _search(this, email, pos);
     _closeHash(this);
     search := found;
   end;
@@ -220,9 +231,24 @@ implementation
     _openHash(this);
     pos := _getBucket(this, node.email);
     rc  := _getControl(this);
+    rc.count  := rc.count + 1;
+    rc.lastID := rc.lastID + 1;
+    node.id   := rc.lastID;
     _set(this, pos, node);
-    rc.count := rc.count + 1;
     _setControl(this, rc);
+    _closeHash(this);
+  end;
+
+  procedure update           (var this : tOpenHash; node : tNode);
+  var
+    pos : tHashValue;
+    found : boolean;
+    rc  : tControlRecord;
+  begin
+    _openHash(this);
+    found := _search(this, node.email, pos);
+    if (found) then
+      _set(this, pos, node);
     _closeHash(this);
   end;
 
@@ -236,7 +262,7 @@ implementation
     node.id := NULLIDX;
     _set(this, pos, node);
     rc       := _getControl(this);
-    rc.count := rc.count + 1;
+    rc.count := rc.count - 1;
     _setControl(this, rc);
     _closeHash(this);
   end;

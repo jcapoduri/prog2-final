@@ -15,6 +15,7 @@ type
   tWidgetListForm = class(TForm)
     closeButton: TBitBtn;
     componentListScrollBox: TScrollBox;
+    procedure CloseButtonClicked(Sender: TObject);
     procedure FormActivate(Sender: TObject);
   private
     list : tComponentList;
@@ -33,11 +34,12 @@ implementation
 
 procedure tWidgetListForm.FormActivate(Sender: TObject);
 var
-  i      : integer;
-  widget : tForm;
-  item   : tComponent;
+  i, count : integer;
+  widget   : tForm;
+  item     : tComponent;
 begin
-  for i := 0 to list.Count do
+  count := list.Count - 1;
+  for i := 0 to count do
     begin
       item           := self.list.Items[i];
       widget         := item as TForm;
@@ -49,6 +51,11 @@ begin
       widget.Visible := true;
     end;
   self.componentListScrollBox.Refresh;
+end;
+
+procedure tWidgetListForm.CloseButtonClicked(Sender: TObject);
+begin
+  Close;
 end;
 
 constructor tWidgetListForm.Create(theOwner: tComponent;

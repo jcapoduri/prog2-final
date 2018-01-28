@@ -21,6 +21,7 @@ uses
   ,lib.tree.avl     in 'libs\lib.tree.avl.pas'
   ,lib.tree.trinary in 'libs\lib.tree.trinary.pas'
   ,io.helpers       in 'libs\io.helpers.pas'
+  ,metru.core       in 'libs\metru.core.pas'
   ;
 
 type
@@ -41,6 +42,8 @@ begin
     end;
 end;
 
+{ category menu block }
+
 procedure dumpCategoryTree();
 var
   category            : lib.tree.lcrs.tCategory;
@@ -49,7 +52,7 @@ var
 begin
   lib.tree.lcrs.loadTree(catDB, 'data/', 'categories');
   reset(catDB.data);
-  maxIdx := filesize(catDB.data);
+  maxIdx := filesize(catDB.data) - 1;
   close(catDB.data);
 
   write('pos | ');
@@ -72,7 +75,27 @@ begin
       write(category.rightSibling, ' | ');
       writeln;
     end;
+  wait('presione una tecla para continuar');
 end;
+
+function categorymenu() : integer;
+begin
+  ClrScr;
+  writeln('Menu Categorias (1-2)');
+  writeln('1- Dump de estructura de datos');
+  writeln('2- Dump de estructura de control');
+  writeln('0- Salir');
+  categorymenu := readValidNumber(0, 2);
+end;
+
+procedure categorymenuAct(op : integer);
+begin
+  case op of
+    1: dumpCategoryTree;
+  end;
+end;
+
+{ end category menu block }
 
 { user menu block }
 procedure dumpUserHash();
@@ -373,6 +396,12 @@ end;
 { end sells menu block }
 
 {main menu block}
+procedure resetApp;
+begin
+  metru.core.kickoff(metruApp);
+  wait('Reset realizado. Presione una tecla para continuar');
+end;
+
 function mainmenu() : integer;
 begin
   ClrScr;
@@ -382,16 +411,19 @@ begin
   writeln('3- Publicaciones');
   writeln('4- Mensajes');
   writeln('5- Ventas');
+  writeln('6- RESET GENERAL DEL SISTEMA');
   writeln('0- Salir');
-  mainmenu := readValidNumber(0, 5);
+  mainmenu := readValidNumber(0, 6);
 end;
 
 procedure mainmenuAct(op : integer);
 begin
   case op of
     1: actMenu(@usermenu, @usermenuAct);
+    2: actMenu(@categorymenu, @categorymenuAct);
     4: actMenu(@messagemenu, @messagemenuAct);
     5: actMenu(@sellsmenu, @sellsmenuAct);
+    6: resetApp;
   end;
 end;
 {end main menu block }

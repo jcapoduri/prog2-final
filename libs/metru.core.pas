@@ -147,6 +147,18 @@ implementation
     user.blocked    := false;
     lib.hash.open.insert(this.io.users, user);
 
+    user.email      := 'jcapoduri@gmail.com';
+    user.password   := 'abcd1234';
+    user.fullname   := 'Jorge Capoduri';
+    user.address    := 'Yrigoyen 831';
+    user.providence := 4;
+    user.ctimestamp := Now;
+    user.photoUrl   := '';
+    user.status     := false;
+    user.utimestamp := Now;
+    user.blocked    := false;
+    lib.hash.open.insert(this.io.users, user);
+
     { setup categories }
     cat.categoryName := 'RAIZ';
     cat.description  := 'RAIZ';
@@ -205,7 +217,7 @@ implementation
         if (not blocked) and (user.password = pass) then
           begin
             user.status := true;
-            lib.hash.open.insert(this.io.users, user);
+            lib.hash.open.update(this.io.users, user);
             this.user   := user;
           end
         else
@@ -227,7 +239,7 @@ implementation
   procedure logoff     (var this : tMetruCore);
   begin
     this.user.status := false;
-    lib.hash.open.insert(this.io.users, this.user);
+    lib.hash.open.update(this.io.users, this.user);
     this.user.id := 0;
   end;
 
@@ -505,6 +517,7 @@ implementation
     category : tCategory;
     pos      : lib.tree.lcrs.idxRange;
   begin
+    { TODO: mark publication as sold }
     lib.tree.lcrs.search(this.io.categories, publication.idCategory, pos);
     category                  := lib.tree.lcrs.fetch(this.io.categories, pos);
     purchase.idBuyer          := user.id;
@@ -520,12 +533,19 @@ implementation
     purchase.calification     := lib.hash.close.None;
     purchase.tax              := category.VAT;
     purchase.alreadyCollected := false;
+
+    lib.hash.close.insert(this.io.sells, purchase);
+
+    publication.status        :=  lib.tree.avl.Sold;
+    lib.tree.avl.update(this.io.publications, publication);
   end;
 
   function  retrieveAllMyPurchase (var this : tMetruCore; user : tUser) : tSellList;
   var 
     list : tSellList;
   begin
+    SetLength(list, 0);
+
     retrieveAllMyPurchase := list;
   end;
 

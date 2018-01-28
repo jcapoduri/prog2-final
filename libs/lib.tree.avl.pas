@@ -59,6 +59,7 @@ type
   function  searchByUser       (var this : tAVLtree; key : tKey; var pos: idxRange) : boolean;
   function  searchByCategory   (var this : tAVLtree; key : tKey; var pos: idxRange) : boolean;
   procedure append             (var this : tAVLtree; publication : tPublish);
+  procedure update             (var this : tAVLtree; publication : tPublish);
   procedure remove             (var this : tAVLtree; publication : tPublish);
   function  fetch              (var this : tAVLtree; pos: idxRange) : tPublish;
   function  fetchByUser        (var this : tAVLtree; pos: idxRange) : tPublish;
@@ -541,6 +542,12 @@ implementation
     nodeCat.parent := posCat;
     auxIdxCat      := _appendByCategory(this, nodeCat);
 
+    { add publicatio id }
+    rc        := _getControl(this);
+    rc.lastID := rc.lastID + 1;
+    _setControl(this, rc);
+    publication.id := rc.lastID;
+
     { set index for publication }
     if nodeUser.index = NULLIDX then { we need to create a new publication }
       begin
@@ -756,6 +763,19 @@ implementation
   procedure append           (var this : tAVLtree; publication : tPublish);
   begin
     _openTree(this);
+    _append(this, publication);
+    _closeTree(this);
+  end;
+
+  procedure update             (var this : tAVLtree; publication : tPublish);
+  var
+    pos  : idxRange;
+    node : tNode;
+  begin
+    _openTree(this);
+    _searchByUser(this, publication.idUser, pos);
+    node := _getByUser(this, pos);
+    _setPublication(this, node.index, publication);
     _append(this, publication);
     _closeTree(this);
   end;

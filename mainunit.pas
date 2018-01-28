@@ -7,6 +7,7 @@ interface
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, Menus,
   ExtCtrls, publicationlistform, publicationForm,
+  PublicationDisplayWidget,
   Contnrs,
   loginform    in 'frm\loginform',
   categorybase in 'frm\cateogorybase.pas',
@@ -103,9 +104,25 @@ end;
 
 procedure TForm1.myPublicationMenuItemClick(Sender: TObject);
 var
-  form : tPublicationListForm;
+  result        : tPublishList;
+  componentList : tComponentList;
+  _parent       : tComponent;
+  item          : tPublicationDisplayWidget;
+  user          : tUser;
+  i             : integer;
+  form          : tWidgetListForm;
 begin
-  form := tPublicationListForm.Create(self, metru.core.loggedUser(metruApp), true);
+  user          := metru.core.loggedUser(metruApp);
+  result        := metru.core.retrievePublicationByUser(metruApp, user);
+  componentList := tComponentList.Create;
+  for i := low(result) to high(result) do
+    begin
+      _parent := self as TComponent;
+      item    :=  tPublicationDisplayWidget.Create(_parent, result[i], true);
+      componentList.Add(item);
+    end;
+  
+  form := tWidgetListForm.Create(self, componentList);
   form.Show;
 end;
 
@@ -129,7 +146,8 @@ end;
 
 procedure TForm1.quitMenuItemClick(Sender: TObject);
 begin
-  Application.Terminate;
+  metru.core.logoff(metruApp);
+  login.ShowModal;
 end;
 
 end.

@@ -56,6 +56,7 @@ procedure tPublicationSellWidget.buyButtonClick(Sender: TObject);
 begin
   metru.core.doPurchase(metruApp, self.publication, self.user);
   MessageDlg('Gracias por su compra! por favor acceda a ella para poder abonarla y calificar al vendedor', mtCustom , [mbOK], 0);
+  self.buyButton.Enabled:=false;
 end;
 
 procedure tPublicationSellWidget.FormActivate(Sender: TObject);

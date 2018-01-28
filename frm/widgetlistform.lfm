@@ -25,6 +25,7 @@ object tWidgetListForm: tWidgetListForm
     Width = 75
     Anchors = [akRight, akBottom]
     Caption = 'Cerrar'
+    OnClick = CloseButtonClicked
     TabOrder = 1
   end
 end
