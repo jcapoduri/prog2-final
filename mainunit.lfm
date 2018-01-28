@@ -63,6 +63,18 @@ object Form1: TForm1
         OnClick = mySellsBaseMenuItemClick
       end
     end
+    object MenuItem1: TMenuItem
+      Caption = 'Reportes'
+      object reportAllPublicationsMenuItem: TMenuItem
+        Caption = 'Listado de articulos publicados'
+      end
+      object reportByCategoryMenuItem: TMenuItem
+        Caption = 'Listado de totales de categoría'
+      end
+      object reportByMaxPerCateogryMenuItem: TMenuItem
+        Caption = 'Listado de Categorias por Mayores Totales'
+      end
+    end
     object advanceBaseMenuItem: TMenuItem
       Caption = 'Avanzado'
     end

@@ -21,6 +21,10 @@ type
 
   TForm1 = class(TForm)
     MainMenu1: TMainMenu;
+    MenuItem1: TMenuItem;
+    reportByMaxPerCateogryMenuItem: TMenuItem;
+    reportByCategoryMenuItem: TMenuItem;
+    reportAllPublicationsMenuItem: TMenuItem;
     mySellsBaseMenuItem: TMenuItem;
     userBaseMenuItem: TMenuItem;
     newPublicationMenuItem: TMenuItem;
