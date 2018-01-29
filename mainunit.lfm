@@ -3,7 +3,7 @@ object mainWidget: TmainWidget
   Height = 471
   Top = 200
   Width = 1060
-  Caption = 'mainWidget'
+  Caption = 'MercaTrucho'
   ChildSizing.ShrinkHorizontal = crsHomogenousChildResize
   ChildSizing.ShrinkVertical = crsHomogenousChildResize
   ChildSizing.Layout = cclLeftToRightThenTopToBottom
