@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ExtCtrls,
-  StdCtrls, Buttons, metru.core;
+  StdCtrls, Buttons, metru.core, publicationSellWidget, publicationForm;
 
 type
 
@@ -19,12 +19,15 @@ type
     openButton: TButton;
     priceLabel: TLabel;
     titleLabel: TLabel;
-    constructor Create(var _owner : TComponent; publication: tPublish; isOwn : boolean); overload;
+    constructor Create(var _owner : TComponent; pubIdx: tPublishIdx; isOwn : boolean); overload;
+    procedure editButtonClick(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     function GetPublication() : tPublish;
+    procedure openButtonClick(Sender: TObject);
   private
-    publication : tPublish;
-    isOwn       : boolean;
+    publication    : tPublish;
+    publicationIdx : tPublishIdx;
+    isOwn          : boolean;
   public
 
   end;
@@ -39,12 +42,23 @@ implementation
 { tPublicationDisplayWidget }
 
 constructor tPublicationDisplayWidget.Create(var _owner: TComponent;
-  publication: tPublish; isOwn : boolean); overload;
+  pubIdx: tPublishIdx; isOwn : boolean); overload;
 begin
   Create(_owner);
-  self.publication := publication;
+  self.publicationIdx := pubIdx;
+  metru.core.dereferencePublication(metruApp, pubIdx, self.publication);
   self.isOwn       := isOwn;
   FormActivate(nil);
+end;
+
+procedure tPublicationDisplayWidget.editButtonClick(Sender: TObject);
+var
+  form : tPublicationForm;
+  user : tUser;
+begin
+  user := metru.core.loggedUser(metruApp);
+  form := tPublicationForm.Create(self, user, self.publicationIdx);
+  form.Show;
 end;
 
 procedure tPublicationDisplayWidget.FormActivate(Sender: TObject);
@@ -59,6 +73,16 @@ end;
 function tPublicationDisplayWidget.GetPublication(): tPublish;
 begin
   GetPublication := self.publication;
+end;
+
+procedure tPublicationDisplayWidget.openButtonClick(Sender: TObject);
+var
+  form : tPublicationSellWidget;
+  user : tUser;
+begin
+  user := metru.core.loggedUser(metruApp);
+  form := tPublicationSellWidget.Create(self, user, self.publicationIdx);
+  form.Show;
 end;
 
 end.

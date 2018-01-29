@@ -19,10 +19,11 @@ implementation
 
 procedure tUserReportPublicationForm.doReport();
 var
-  publicationList : tPublishList;
+  publicationList : tPublishIdxList;
   publication     : tPublish;
   user            : tUser;
   purchase        : tSell;
+  purchaseIdx     : tSellIdx;
   i, count, idx   : longint;
   found           : boolean;
 begin
@@ -47,14 +48,15 @@ begin
 
   for i := low(publicationList) to high(publicationList) do
     begin
-      publication            :=  publicationList[i];
+      metru.core.dereferencePublication(metruApp, publicationList[i], publication);
       idx                    := i + 1;
       dataGrid.Cells[0, idx] := IntToStr(i + 1);
       dataGrid.Cells[1, idx] := IntToStr(publication.id);
       dataGrid.Cells[2, idx] := DateTimeToStr(publication.ctimestamp);
       dataGrid.Cells[3, idx] := IntToStr(Ord(publication.status));
-      if metru.core.retrievePurchaseIfAvailable(metruApp, publication, purchase) then
+      if metru.core.retrievePurchaseIfAvailable(metruApp, publicationList[i], purchaseIdx) then
         begin
+          metru.core.dereferenceSell(metruApp, purchaseIdx, purchase);
           metru.core.retrieveUser(metruApp, purchase.idBuyer, user);
           dataGrid.Cells[4, idx] := IntToStr(user.id);
           dataGrid.Cells[5, idx] := user.fullname;

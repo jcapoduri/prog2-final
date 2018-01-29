@@ -22,19 +22,23 @@ const
 
 type
   { expose data records only }
-  tCategoryList = lib.tree.lcrs.tCategoryList;
-  tCategory     = lib.tree.lcrs.tCategory;
-  tPublish      = lib.tree.avl.tPublish;
-  tSell         = lib.hash.close.tSell;
-  tSellList     = array of tSell;
-  tCalification = lib.hash.close.tCalification;
-  tPublishList  = array of tPublish;
-  tItemType     = lib.tree.avl.tItemType;
-  tStatus       = lib.tree.avl.tStatus;
-  tUser         = lib.hash.open.tUser;
-  tMessage      = lib.tree.trinary.tMessage;
-  tMessageIdx   = lib.tree.trinary.idxRange;
-  tMessageList  = array of tMessageIdx;
+  tCategory       = lib.tree.lcrs.tCategory;
+  tCategoryList   = lib.tree.lcrs.tCategoryList;
+  tPublishIdx     = lib.tree.avl.idxRange;
+  tPublish        = lib.tree.avl.tPublish;
+  tPublishList    = array of tPublish;
+  tPublishIdxList = array of tPublishIdx;
+  tSell           = lib.hash.close.tSell;
+  tSellIdx        = lib.hash.close.idxRange;
+  tSellList       = array of tSell;
+  tSellIdxList    = array of tSellIdx;
+  tCalification   = lib.hash.close.tCalification;
+  tItemType       = lib.tree.avl.tItemType;
+  tStatus         = lib.tree.avl.tStatus;
+  tUser           = lib.hash.open.tUser;
+  tMessage        = lib.tree.trinary.tMessage;
+  tMessageIdx     = lib.tree.trinary.idxRange;
+  tMessageList    = array of tMessageIdx;
 
   tMetruIO =   record
                  users        : tOpenHash;
@@ -79,21 +83,24 @@ type
   procedure createPublication             (var this : tMetruCore; publication : tPublish);
   procedure editPublication               (var this : tMetruCore; publication : tPublish);
   procedure deletePublication             (var this : tMetruCore; publication : tPublish);
-  function  retrieveAllPublication        (var this : tMetruCore) : tPublishList;
-  function  retrievePublicationByCategory (var this : tMetruCore; var category : tCategory) : tPublishList;
-  function  retrievePublicationByUser     (var this : tMetruCore; var user : tUser) : tPublishList;
+  function  retrieveAllPublication        (var this : tMetruCore) : tPublishIdxList;
+  function  retrievePublicationByCategory (var this : tMetruCore; var category : tCategory) : tPublishIdxList;
+  function  retrievePublicationByUser     (var this : tMetruCore; var user : tUser) : tPublishIdxList;
+  function  dereferencePublication        (var this : tMetruCore; idx : tPublishIdx; var publication : tPublish) : boolean;
 
   { message related functions }
-  function postMessage     (var this : tMetruCore; publication : tPublish; user : tUser; msg : string) : boolean;
-  function postResponse    (var this : tMetruCore; var message : tMessageIdx; response : string) : boolean;
-  function retrieveMessage (var this : tMetruCore; publication : tPublish) : tMessageList;
+  function postMessage        (var this : tMetruCore; pubIdx : tPublishIdx; user : tUser; msg : string) : boolean;
+  function postResponse       (var this : tMetruCore; var message : tMessageIdx; response : string) : boolean;
+  function retrieveMessages   (var this : tMetruCore; pubIdx : tPublishIdx) : tMessageList;
+  function dereferenceMessage (var this : tMetruCore; idx : tMessageIdx; var message : tMessage) : boolean;
 
   { sells }
-  procedure doPurchase                  (var this : tMetruCore; publication : tPublish; user : tUser);
-  procedure doPayment                   (var this : tMetruCore; purchase : tSell);
-  procedure doReviewPurchase            (var this : tMetruCore; purchase : tSell; review : tCalification);
-  function  retrievePurchaseIfAvailable (var this : tMetruCore; publication : tPublish; var purchase : tSell) : boolean;
-  function  retrieveAllMyPurchase       (var this : tMetruCore; user : tUser) : tSellList;
+  procedure doPurchase                  (var this : tMetruCore; pubIdx : tPublishIdx; user : tUser);
+  procedure doPayment                   (var this : tMetruCore; sellIdx : tSellIdx);
+  procedure doReviewPurchase            (var this : tMetruCore; sellIdx : tSellIdx; review : tCalification);
+  function  retrievePurchaseIfAvailable (var this : tMetruCore; pubIdx : tPublishIdx; var purchase : tSellIdx) : boolean;
+  function  retrieveAllMyPurchase       (var this : tMetruCore; user : tUser) : tSellIdxList;
+  function  dereferenceSell             (var this : tMetruCore; idx : tSellIdx; var sell : tSell) : boolean;
 
 var
   metruApp : tMetruCore;
@@ -301,10 +308,10 @@ implementation
 
   function  retrieveUser (var this : tMetruCore; id : integer; var user : tUser) : boolean;
   var
-    idxUser : lib.hash.close.tHashValue;
+    idxUser : lib.hash.open.tHashValue;
     found   : boolean;
   begin
-    found := lib.hash.close.searchById(this.io.users, id, idxUser);
+    found := lib.hash.open.searchById(this.io.users, id, idxUser);
     if found then
       user := fetchByIdx(this.io.users, idxUser);
     retrieveUser := found;
@@ -460,10 +467,10 @@ implementation
   begin
   end;
 
-  function retrievePublicationByCategory (var this : tMetruCore; var category : tCategory) : tPublishList;
+  function retrievePublicationByCategory (var this : tMetruCore; var category : tCategory) : tPublishIdxList;
   var
-    list : tPublishList;
-    item : tPublish;
+    list : tPublishIdxList;
+    item : tPublishIdx;
     idx  : idxRange;
     i    : integer;
   begin
@@ -479,10 +486,10 @@ implementation
     retrievePublicationByCategory := list;
   end;
 
-  function retrievePublicationByUser (var this : tMetruCore; var user : tUser) : tPublishList;
+  function retrievePublicationByUser (var this : tMetruCore; var user : tUser) : tPublishIdxList;
   var
-    list : tPublishList;
-    item : tPublish;
+    list : tPublishIdxList;
+    item : tPublishIdx;
     idx  : idxRange;
     i    : integer;
   begin
@@ -498,13 +505,21 @@ implementation
     retrievePublicationByUser := list;
   end;
 
-  function retrieveAllPublication        (var this : tMetruCore) : tPublishList;
+  function  dereferencePublication        (var this : tMetruCore; idx : tPublishIdx; var publication : tPublish) : boolean;
   var
-    list, auxList : tPublishList;
-    item     : tPublish;
-    i        : integer;
-    category : tCategory;
-    catList  : tCategoryList;
+    found : boolean;
+  begin
+    found       := true;
+    publication := lib.tree.avl.fetch(this.io.publications, idx);
+    dereferencePublication := found;
+  end;
+
+  function retrieveAllPublication        (var this : tMetruCore) : tPublishIdxList;
+  var
+    list, auxList : tPublishIdxList;
+    i             : integer;
+    category      : tCategory;
+    catList       : tCategoryList;
   begin
     SetLength(list, 0);
     catList := retrieveAllLeafCateogies(this);
@@ -517,7 +532,7 @@ implementation
     retrieveAllPublication := list;
   end;
   
-  function postMessage  (var this : tMetruCore; publication : tPublish; user : tUser; msg : string) : boolean;
+  function postMessage  (var this : tMetruCore; pubIdx : tPublishIdx; user : tUser; msg : string) : boolean;
   var
     message : tMessage;
   begin
@@ -527,6 +542,19 @@ implementation
   function postResponse (var this : tMetruCore; var message : tMessageIdx; response : string) : boolean;
   begin
   end;  
+
+  function retrieveMessages   (var this : tMetruCore; pubIdx : tPublishIdx) : tMessageList;
+  begin
+  end;
+
+  function dereferenceMessage (var this : tMetruCore; idx : tMessageIdx; var message : tMessage) : boolean;
+  var
+    found : boolean;
+  begin
+    found   := true;
+    message := lib.tree.trinary.fetchMessage(this.io.messages, idx);
+    dereferenceMessage := found;
+  end;
 
   function _retrieveAllMessagesByKeys (var this : tMetruCore; pk, sk : lib.tree.trinary.tKey) : tMessageList;
   var
@@ -549,22 +577,27 @@ implementation
       until not retrieveNextMsgIdx(this.io.messages, pk, sk, msgIdx);
   end;
 
-  function retrieveMessage (var this : tMetruCore; publication : tPublish) : tMessageList;
+  function retrieveMessage (var this : tMetruCore; pubIdx : tPublishIdx) : tMessageList;
   var 
-    linkedKeys : tLinkedKeys;
-    list       : tMessageList;
+    linkedKeys  : tLinkedKeys;
+    list        : tMessageList;
+    publication : tPublish;
   begin
+    dereferencePublication(this, pubIdx, publication);
     linkedKeys := lib.tree.trinary.retrieveAllLinkedKeys(this.io.messages, publication.id);
 
   end;
 
-  procedure doPurchase            (var this : tMetruCore; publication : tPublish; user : tUser);
+  procedure doPurchase            (var this : tMetruCore; pubIdx : tPublishIdx; user : tUser);
   var
-    purchase : tSell;
-    category : tCategory;
-    pos      : lib.tree.lcrs.idxRange;
+    purchase    : tSell;
+    category    : tCategory;
+    pos         : lib.tree.lcrs.idxRange;
+    publication : tPublish;
   begin
     { TODO: mark publication as sold }
+    metru.core.dereferencePublication(this, pubIdx, publication);
+
     lib.tree.lcrs.search(this.io.categories, publication.idCategory, pos);
     category                  := lib.tree.lcrs.fetch(this.io.categories, pos);
     purchase.idBuyer          := user.id;
@@ -587,48 +620,47 @@ implementation
     lib.tree.avl.update(this.io.publications, publication);
   end;
 
-  procedure doPayment             (var this : tMetruCore; purchase : tSell);
+  procedure doPayment             (var this : tMetruCore; sellIdx : tSellIdx);
   var
     auxPurchase : tSell;
     idxPurchase : lib.hash.close.idxRange;
   begin
-    if lib.hash.close.search(this.io.sells, purchase.idItem, idxPurchase) then
+    if dereferenceSell(this, sellIdx, auxPurchase) then
       begin
-        auxPurchase := lib.hash.close.fetch(this.io.sells, idxPurchase);
         auxPurchase.alreadyCollected := true;
         lib.hash.close.update(this.io.sells, idxPurchase, auxPurchase);
       end;
   end;
 
-  procedure doReviewPurchase      (var this : tMetruCore; purchase : tSell; review : tCalification);
+  procedure doReviewPurchase      (var this : tMetruCore; sellIdx : tSellIdx; review : tCalification);
   var
     auxPurchase : tSell;
     idxPurchase : lib.hash.close.idxRange;
+
   begin
-    if (review > None) and (lib.hash.close.search(this.io.sells, purchase.idItem, idxPurchase)) then
+    if (review > None) and (dereferenceSell(this, sellIdx, auxPurchase)) then
       begin
-        auxPurchase := lib.hash.close.fetch(this.io.sells, idxPurchase);
         auxPurchase.calification := review;
         lib.hash.close.update(this.io.sells, idxPurchase, auxPurchase);
       end;
   end;
 
-  function  retrievePurchaseIfAvailable (var this : tMetruCore; publication : tPublish; var purchase : tSell) : boolean;
+  function  retrievePurchaseIfAvailable (var this : tMetruCore; pubIdx : tPublishIdx; var purchase : tSellIdx) : boolean;
   var
     found : boolean;
     idx   : lib.hash.close.idxRange;
+    publication : tPublish;
   begin
-    found    := lib.hash.close.search(this.io.sells, publication.id, idx);
-    if found then
-      purchase := lib.hash.close.fetch(this.io.sells, idx);
+    dereferencePublication(this, pubIdx, publication);
+    found    := lib.hash.close.search(this.io.sells, publication.id, purchase);
     retrievePurchaseIfAvailable := found;  
   end;
 
-  function  retrieveAllMyPurchase (var this : tMetruCore; user : tUser) : tSellList;
+  function  retrieveAllMyPurchase (var this : tMetruCore; user : tUser) : tSellIdxList;
   var 
-    list        : tSellList;
+    list        : tSellIdxList;
     purchase    : tSell;
-    pubList     : tPublishList;
+    pubList     : tPublishIdxList;
     i, j        : integer;
     publication : tPublish;
     idxPurchase : lib.hash.close.idxRange;
@@ -638,7 +670,7 @@ implementation
     pubList := retrieveAllPublication(this);
     for i := 0 to high(pubList) do
       begin
-        publication := pubList[i];
+        dereferencePublication(this, pubList[i], publication);
         if lib.hash.close.search(this.io.sells, publication.id, idxPurchase) then
           begin
             purchase := lib.hash.close.fetch(this.io.sells, idxPurchase);
@@ -646,7 +678,7 @@ implementation
               begin
                 j := j + 1;
                 SetLength(list, j);
-                list[j - 1] := purchase;
+                list[j - 1] := idxPurchase;
               end;
           end;
       end;
@@ -654,4 +686,12 @@ implementation
     retrieveAllMyPurchase := list;
   end;
 
+  function  dereferenceSell             (var this : tMetruCore; idx : tSellIdx; var sell : tSell) : boolean;
+  var
+    found : boolean;
+  begin
+    found := true;
+    sell  := lib.hash.close.fetch(this.io.sells, idx);
+    dereferenceSell := found;
+  end;
 end.

@@ -62,8 +62,8 @@ type
   procedure update             (var this : tAVLtree; publication : tPublish);
   procedure remove             (var this : tAVLtree; publication : tPublish);
   function  fetch              (var this : tAVLtree; pos: idxRange) : tPublish;
-  function  fetchByUser        (var this : tAVLtree; pos: idxRange) : tPublish;
-  function  fetchByCategory    (var this : tAVLtree; pos: idxRange) : tPublish;
+  function  fetchByUser        (var this : tAVLtree; pos: idxRange) : idxRange;
+  function  fetchByCategory    (var this : tAVLtree; pos: idxRange) : idxRange;
   function  rootOfUsers        (var this : tAVLtree) : idxRange;
   function  rootOfCategories   (var this : tAVLtree) : idxRange;
   function  leftUserChild      (var this : tAVLtree; pos: idxRange) : idxRange;
@@ -120,13 +120,13 @@ implementation
     _getCategoryByNode := node;
   end;
 
-  function  _getCategoryByPos (var this : tAVLtree; pos : idxRange) : tPublish;
+  function  _getPublishByPos (var this : tAVLtree; pos : idxRange) : tPublish;
   var
     node : tPublish;
   begin
     seek(this.data, pos);
     read(this.data, node);
-    _getCategoryByPos := node;
+    _getPublishByPos := node;
   end;
 
   { setters }
@@ -893,33 +893,31 @@ implementation
     node : tPublish;
   begin
     _openTree(this);
-    node := _getCategoryByPos(this, pos);
+    node := _getPublishByPos(this, pos);
     _closeTree(this);
     fetch := node;
   end;
 
-  function  fetchByUser        (var this : tAVLtree; pos: idxRange) : tPublish;
+  function  fetchByUser        (var this : tAVLtree; pos: idxRange) : idxRange;
   var
     publish : tPublish;
     node    : tNode;
   begin
     _openTree(this);
     node    := _getByUser(this, pos);
-    publish := _getCategoryByPos(this, node.index);
     _closeTree(this);
-    fetchByUser := publish;
+    fetchByUser := node.index;
   end;
 
-  function  fetchByCategory    (var this : tAVLtree; pos: idxRange) : tPublish;
+  function  fetchByCategory    (var this : tAVLtree; pos: idxRange) : idxRange;
   var
     publish : tPublish;
     node    : tNode;
   begin
     _openTree(this);
     node    := _getByCategory(this, pos);
-    publish := _getCategoryByPos(this, node.index);
     _closeTree(this);
-    fetchByCategory := publish;
+    fetchByCategory := node.index;
   end;
 
   function  rootOfUsers      (var this : tAVLtree) : idxRange;
