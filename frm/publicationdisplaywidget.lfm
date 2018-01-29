@@ -47,6 +47,7 @@ object tPublicationDisplayWidget: tPublicationDisplayWidget
     Width = 75
     Anchors = [akRight, akBottom]
     Caption = 'Abrir'
+    OnClick = openButtonClick
     TabOrder = 0
   end
   object editButton: TBitBtn
@@ -56,6 +57,7 @@ object tPublicationDisplayWidget: tPublicationDisplayWidget
     Width = 75
     Anchors = [akRight, akBottom]
     Caption = 'Editar'
+    OnClick = editButtonClick
     TabOrder = 1
   end
 end
