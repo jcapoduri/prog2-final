@@ -99,7 +99,7 @@ procedure TmainWidget.mySellsBaseMenuItemClick(Sender: TObject);
 var
   list         : tComponentList;
   item         : tSellListForm;
-  purchaseList : tSellList;
+  purchaseList : tSellIdxList;
   user         : tUser;
   i            : integer;
   form         : tWidgetListForm;
@@ -118,7 +118,7 @@ end;
 
 procedure TmainWidget.myPublicationMenuItemClick(Sender: TObject);
 var
-  result        : tPublishList;
+  result        : tPublishIdxList;
   componentList : tComponentList;
   _parent       : tComponent;
   item          : tPublicationDisplayWidget;

@@ -34,12 +34,14 @@ type
     titleEdit: TLabeledEdit;
     procedure CloseForm(Sender: TObject);
     constructor Create(parentComponent : TComponent; var User : tUser); overload;
+    constructor Create(parentComponent : TComponent; var User : tUser; pubIdx : tPublishIdx); overload;
     procedure addPictureButtonClick(Sender: TObject);
     procedure saveButtonClick(Sender: TObject);
     procedure FormActivate(Sender: TObject);
   private
-    publication : tPublish;
-    user        : tUser;
+    publication    : tPublish;
+    publicationIdx : tPublishIdx;
+    user           : tUser;
     procedure assertValues();
   public
 
@@ -55,6 +57,14 @@ constructor tPublicationForm.Create(parentComponent : TComponent; var User : tUs
 begin
   Create(parentComponent);
   self.user := user;
+end;
+
+constructor tPublicationForm.Create(parentComponent: TComponent;
+  var User: tUser; pubIdx: tPublishIdx);
+begin
+  self.publicationIdx := pubIdx;
+  metru.core.dereferencePublication(metruApp, pubIdx, self.publication);
+  Create(parentComponent, user);
 end;
 
 procedure tPublicationForm.CloseForm(Sender: TObject);
