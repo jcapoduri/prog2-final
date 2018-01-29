@@ -40,14 +40,16 @@ type
                      control : tControl;
                    end;
 
-  procedure loadHash         (var this : tOpenHash; path, filename : string);
-  procedure newEmptyHash     (var this : tOpenHash; path, filename : string);
-  {function  isEmpty          (var this : tOpenHash) : boolean;}
-  function  search           (var this : tOpenHash; email : tKey; var pos: tHashValue) : boolean;
-  procedure insert           (var this : tOpenHash; node : tNode);
-  procedure update           (var this : tOpenHash; node : tNode);
-  procedure remove           (var this : tOpenHash; node : tNode);
-  function  fetch            (var this : tOpenHash; email: tKey) : tNode;
+  procedure loadHash     (var this : tOpenHash; path, filename : string);
+  procedure newEmptyHash (var this : tOpenHash; path, filename : string);
+  {function  isEmpty      (var this : tOpenHash) : boolean;}
+  function  search       (var this : tOpenHash; email : tKey; var pos: tHashValue) : boolean;
+  function  searchById   (var this : tOpenHash; id :longint; var pos: tHashValue) : boolean;
+  procedure insert       (var this : tOpenHash; node : tNode);
+  procedure update       (var this : tOpenHash; node : tNode);
+  procedure remove       (var this : tOpenHash; node : tNode);
+  function  fetch        (var this : tOpenHash; email: tKey) : tNode;
+  function  fetchByIdx   (var this : tOpenHash; pos: tHashValue) : tNode;
 
 implementation
   { Helpers }
@@ -223,6 +225,32 @@ implementation
     search := found;
   end;
 
+  function  searchById   (var this : tOpenHash; id :longint; var pos: tHashValue) : boolean;
+  var
+    rc      : tControlRecord;
+    found   : boolean;
+    auxPos  : integer; 
+    node    : tNode;   
+  begin
+    _openHash(this);
+    rc      := _getControl(this);
+    found   := false;
+    auxPos  := 0;
+    while (auxPos <= MAX) and (not found) do
+      begin
+        node := _get(this, auxPos);
+        if (node.id = id) then
+          found := true
+        else
+          auxPos := auxPos + 1;
+      end;
+
+    if found then 
+      pos := auxPos;
+    _closeHash(this);
+    searchById := found;
+  end;
+
   procedure insert           (var this : tOpenHash; node : tNode);
   var
     pos : tHashValue;
@@ -277,6 +305,17 @@ implementation
     node := _get(this, pos);
     _closeHash(this);
     fetch := node;
+  end;
+
+  function  fetchByIdx   (var this : tOpenHash; pos: tHashValue) : tNode;
+  var
+    node : tNode;
+    pos  : tHashValue; 
+  begin
+    _openHash(this);
+    node := _get(this, pos);
+    _closeHash(this);
+    fetchByIdx := node;
   end;
   
 end.

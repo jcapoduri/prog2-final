@@ -18,7 +18,7 @@ begin
   metru.core.setup(metruApp);
   RequireDerivedFormResource:=True;
   Application.Initialize;
-  Application.CreateForm(TForm1, Form1);
+  Application.CreateForm(TmainWidget, mainWidget);
   Application.Run;
 end.
 

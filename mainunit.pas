@@ -13,13 +13,14 @@ uses
   categorybase in 'frm\cateogorybase.pas',
   selllistform,
   widgetlistform,
+  userReportPublicationForm,
   metru.core   in 'libs\metru.core.pas';
 
 type
 
-  { TForm1 }
+  { TmainWidget }
 
-  TForm1 = class(TForm)
+  TmainWidget = class(TForm)
     MainMenu1: TMainMenu;
     MenuItem1: TMenuItem;
     reportByMaxPerCateogryMenuItem: TMenuItem;
@@ -48,6 +49,7 @@ type
     procedure publicationAllMenuItemClick(Sender: TObject);
     procedure quitMenuItemClick(Sender: TObject);
     procedure EmbedForm(ArgParent : TWinControl; ArgForm : TCustomForm);
+    procedure reportAllPublicationsMenuItemClick(Sender: TObject);
   private
     { private declarations }
   public
@@ -55,22 +57,30 @@ type
   end;
 
 var
-  Form1: TForm1;
+  mainWidget: TmainWidget;
 
 implementation
 
 {$R *.lfm}
 
-{ TForm1 }
+{ TmainWidget }
 
-procedure TForm1.EmbedForm(ArgParent: TWinControl; ArgForm: TCustomForm);
+procedure TmainWidget.EmbedForm(ArgParent: TWinControl; ArgForm: TCustomForm);
 begin
   while ArgForm.MDIChildCount > 0 do
     ArgForm.MDIChildren[0].Parent := ArgParent;
   ArgForm.Parent:= ArgParent;
 end;
 
-procedure TForm1.FormCreate(Sender: TObject);
+procedure TmainWidget.reportAllPublicationsMenuItemClick(Sender: TObject);
+var
+  form : tUserReportPublicationForm;
+begin
+  form := tUserReportPublicationForm.Create(nil);
+  form.Show;
+end;
+
+procedure TmainWidget.FormCreate(Sender: TObject);
 begin
   Application.CreateForm(TLoginForm, login);
   { WARNING : Please delete this 2 lines before prod! }
@@ -79,13 +89,13 @@ begin
   login.ShowModal;
 end;
 
-procedure TForm1.categoryCRUDMenuItemClick(Sender: TObject);
+procedure TmainWidget.categoryCRUDMenuItemClick(Sender: TObject);
 begin
    Application.CreateForm(TCategoryBase, self.catBase);
    self.catBase.Show;
 end;
 
-procedure TForm1.mySellsBaseMenuItemClick(Sender: TObject);
+procedure TmainWidget.mySellsBaseMenuItemClick(Sender: TObject);
 var
   list         : tComponentList;
   item         : tSellListForm;
@@ -106,7 +116,7 @@ begin
   form.Show;
 end;
 
-procedure TForm1.myPublicationMenuItemClick(Sender: TObject);
+procedure TmainWidget.myPublicationMenuItemClick(Sender: TObject);
 var
   result        : tPublishList;
   componentList : tComponentList;
@@ -130,7 +140,7 @@ begin
   form.Show;
 end;
 
-procedure TForm1.newPublicationMenuItemClick(Sender: TObject);
+procedure TmainWidget.newPublicationMenuItemClick(Sender: TObject);
 var
   form : tPublicationForm;
   user : tUser;
@@ -140,7 +150,7 @@ begin
   form.showModal;
 end;
 
-procedure TForm1.publicationAllMenuItemClick(Sender: TObject);
+procedure TmainWidget.publicationAllMenuItemClick(Sender: TObject);
 var
   form : tPublicationListForm;
 begin
@@ -148,7 +158,7 @@ begin
   form.show;
 end;
 
-procedure TForm1.quitMenuItemClick(Sender: TObject);
+procedure TmainWidget.quitMenuItemClick(Sender: TObject);
 begin
   metru.core.logoff(metruApp);
   login.ShowModal;

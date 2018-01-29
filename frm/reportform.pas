@@ -20,10 +20,11 @@ type
     procedure closeButtonClick(Sender: TObject);
     procedure doReportButtonClick(Sender: TObject);
     procedure exportToCSVButtonClick(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
   private
 
   public
-
+    procedure doReport; Virtual; Abstract;
   end;
 
 var
@@ -42,7 +43,7 @@ end;
 
 procedure TReportFormWidget.doReportButtonClick(Sender: TObject);
 begin
-
+  doReport;
 end;
 
 procedure TReportFormWidget.exportToCSVButtonClick(Sender: TObject);
@@ -76,6 +77,11 @@ begin
     saveDialog.Free;
     Screen.Cursor := crDefault;
   end;
+end;
+
+procedure TReportFormWidget.FormActivate(Sender: TObject);
+begin
+  doReportButtonClick(Sender);
 end;
 
 end.

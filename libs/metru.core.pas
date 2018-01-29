@@ -57,22 +57,23 @@ type
   procedure kickoff (var this : tMetruCore);
 
   { User functions }
-  function  login      (var this : tMetruCore; email, pass : string; var blocked : boolean) : boolean;
-  function  isLogedIn  (var this : tMetruCore) : boolean;
-  function  loggedUser (var this : tMetruCore) : tUser;
-  procedure logoff     (var this : tMetruCore);
-  function  createUser (var this : tMetruCore; user : tUser) : boolean;
-  function  updateUser (var this : tMetruCore; user : tUser) : boolean;
-  function  banUser    (var this : tMetruCore; user : tUser) : boolean;
+  function  login        (var this : tMetruCore; email, pass : string; var blocked : boolean) : boolean;
+  function  isLogedIn    (var this : tMetruCore) : boolean;
+  function  loggedUser   (var this : tMetruCore) : tUser;
+  procedure logoff       (var this : tMetruCore);
+  function  createUser   (var this : tMetruCore; user : tUser) : boolean;
+  function  updateUser   (var this : tMetruCore; user : tUser) : boolean;
+  function  banUser      (var this : tMetruCore; user : tUser) : boolean;
+  function  retrieveUser (var this : tMetruCore; id : integer; var user : tUser) : boolean;
 
   { category functions }
-  procedure createCateogry         (var this : tMetruCore; category : tCategory);
-  procedure editCateogry           (var this : tMetruCore; category : tCategory);
-  procedure deleteCateogry         (var this : tMetruCore; category : tCategory);
-  function  retrieveAllLeafCateogies   (var this : tMetruCore) : tCategoryList;
-  function  retrieveBaseCateogies  (var this : tMetruCore) : tCategoryList;
-  function  retrieveChildCateogies (var this : tMetruCore; category : tCategory) : tCategoryList;
-  function  retrieveAllCateogies   (var this : tMetruCore) : tCategoryList;
+  procedure createCateogry           (var this : tMetruCore; category : tCategory);
+  procedure editCateogry             (var this : tMetruCore; category : tCategory);
+  procedure deleteCateogry           (var this : tMetruCore; category : tCategory);
+  function  retrieveAllLeafCateogies (var this : tMetruCore) : tCategoryList;
+  function  retrieveBaseCateogies    (var this : tMetruCore) : tCategoryList;
+  function  retrieveChildCateogies   (var this : tMetruCore; category : tCategory) : tCategoryList;
+  function  retrieveAllCateogies     (var this : tMetruCore) : tCategoryList;
 
   { publication functions }
   procedure createPublication             (var this : tMetruCore; publication : tPublish);
@@ -88,10 +89,11 @@ type
   function retrieveMessage (var this : tMetruCore; publication : tPublish) : tMessageList;
 
   { sells }
-  procedure doPurchase            (var this : tMetruCore; publication : tPublish; user : tUser);
-  procedure doPayment             (var this : tMetruCore; purchase : tSell);
-  procedure doReviewPurchase      (var this : tMetruCore; purchase : tSell; review : tCalification);
-  function  retrieveAllMyPurchase (var this : tMetruCore; user : tUser) : tSellList;
+  procedure doPurchase                  (var this : tMetruCore; publication : tPublish; user : tUser);
+  procedure doPayment                   (var this : tMetruCore; purchase : tSell);
+  procedure doReviewPurchase            (var this : tMetruCore; purchase : tSell; review : tCalification);
+  function  retrievePurchaseIfAvailable (var this : tMetruCore; publication : tPublish; var purchase : tSell) : boolean;
+  function  retrieveAllMyPurchase       (var this : tMetruCore; user : tUser) : tSellList;
 
 var
   metruApp : tMetruCore;
@@ -295,6 +297,17 @@ implementation
       {TODO : search if has active publication}
       lib.hash.open.remove(this.io.users, user);
     banUser := ok;
+  end;
+
+  function  retrieveUser (var this : tMetruCore; id : integer; var user : tUser) : boolean;
+  var
+    idxUser : lib.hash.close.tHashValue;
+    found   : boolean;
+  begin
+    found := lib.hash.close.searchById(this.io.users, id, idxUser);
+    if found then
+      user := fetchByIdx(this.io.users, idxUser);
+    retrieveUser := found;
   end;
 
   procedure  createCateogry         (var this : tMetruCore; category : tCategory);
@@ -598,6 +611,17 @@ implementation
         auxPurchase.calification := review;
         lib.hash.close.update(this.io.sells, idxPurchase, auxPurchase);
       end;
+  end;
+
+  function  retrievePurchaseIfAvailable (var this : tMetruCore; publication : tPublish; var purchase : tSell) : boolean;
+  var
+    found : boolean;
+    idx   : lib.hash.close.idxRange;
+  begin
+    found    := lib.hash.close.search(this.io.sells, publication.id, idx);
+    if found then
+      purchase := lib.hash.close.fetch(this.io.sells, idx);
+    retrievePurchaseIfAvailable := found;  
   end;
 
   function  retrieveAllMyPurchase (var this : tMetruCore; user : tUser) : tSellList;

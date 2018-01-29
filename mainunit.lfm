@@ -1,9 +1,9 @@
-object Form1: TForm1
+object mainWidget: TmainWidget
   Left = 313
   Height = 471
   Top = 200
   Width = 1060
-  Caption = 'Form1'
+  Caption = 'mainWidget'
   ChildSizing.ShrinkHorizontal = crsHomogenousChildResize
   ChildSizing.ShrinkVertical = crsHomogenousChildResize
   ChildSizing.Layout = cclLeftToRightThenTopToBottom
@@ -67,6 +67,7 @@ object Form1: TForm1
       Caption = 'Reportes'
       object reportAllPublicationsMenuItem: TMenuItem
         Caption = 'Listado de articulos publicados'
+        OnClick = reportAllPublicationsMenuItemClick
       end
       object reportByCategoryMenuItem: TMenuItem
         Caption = 'Listado de totales de categoría'

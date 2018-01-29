@@ -24,7 +24,7 @@ type
                      publishDate      : TDateTime;
                      sellDate         : TDateTime;
                      itemType         : tItemType;
-                     calification     : tCalification;
+                     tCalification     : tCalification;
                      tax              : double;
                      alreadyCollected : boolean;
                      previous         : idxRange;
