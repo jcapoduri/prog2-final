@@ -1,0 +1,135 @@
+object mocker: Tmocker
+  Left = 483
+  Height = 262
+  Top = 235
+  Width = 436
+  Caption = 'MercaTrucho::Mocker'
+  ClientHeight = 262
+  ClientWidth = 436
+  LCLVersion = '1.8.0.6'
+  object Label1: TLabel
+    Left = 16
+    Height = 15
+    Top = 8
+    Width = 59
+    Caption = 'Categorias:'
+    ParentColor = False
+  end
+  object Label2: TLabel
+    Left = 16
+    Height = 15
+    Top = 48
+    Width = 48
+    Caption = 'Usuarios:'
+    ParentColor = False
+  end
+  object Label3: TLabel
+    Left = 16
+    Height = 15
+    Top = 88
+    Width = 144
+    Caption = 'Publicaciones por usuarios:'
+    ParentColor = False
+  end
+  object categoryCombo: TComboBox
+    Left = 176
+    Height = 23
+    Top = 8
+    Width = 238
+    Anchors = [akTop, akLeft, akRight]
+    ItemHeight = 15
+    Items.Strings = (
+      'sin anidamiento | 5 cateogrias'
+      '1 nivel de profundidad | 3 bases con 5 cateogrias'
+      '2 nivel de profundidad | 3 x 3 x 5'
+    )
+    Style = csDropDownList
+    TabOrder = 0
+  end
+  object doButton: TButton
+    Left = 339
+    Height = 25
+    Top = 226
+    Width = 75
+    Anchors = [akRight, akBottom]
+    Caption = 'Mockear'
+    OnClick = doButtonClick
+    TabOrder = 1
+  end
+  object publicationComboBox: TComboBox
+    Left = 176
+    Height = 23
+    Top = 90
+    Width = 238
+    Anchors = [akTop, akLeft, akRight]
+    ItemHeight = 15
+    Items.Strings = (
+      '2 publicaciones por categoria'
+      '5 publicaciones por categoria'
+      '10 publicaciones por categoria'
+    )
+    Style = csDropDownList
+    TabOrder = 2
+  end
+  object userComboBox: TComboBox
+    Left = 176
+    Height = 23
+    Top = 48
+    Width = 238
+    Anchors = [akTop, akLeft, akRight]
+    ItemHeight = 15
+    Items.Strings = (
+      '3 usuarios'
+      '5 usuarios'
+      '10 usuarios'
+    )
+    Style = csDropDownList
+    TabOrder = 3
+  end
+  object Label4: TLabel
+    Left = 16
+    Height = 15
+    Top = 136
+    Width = 138
+    Caption = 'Mensajes por publicacion:'
+    ParentColor = False
+  end
+  object messageComboBox: TComboBox
+    Left = 176
+    Height = 23
+    Top = 136
+    Width = 238
+    Anchors = [akTop, akLeft, akRight]
+    ItemHeight = 15
+    Items.Strings = (
+      '2 mensajes'
+      '5 mensaes'
+      '10 mensajes'
+    )
+    Style = csDropDownList
+    TabOrder = 4
+  end
+  object Label5: TLabel
+    Left = 16
+    Height = 15
+    Top = 181
+    Width = 86
+    Caption = 'Ventas cruzadas:'
+    ParentColor = False
+  end
+  object sellsComboBox: TComboBox
+    Left = 176
+    Height = 23
+    Top = 181
+    Width = 234
+    Anchors = [akTop, akLeft, akRight]
+    ItemHeight = 15
+    Items.Strings = (
+      '3 compras'
+      '5 compras'
+      '10 compras'
+    )
+    Style = csDropDownList
+    TabOrder = 5
+  end
+end
