@@ -94,11 +94,12 @@ constructor TCategoryForm.CreateWithCategory(TheOwner: TComponent;
   cat: tCategory);
 begin
   self.category := cat;
+  inherited Create(TheOwner);
 end;
 
 constructor TCategoryForm.Create(TheOwner: TComponent);
 begin
-  self.Create(TheOwner);
+  inherited Create(TheOwner);
   self.category.id := 0;
 end;
 

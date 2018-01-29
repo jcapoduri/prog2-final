@@ -85,7 +85,7 @@ var
 begin
   node := self.treeView.Selected;
   item := tCategoryItem(node.Data);
-  self.form := TCategoryForm.CreateWithCategory(self.Owner, item.category);
+  self.form := TCategoryForm.CreateWithCategory(self, item.category);
   i := self.form.ShowModal;
 end;
 

@@ -45,7 +45,6 @@ begin
       Cells[9,0] := 'pagado';
     end;
 
-
   for i := low(publicationList) to high(publicationList) do
     begin
       publication            :=  publicationList[i];
