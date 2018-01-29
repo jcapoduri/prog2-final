@@ -171,7 +171,7 @@ implementation
     user.blocked    := false;
     lib.hash.open.insert(this.io.users, user);
 
-    user.email      := 'jcapoduri@gmail.com';
+     {user.email      := 'jcapoduri@gmail.com';
     user.password   := 'abcd1234';
     user.fullname   := 'Jorge Capoduri';
     user.address    := 'Yrigoyen 831';
@@ -181,7 +181,7 @@ implementation
     user.status     := false;
     user.utimestamp := Now;
     user.blocked    := false;
-    lib.hash.open.insert(this.io.users, user);
+    lib.hash.open.insert(this.io.users, user);}
 
     { setup categories }
     cat.categoryName := 'RAIZ';
@@ -193,7 +193,7 @@ implementation
     lib.tree.lcrs.addSibling(this.io.categories, NULLIDX, cat);
 
 
-    cat.categoryName := 'Tecnologia';
+    {cat.categoryName := 'Tecnologia';
     cat.description  := 'Tecnologia';
     cat.VAT          := 10;
     cat.parent       := 1;
@@ -222,7 +222,7 @@ implementation
     cat.VAT          := 10;
     cat.parent       := 3;
     cat.leftChild    := NULLIDX;
-    cat.rightSibling := NULLIDX;
+    cat.rightSibling := NULLIDX;}
     createCateogry(metruApp, cat);
   end;
 
