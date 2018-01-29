@@ -215,11 +215,9 @@ implementation
 
   function  search           (var this : tOpenHash; email : tKey; var pos: tHashValue) : boolean;
   var
-    rc      : tControlRecord;
     found   : boolean;
   begin
     _openHash(this);
-    rc      := _getControl(this);
     found   := _search(this, email, pos);
     _closeHash(this);
     search := found;
@@ -227,13 +225,11 @@ implementation
 
   function  searchById   (var this : tOpenHash; id :longint; var pos: tHashValue) : boolean;
   var
-    rc      : tControlRecord;
     found   : boolean;
     auxPos  : integer; 
     node    : tNode;   
   begin
     _openHash(this);
-    rc      := _getControl(this);
     found   := false;
     auxPos  := 0;
     while (auxPos <= MAX) and (not found) do
@@ -271,7 +267,6 @@ implementation
   var
     pos : tHashValue;
     found : boolean;
-    rc  : tControlRecord;
   begin
     _openHash(this);
     found := _search(this, node.email, pos);
@@ -310,7 +305,6 @@ implementation
   function  fetchByIdx   (var this : tOpenHash; pos: tHashValue) : tNode;
   var
     node : tNode;
-    pos  : tHashValue; 
   begin
     _openHash(this);
     node := _get(this, pos);

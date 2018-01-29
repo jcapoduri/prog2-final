@@ -23,8 +23,9 @@ type
     procedure openButtonClick(Sender: TObject);
   private
     sell : tSell;
+    sellIdx : tSellIdx;
   public
-    constructor Create(theOwner : tComponent; ownSell : tSell); overload;
+    constructor Create(theOwner : tComponent; _sellIdx : tSellIdx); overload;
   end;
 
 var
@@ -47,14 +48,15 @@ procedure tSellListForm.openButtonClick(Sender: TObject);
 var
   form : tSellWidget;
 begin
-  form := tSellWidget.Create(nil, self.sell);
+  form := tSellWidget.Create(nil, self.sellIdx);
   form.ShowModal;
   form.free;
 end;
 
-constructor tSellListForm.Create(theOwner: tComponent; ownSell: tSell); overload;
+constructor tSellListForm.Create(theOwner: tComponent; _sellIdx : tSellIdx); overload;
 begin
-  self.sell := ownSell;
+  self.sellIdx := _sellIdx;
+  metru.core.dereferenceSell(metruApp, sellIdx, self.sell);
   Create(theOwner)
 end;
 

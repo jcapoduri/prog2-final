@@ -33,7 +33,7 @@ type
   private
     user  : tUser;
     isOwn : boolean;
-    procedure loadPublicationList(list : tPublishList);
+    procedure loadPublicationList(list : tPublishIdxList);
     procedure openPublication(Sender : TObject);
   public
 
@@ -53,7 +53,7 @@ var
   list   : tCategoryList;
   i      : integer;
   item   : TCategoryItem;
-  result : tPublishList;
+  result : tPublishIdxList;
 begin
   if self.isOwn then
     begin
@@ -74,7 +74,7 @@ end;
 
 procedure tPublicationListForm.searchButtonClick(Sender: TObject);
 var
-  list   : tPublishList;
+  list   : tPublishIdxList;
   item   : tCategoryItem;
 begin
   item := TCategoryItem(self.categoryCombobox.Items.Objects[self.categoryCombobox.ItemIndex]);
@@ -82,7 +82,7 @@ begin
   loadPublicationList(list);
 end;
 
-procedure tPublicationListForm.loadPublicationList(list : tPublishList);
+procedure tPublicationListForm.loadPublicationList(list : tPublishIdxList);
 var
   widget : tPublicationDisplayWidget;
   i      : integer;
@@ -98,7 +98,6 @@ begin
       widget.width   := self.publicationContainer.Width;
       widget.Height  := 100;
       widget.Visible := true;
-      widget.openButton.OnClick := @openPublication;
     end;
   self.publicationContainer.Refresh;
 end;
@@ -110,10 +109,10 @@ var
   widget      : tPublicationDisplayWidget;
   button      : tButton;
 begin
-  button      := Sender as TButton;
+  {button      := Sender as TButton;
   widget      := button.Parent as tPublicationDisplayWidget;
   publication := widget.GetPublication();
-  form        := tPublicationSellWidget.Create(self, user, publication);
+  form        := tPublicationSellWidget.Create(self, user, publication);}
   form.Show;
 end;
 

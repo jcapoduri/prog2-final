@@ -19,12 +19,13 @@ type
     openButton: TButton;
     priceLabel: TLabel;
     titleLabel: TLabel;
-    constructor Create(var _owner : TComponent; publication: tPublish; isOwn : boolean); overload;
+    constructor Create(var _owner : TComponent; pubIdx: tPublishIdx; isOwn : boolean); overload;
     procedure FormActivate(Sender: TObject);
     function GetPublication() : tPublish;
   private
-    publication : tPublish;
-    isOwn       : boolean;
+    publication    : tPublish;
+    publicationIdx : tPublishIdx;
+    isOwn          : boolean;
   public
 
   end;
@@ -39,10 +40,11 @@ implementation
 { tPublicationDisplayWidget }
 
 constructor tPublicationDisplayWidget.Create(var _owner: TComponent;
-  publication: tPublish; isOwn : boolean); overload;
+  pubIdx: tPublishIdx; isOwn : boolean); overload;
 begin
   Create(_owner);
-  self.publication := publication;
+  self.publicationIdx := pubIdx;
+  metru.core.dereferencePublication(metruApp, pubIdx, self.publication);
   self.isOwn       := isOwn;
   FormActivate(nil);
 end;

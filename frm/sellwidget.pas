@@ -31,9 +31,10 @@ type
     procedure paymentButtonClick(Sender: TObject);
     procedure reviewButtonClick(Sender: TObject);
   private
-     sell : tSell;
+     sell    : tSell;
+     sellIdx : tSellIdx;
   public
-     constructor Create (theOwner : TComponent; var theSell : tSell); overload;
+     constructor Create (theOwner : TComponent; _sellIdx : tSellIdx); overload;
   end;
 
 var
@@ -67,7 +68,7 @@ end;
 
 procedure tSellWidget.paymentButtonClick(Sender: TObject);
 begin
-  metru.core.doPayment(metruApp, self.sell);
+  metru.core.doPayment(metruApp, self.sellIdx);
   self.sell.alreadyCollected := true;
   self.paymentButton.Enabled := false;
   MessageDlg('Gracias por su pago! No olvide de puntuar su compra', mtCustom , [mbOK], 0);
@@ -79,14 +80,15 @@ begin
   if self.reviewComboBox.ItemIndex > 0 then
     begin
       self.sell.calification := metru.core.tCalification(self.reviewComboBox.ItemIndex);
-      metru.core.doReviewPurchase(metruApp, self.sell, metru.core.tCalification(self.reviewComboBox.ItemIndex));
+      metru.core.doReviewPurchase(metruApp, self.sellIdx, metru.core.tCalification(self.reviewComboBox.ItemIndex));
       MessageDlg('Gracias por calificar el producto!', mtCustom , [mbOK], 0);
     end;
 end;
 
-constructor tSellWidget.Create(theOwner: TComponent; var theSell: tSell); overload;
+constructor tSellWidget.Create(theOwner: TComponent; _sellIdx : tSellIdx); overload;
 begin
-  self.sell := theSell;
+  self.sellIdx := _sellIdx;
+  metru.core.dereferenceSell(metruApp, sellIdx, self.sell);
   Create(theOwner);
 end;
 
