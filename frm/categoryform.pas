@@ -26,9 +26,10 @@ type
     procedure FormActivate(Sender: TObject);
     procedure saveButtonClick(Sender: TObject);
   private
-    category : tCategory;
+    category    : tCategory;
+    idxCategory : tCategoryIdx;
   public
-    constructor CreateWithCategory(TheOwner: TComponent; cat: tCategory);
+    constructor Create(TheOwner: TComponent; cat: tCategoryIdx); overload;
     constructor Create(TheOwner: TComponent);
 
   end;
@@ -52,7 +53,7 @@ begin
   if self.categoryCombobox.ItemIndex <> -1 then
     begin
       item                   := TCategoryItem(self.categoryCombobox.Items.Objects[self.categoryCombobox.ItemIndex]);
-      self.category.parent   := item.category.id;
+      self.category.parent   := item.categoryIdx;
     end
   else
     self.category.parent     := -1;
@@ -60,7 +61,7 @@ begin
   if self.category.id = 0 then
     metru.core.createCateogry(metruApp, self.category)
   else
-    metru.core.editCateogry(metruApp, self.category);
+    metru.core.editCateogry(metruApp, self.idxCategory, self.category);
   close;
 end;
 
@@ -90,10 +91,11 @@ begin
   close;
 end;
 
-constructor TCategoryForm.CreateWithCategory(TheOwner: TComponent;
-  cat: tCategory);
+constructor TCategoryForm.Create(TheOwner: TComponent;
+  cat: tCategoryIdx); overload;
 begin
-  self.category := cat;
+  self.idxCategory := cat;
+  metru.core.dereferenceCategory(metruApp, self.idxCategory, self.category);
   inherited Create(TheOwner);
 end;
 

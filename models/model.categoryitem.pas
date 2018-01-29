@@ -12,16 +12,18 @@ type
 
   TCategoryItem = class(TObject)
                     category    : tCategory;
+                    categoryIdx : tCategoryIdx;
                     displayName : string;
-                    constructor Create(c : tCategory);
+                    constructor Create(c : tCategoryIdx);
                   end;
 
 implementation
 	{ TCategoryItem }
 
-  constructor TCategoryItem.Create(c: tCategory);
+  constructor TCategoryItem.Create(c: tCategoryIdx);
   begin
-    self.category    := c;
-    self.displayName := c.categoryName;
+    self.categoryIdx := c;
+    metru.core.dereferenceCategory(metruApp, c, self.category);
+    self.displayName := category.categoryName;
   end;
 end.

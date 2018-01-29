@@ -82,6 +82,7 @@ begin
   for i := Low(list) to High(list) do
     begin
       item := TCategoryItem.Create(list[i]);
+      //metru.core.dereferenceCategory(metruApp, list[i], item);
       self.categoryComboBox.Items.AddObject(item.displayName, item);
       {if (item.category.id = self.category.parent) then
         selected := j;}

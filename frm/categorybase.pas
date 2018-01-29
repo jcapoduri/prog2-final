@@ -26,7 +26,7 @@ type
     procedure FormActivate(Sender: TObject);
   private
     form : TCategoryForm;
-    procedure loadBranch(var parentNode : TTreeNode; category : tCategory);
+    procedure loadBranch(var parentNode : TTreeNode; idxCat : tCategoryIdx);
   public
 
   end;
@@ -73,7 +73,7 @@ begin
   node := self.treeView.Selected;
   item := tCategoryItem(node.Data);
 //  Application.createForm(TCategoryForm, self.form, item.category);
-  self.form := TCategoryForm.CreateWithCategory(self, item.category);
+ // self.form := TCategoryForm.CreateWithCategory(self, item.category);
   i := self.form.ShowModal;
 end;
 
@@ -85,18 +85,19 @@ var
 begin
   node := self.treeView.Selected;
   item := tCategoryItem(node.Data);
-  self.form := TCategoryForm.CreateWithCategory(self, item.category);
+  self.form := TCategoryForm.Create(self, item.categoryIdx);
   i := self.form.ShowModal;
 end;
 
-procedure TCategoryBase.loadBranch(var parentNode: TTreeNode; category: tCategory);
+procedure TCategoryBase.loadBranch(var parentNode: TTreeNode; idxCat: tCategoryIdx);
 var
-  list    : tCategoryList;
-  i       : integer;
-  auxNode : TTreeNode;
-  item    : TCategoryItem;
+  list     : tCategoryList;
+  i        : integer;
+  auxNode  : TTreeNode;
+  category : tCategory;
+  item     : TCategoryItem;
 begin
-  list := metru.core.retrieveChildCateogies(metruApp, category);
+  list := metru.core.retrieveChildCateogies(metruApp, idxCat);
   for i := Low(list) to High(list) do
     begin
       item    := TCategoryItem.Create(list[i]);

@@ -23,7 +23,8 @@ const
 type
   { expose data records only }
   tCategory       = lib.tree.lcrs.tCategory;
-  tCategoryList   = lib.tree.lcrs.tCategoryList;
+  tCategoryIdx    = lib.tree.lcrs.idxRange;
+  tCategoryList   = array of tCategoryIdx;
   tPublishIdx     = lib.tree.avl.idxRange;
   tPublish        = lib.tree.avl.tPublish;
   tPublishList    = array of tPublish;
@@ -72,12 +73,13 @@ type
 
   { category functions }
   procedure createCateogry           (var this : tMetruCore; category : tCategory);
-  procedure editCateogry             (var this : tMetruCore; category : tCategory);
-  procedure deleteCateogry           (var this : tMetruCore; category : tCategory);
+  procedure editCateogry             (var this : tMetruCore; catIdx : tCategoryIdx; category : tCategory);
+  procedure deleteCateogry           (var this : tMetruCore; catIdx : tCategoryIdx);
   function  retrieveAllLeafCateogies (var this : tMetruCore) : tCategoryList;
   function  retrieveBaseCateogies    (var this : tMetruCore) : tCategoryList;
-  function  retrieveChildCateogies   (var this : tMetruCore; category : tCategory) : tCategoryList;
+  function  retrieveChildCateogies   (var this : tMetruCore; catIdx : tCategoryIdx) : tCategoryList;
   function  retrieveAllCateogies     (var this : tMetruCore) : tCategoryList;
+  function  dereferenceCategory      (var this : tMetruCore; idx : tCategoryIdx; var category : tCategory) : boolean;
 
   { publication functions }
   procedure createPublication             (var this : tMetruCore; publication : tPublish);
@@ -329,28 +331,22 @@ implementation
     lib.tree.lcrs.addChild(this.io.categories, pos, category);
   end;
 
-  procedure  editCateogry           (var this : tMetruCore; category : tCategory);
-  var
-    pos : idxRange;
+  procedure  editCateogry           (var this : tMetruCore; catIdx : tCategoryIdx; category : tCategory);
   begin
-    lib.tree.lcrs.search(this.io.categories, category.id, pos);
-    lib.tree.lcrs.update(this.io.categories, pos, category);
+    lib.tree.lcrs.update(this.io.categories, catIdx, category);
   end;
 
-  procedure  deleteCateogry         (var this : tMetruCore; category : tCategory);
-  var
-    pos : idxRange;
+  procedure  deleteCateogry         (var this : tMetruCore; catIdx : tCategoryIdx);
   begin
-    lib.tree.lcrs.search(this.io.categories, category.id, pos);
-    lib.tree.lcrs.remove(this.io.categories, pos);
+    lib.tree.lcrs.remove(this.io.categories, catIdx);
   end;
 
   function  retrieveBaseCateogies  (var this : tMetruCore) : tCategoryList;
   var
     list    : tCategoryList;
-    auxCat  : tCategory;
     i       : integer;
-    auxPos  : idxRange;
+    auxCat  : tCategory;
+    auxPos  : tCategoryIdx;
   begin
     auxPos  := lib.tree.lcrs.root(this.io.categories);
     auxCat  := lib.tree.lcrs.fetch(this.io.categories, auxPos);
@@ -358,32 +354,29 @@ implementation
     i := 0;
     while (auxPos <> NULLIDX) do
       begin
-        auxCat      := lib.tree.lcrs.fetch(this.io.categories, auxPos);
         i           := i + 1;
         SetLength(list, i);
-        list[i - 1] := auxCat;
+        list[i - 1] := auxPos;
         auxPos      := lib.tree.lcrs.nextSibling(this.io.categories, auxPos);
       end;
     retrieveBaseCateogies := list;
   end;
 
-  function  retrieveChildCateogies (var this : tMetruCore; category : tCategory) : tCategoryList;
+  function  retrieveChildCateogies (var this : tMetruCore; catIdx : tCategoryIdx) : tCategoryList;
   var
     list    : tCategoryList;
-    auxCat  : tCategory;
     i       : integer;
-    auxPos  : idxRange;
+    auxPos  : tCategoryIdx;
   begin
     SetLength(list, 0);
-    lib.tree.lcrs.search(this.io.categories, category.id, auxPos);
+    auxPos := catIdx;
     auxPos := lib.tree.lcrs.firstChild(this.io.categories, auxPos);
     i := 0;
     while (auxPos <> NULLIDX) do
       begin
-        auxCat      := lib.tree.lcrs.fetch(this.io.categories, auxPos);
         i           := i + 1;
         SetLength(list, i);
-        list[i - 1] := auxCat;
+        list[i - 1] := auxPos;
         auxPos      := lib.tree.lcrs.nextSibling(this.io.categories, auxPos);
       end;
     retrieveChildCateogies := list;
@@ -395,17 +388,16 @@ implementation
     auxList : tCategoryList;
     auxCat  : tCategory;
     i       : integer;
-    auxPos  : idxRange;
+    auxPos  : tCategoryIdx;
   begin
     SetLength(list, 1);
     auxPos  := lib.tree.lcrs.root(this.io.categories);
-    auxCat  := lib.tree.lcrs.fetch(this.io.categories, auxPos); 
-    list[0] := auxCat;
+    list[0] := auxPos;
     i       := 0;
     while (Length(list) > i) do
       begin
-        auxCat  := list[i];
-        auxList := retrieveChildCateogies(this, auxCat);
+        auxPos  := list[i];
+        auxList := retrieveChildCateogies(this, auxPos);
         if (Length(auxList) > 0) then
           list := list + auxList;
         i       := i + 1;
@@ -413,19 +405,19 @@ implementation
     retrieveAllCateogies := list;
   end;
 
-  function  _retrieveAllLeafCateogies  (var this : tMetruCore; pos : idxRange) : tCategoryList;
+  function  _retrieveAllLeafCateogies  (var this : tMetruCore; pos : tCategoryIdx) : tCategoryList;
   var
     list    : tCategoryList;
     auxList : tCategoryList;
     auxCat  : tCategory;
-    auxPos  : idxRange;
+    auxPos  : tCategoryIdx;
   begin
     SetLength(list, 0);
     auxCat  := lib.tree.lcrs.fetch(this.io.categories, pos); 
     if (lib.tree.lcrs.isLeaf(this.io.categories, auxCat)) then
       begin
         SetLength(list, 1);
-        list[0] := auxCat;
+        list[0] := pos;
       end
     else
       begin
@@ -451,7 +443,15 @@ implementation
   begin
     auxPos  := lib.tree.lcrs.root(this.io.categories);
     retrieveAllLeafCateogies := _retrieveAllLeafCateogies(this, auxPos);
+  end;
 
+  function  dereferenceCategory      (var this : tMetruCore; idx : tCategoryIdx; var category : tCategory) : boolean;
+  var
+    found : boolean;
+  begin
+    found := true;
+    category := lib.tree.lcrs.fetch(this.io.categories, idx);
+    dereferenceCategory := found;
   end;
 
   procedure createPublication         (var this : tMetruCore; publication : tPublish);
@@ -518,6 +518,7 @@ implementation
   var
     list, auxList : tPublishIdxList;
     i             : integer;
+    catIdx        : tCategoryIdx;
     category      : tCategory;
     catList       : tCategoryList;
   begin
@@ -525,7 +526,8 @@ implementation
     catList := retrieveAllLeafCateogies(this);
     for i := 0 to High(catList) do
       begin
-        category := catList[i];
+        catIdx := catList[i];
+        dereferenceCategory(this, catIdx, category);
         auxList  := retrievePublicationByCategory(this, category);
         list     := list + auxList;
       end;
