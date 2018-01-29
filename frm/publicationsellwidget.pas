@@ -47,11 +47,12 @@ implementation
 constructor tPublicationSellWidget.Create(parentComponent: TComponent;
   var User: tUser; pubIdx : tPublishIdx);
 begin
-  inherited Create(parentComponent);
   self.publicationIdx    := pubIdx;
   metru.core.dereferencePublication(metruApp, pubIdx, self.publication);
   self.user              := user;
   self.isSelfPublication := user.id = publication.idUser;
+  inherited Create(parentComponent);
+  FormActivate(Nil);
 end;
 
 procedure tPublicationSellWidget.buyButtonClick(Sender: TObject);

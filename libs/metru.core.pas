@@ -507,11 +507,10 @@ implementation
 
   function  dereferencePublication        (var this : tMetruCore; idx : tPublishIdx; var publication : tPublish) : boolean;
   var
-    pub   : tPublish;
     found : boolean;
   begin
-    found  := true;
-    pub    := lib.tree.avl.fetch(this.io.publications, idx);
+    found       := true;
+    publication := lib.tree.avl.fetch(this.io.publications, idx);
     dereferencePublication := found;
   end;
 
