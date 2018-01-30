@@ -92,7 +92,7 @@ type
 
   { message related functions }
   function postMessage        (var this : tMetruCore; pubIdx : tPublishIdx; user : tUser; msg : string) : boolean;
-  function postResponse       (var this : tMetruCore; var message : tMessageIdx; response : string) : boolean;
+  function postResponse       (var this : tMetruCore; msgIdx : tMessageIdx; response : string) : boolean;
   function retrieveMessages   (var this : tMetruCore; pubIdx : tPublishIdx) : tMessageList;
   function dereferenceMessage (var this : tMetruCore; idx : tMessageIdx; var message : tMessage) : boolean;
 
@@ -536,17 +536,45 @@ implementation
   
   function postMessage  (var this : tMetruCore; pubIdx : tPublishIdx; user : tUser; msg : string) : boolean;
   var
-    message : tMessage;
+    message     : tMessage;
+    publication : tPublish;
   begin
-
+    dereferencePublication(this, pubIdx, publication);
+    message.question  := msg;
+    message.answer    := '';
+    message.timestamp := Now;
+    lib.tree.trinary.insertMessage(this.io.messages, publication.id, user.id, message);
   end;
 
-  function postResponse (var this : tMetruCore; var message : tMessageIdx; response : string) : boolean;
+  function postResponse (var this : tMetruCore; msgIdx : tMessageIdx; response : string) : boolean;
+  var
+    message     : tMessage;
   begin
+    dereferenceMessage(this, msgIdx, message);
+    message.answer := response;
+    lib.tree.trinary.updateMessage(this.io.messages, msgIdx, message); 
   end;  
 
   function retrieveMessages   (var this : tMetruCore; pubIdx : tPublishIdx) : tMessageList;
+  var
+    list        : tMessageList;
+    msgIdx      : tMessageIdx;
+    count       : integer;
+    publication : tPublish;
+    foundNext   : boolean;
   begin
+    dereferencePublication(this, pubIdx, publication);
+    count     := 0;
+    foundNext := lib.tree.trinary.retrieveFirstMsgIdx(this.io.messages, publication.id, msgIdx);
+    
+    while foundNext do
+      begin
+        count := count + 1;
+        SetLength(list, count);
+        list[count - 1] := msgIdx;
+        foundNext := lib.tree.trinary.retrieveFirstMsgIdx(this.io.messages, publication.id, msgIdx);
+      end;
+    retrieveMessages := list;
   end;
 
   function dereferenceMessage (var this : tMetruCore; idx : tMessageIdx; var message : tMessage) : boolean;

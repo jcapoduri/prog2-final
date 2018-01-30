@@ -20,10 +20,11 @@ type
     questionLabel: TLabel;
     responseLabel: TLabel;
     responseEdit: TMemo;
-    constructor Create(parentComponent : TComponent; var User : tUser; canEdit : boolean); overload;
+    constructor Create(parentComponent : TComponent; User : tUser; msgIdx : tMessageIdx); overload;
   private
-    user    : tUser;
-    canEdit : boolean;
+    user       : tUser;
+    canEdit    : boolean;
+    messageIdx : tMessageIdx;
   public
 
   end;
@@ -37,12 +38,12 @@ implementation
 
 { tMessageWidget }
 
-constructor tMessageWidget.Create(parentComponent: TComponent; var User: tUser;
-   canEdit : boolean);
+constructor tMessageWidget.Create(parentComponent : TComponent; User : tUser; msgIdx : tMessageIdx);
 begin
   Create(parentComponent);
-  self.user    := user;
-  sefl.canEdit := canEdit;
+  self.user       := user;
+  self.messageIdx := msgIdx;
+  self.canEdit    := true;
 end;
 
 end.

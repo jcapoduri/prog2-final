@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ExtCtrls,
-  StdCtrls, Buttons, metru.core;
+  StdCtrls, Buttons, metru.core, messagewidget;
 
 type
 
@@ -26,6 +26,7 @@ type
     procedure buyButtonClick(Sender: TObject);
     constructor Create(parentComponent : TComponent; var User : tUser; pubIdx : tPublishIdx); overload;
     procedure FormActivate(Sender: TObject);
+    procedure sendQuestionButtonClick(Sender: TObject);
   private
     user              : tUser;
     publicationIdx    : tPublishIdx;
@@ -63,12 +64,30 @@ begin
 end;
 
 procedure tPublicationSellWidget.FormActivate(Sender: TObject);
+var
+  messageList : tMessageList;
+  mesIdx      : tMessageIdx;
+  i, count    : integer;
+  messageItem : tMessageWidget;
 begin
   self.titleLabel.Caption := self.publication.itemName;
   self.descriptionLabel.Caption := self.publication.details;
   self.priceLabel.Caption:= FloatToStr(self.publication.price);
   if (publication.idUser = user.id) then {if publication is my own, disable purchase}
      self.buyButton.Enabled := false;
+  { retrieve messages }
+  messageList := metru.core.retrieveMessages(metruApp, publicationIdx);
+  count       := length(messageList) - 1;
+  for i := 0 to count do
+      begin
+        mesIdx := messageList[i];
+        messageItem := tMessageWidget.Create(self, self.user, mesIdx);
+      end;
+end;
+
+procedure tPublicationSellWidget.sendQuestionButtonClick(Sender: TObject);
+begin
+  metru.core.postMessage(metruApp, self.publicationIdx, self.user, string(self.questionEdit.Text));
 end;
 
 end.
