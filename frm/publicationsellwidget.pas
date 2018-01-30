@@ -82,6 +82,12 @@ begin
       begin
         mesIdx := messageList[i];
         messageItem := tMessageWidget.Create(self, self.user, mesIdx);
+        messageItem.parent  := self.messagesContainer;
+        messageItem.top     := i * 106;
+        messageItem.left    := 0;
+        messageItem.width   := self.messagesContainer.Width;
+        messageItem.Height  := 100;
+        messageItem.Visible := true;
       end;
 end;
 

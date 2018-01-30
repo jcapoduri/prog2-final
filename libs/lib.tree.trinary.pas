@@ -672,7 +672,7 @@ implementation
     if found then 
       begin
         node := _get(this, pos);
-        while node.left <> NULLIDX do;
+        while (node.left <> NULLIDX) do
           begin
             pos  := node.left;
             node := _get(this, pos);
@@ -697,23 +697,24 @@ implementation
       begin
         auxNode := _get(this, pos);
         if (auxNode.last = idxMsg) then { current is the node with the last }
-          begin
-            found  := true;
-            parent := _get(this, auxNode.parent);
-            if parent.center <> pos then
-              begin
-                if parent.left = pos then { my parent is next}
-                  idxMsg := parent.first
-                else { my parent neither is the next}
-                  found := false;
-              end
-            else
-              begin
-                pos     := parent.right;
-                auxNode := _get(this, pos);
-                idxMsg  := auxNode.first;
-              end;
-          end
+          if (auxNode.parent <> NULLIDX) then
+            begin
+              found  := true;
+              parent := _get(this, auxNode.parent);
+              if parent.center <> pos then
+                begin
+                  if parent.left = pos then { my parent is next}
+                    idxMsg := parent.first
+                  else { my parent neither is the next}
+                    found := false;
+                end
+              else
+                begin
+                  pos     := parent.right;
+                  auxNode := _get(this, pos);
+                  idxMsg  := auxNode.first;
+                end;
+            end
         else
           begin
             found := _retrieveNextNodeFromLastMessage(this, auxNode.left, idxMsg);

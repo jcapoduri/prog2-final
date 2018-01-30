@@ -572,7 +572,7 @@ implementation
         count := count + 1;
         SetLength(list, count);
         list[count - 1] := msgIdx;
-        foundNext := lib.tree.trinary.retrieveFirstMsgIdx(this.io.messages, publication.id, msgIdx);
+        foundNext := lib.tree.trinary.retrieveNextMsgIdx(this.io.messages, publication.id, msgIdx);
       end;
     retrieveMessages := list;
   end;

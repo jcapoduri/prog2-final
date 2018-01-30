@@ -15,16 +15,18 @@ type
   { tMessageWidget }
 
   tMessageWidget = class(TForm)
-    createResponseButton: TBitBtn;
     doneButton: TBitBtn;
     questionLabel: TLabel;
     responseLabel: TLabel;
     responseEdit: TMemo;
     constructor Create(parentComponent : TComponent; User : tUser; msgIdx : tMessageIdx); overload;
+    procedure doneButtonClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
     user       : tUser;
     canEdit    : boolean;
     messageIdx : tMessageIdx;
+    message    : tMessage;
   public
 
   end;
@@ -40,10 +42,27 @@ implementation
 
 constructor tMessageWidget.Create(parentComponent : TComponent; User : tUser; msgIdx : tMessageIdx);
 begin
-  Create(parentComponent);
   self.user       := user;
   self.messageIdx := msgIdx;
   self.canEdit    := true;
+  metru.core.dereferenceMessage(metruApp, self.messageIdx, self.message);
+  Create(parentComponent);
+end;
+
+procedure tMessageWidget.doneButtonClick(Sender: TObject);
+begin
+  metru.core.postResponse(metruApp, messageIdx, string(self.responseEdit.Caption));
+end;
+
+procedure tMessageWidget.FormCreate(Sender: TObject);
+begin
+  self.questionLabel.Caption := message.question;
+  if (EmptyStr <> message.answer) then
+     begin
+       responseLabel.Caption:= message.answer;
+       responseEdit.Visible:=false;
+       doneButton.Visible:=false;
+     end;
 end;
 
 end.
