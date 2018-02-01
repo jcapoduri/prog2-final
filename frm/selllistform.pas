@@ -19,7 +19,7 @@ type
     ItemNameLabel: TLabel;
     priceLabel: TLabel;
     Label2: TLabel;
-    procedure FormActivate(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
     procedure openButtonClick(Sender: TObject);
   private
     sell : tSell;
@@ -37,7 +37,7 @@ implementation
 
 { tSellListForm }
 
-procedure tSellListForm.FormActivate(Sender: TObject);
+procedure tSellListForm.FormCreate(Sender: TObject);
 begin
   self.ItemNameLabel.Caption     := self.sell.itemName;
   self.purchaseDateLabel.Caption := DateToStr(self.sell.sellDate);

@@ -27,7 +27,7 @@ type
     Label2: TLabel;
     Label3: TLabel;
     publicationContainer: TScrollBox;
-    procedure FormActivate(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
     procedure searchButtonClick(Sender: TObject);
     constructor Create(theOwner : TComponent; user : tUser; isOwn : boolean); overload;
   private
@@ -48,7 +48,7 @@ implementation
 
 { tPublicationListForm }
 
-procedure tPublicationListForm.FormActivate(Sender: TObject);
+procedure tPublicationListForm.FormCreate(Sender: TObject);
 var
   list   : tCategoryList;
   i      : integer;

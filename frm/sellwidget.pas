@@ -27,7 +27,7 @@ type
     Label2: TLabel;
     Label3: TLabel;
     priceLabel: TLabel;
-    procedure FormActivate(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
     procedure paymentButtonClick(Sender: TObject);
     procedure reviewButtonClick(Sender: TObject);
   private
@@ -46,7 +46,7 @@ implementation
 
 { tSellWidget }
 
-procedure tSellWidget.FormActivate(Sender: TObject);
+procedure tSellWidget.FormCreate(Sender: TObject);
 begin
   self.titleLabel.Caption       := self.sell.itemName;
   self.publishDateLabel.Caption := DateToStr(self.sell.publishDate);

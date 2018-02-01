@@ -25,7 +25,7 @@ type
     messagesContainer: TScrollBox;
     procedure buyButtonClick(Sender: TObject);
     constructor Create(parentComponent : TComponent; var User : tUser; pubIdx : tPublishIdx); overload;
-    procedure FormActivate(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
     procedure sendQuestionButtonClick(Sender: TObject);
   private
     user              : tUser;
@@ -33,7 +33,7 @@ type
     publication       : tPublish;
     isSelfPublication : boolean;
   public
-
+    procedure populateMessages();
   end;
 
 var
@@ -53,7 +53,7 @@ begin
   self.user              := user;
   self.isSelfPublication := user.id = publication.idUser;
   inherited Create(parentComponent);
-  FormActivate(Nil);
+  FormCreate(Nil);
 end;
 
 procedure tPublicationSellWidget.buyButtonClick(Sender: TObject);
@@ -63,19 +63,25 @@ begin
   self.buyButton.Enabled:=false;
 end;
 
-procedure tPublicationSellWidget.FormActivate(Sender: TObject);
-var
-  messageList : tMessageList;
-  mesIdx      : tMessageIdx;
-  i, count    : integer;
-  messageItem : tMessageWidget;
+procedure tPublicationSellWidget.FormCreate(Sender: TObject);
 begin
   self.titleLabel.Caption := self.publication.itemName;
   self.descriptionLabel.Caption := self.publication.details;
   self.priceLabel.Caption:= FloatToStr(self.publication.price);
   if (publication.idUser = user.id) then {if publication is my own, disable purchase}
      self.buyButton.Enabled := false;
+  populateMessages;
+end;
+
+procedure tPublicationSellWidget.populateMessages();
+var
+  messageList : tMessageList;
+  mesIdx      : tMessageIdx;
+  i, count    : integer;
+  messageItem : tMessageWidget;
+begin
   { retrieve messages }
+  self.messagesContainer.DestroyComponents;
   messageList := metru.core.retrieveMessages(metruApp, publicationIdx);
   count       := length(messageList) - 1;
   for i := 0 to count do
@@ -94,6 +100,8 @@ end;
 procedure tPublicationSellWidget.sendQuestionButtonClick(Sender: TObject);
 begin
   metru.core.postMessage(metruApp, self.publicationIdx, self.user, string(self.questionEdit.Text));
+  self.questionEdit.Text := EmptyStr;
+  populateMessages;
 end;
 
 end.

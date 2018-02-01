@@ -1,0 +1,8 @@
+object UserEdit: TUserEdit
+  Left = 420
+  Height = 344
+  Top = 223
+  Width = 731
+  Caption = 'UserEdit'
+  LCLVersion = '1.8.0.6'
+end

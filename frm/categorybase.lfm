@@ -8,7 +8,7 @@ object CategoryBase: TCategoryBase
   Caption = 'Categorias'
   ClientHeight = 597
   ClientWidth = 664
-  OnActivate = FormActivate
+  OnCreate = FormCreate
   Position = poDesktopCenter
   LCLVersion = '1.8.0.6'
   object treeView: TTreeView

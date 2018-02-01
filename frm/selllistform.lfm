@@ -7,7 +7,7 @@ object tSellListForm: tSellListForm
   Caption = 'Venta'
   ClientHeight = 85
   ClientWidth = 761
-  OnActivate = FormActivate
+  OnCreate = FormCreate
   LCLVersion = '1.8.0.6'
   object openButton: TBitBtn
     Left = 680

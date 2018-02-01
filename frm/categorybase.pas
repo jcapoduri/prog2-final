@@ -23,7 +23,7 @@ type
     procedure addButtonClick(Sender: TObject);
     procedure deleteButtonClick(Sender: TObject);
     procedure editButtonClick(Sender: TObject);
-    procedure FormActivate(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
     form : TCategoryForm;
     procedure loadBranch(var parentNode : TTreeNode; idxCat : tCategoryIdx);
@@ -40,7 +40,7 @@ implementation
 
 { TCategoryBase }
 
-procedure TCategoryBase.FormActivate(Sender: TObject);
+procedure TCategoryBase.FormCreate(Sender: TObject);
 var
   list       : tCategoryList;
   i          : integer;
@@ -48,6 +48,8 @@ var
   item       : TCategoryItem;
 begin
   list := metru.core.retrieveBaseCateogies(metruApp);
+  self.treeView.Items.Clear;
+
   for i := Low(list) to High(list) do
     begin
       item       := TCategoryItem.Create(list[i]);
@@ -66,27 +68,25 @@ end;
 
 procedure TCategoryBase.deleteButtonClick(Sender: TObject);
 var
-  i    : integer;
   node : TTreeNode;
   item : tCategoryItem;
 begin
   node := self.treeView.Selected;
   item := tCategoryItem(node.Data);
-//  Application.createForm(TCategoryForm, self.form, item.category);
- // self.form := TCategoryForm.CreateWithCategory(self, item.category);
-  i := self.form.ShowModal;
+  self.form.ShowModal;
+  FormCreate(nil); //repopulate tree
 end;
 
 procedure TCategoryBase.editButtonClick(Sender: TObject);
 var
-  i    : integer;
   node : TTreeNode;
   item : tCategoryItem;
 begin
   node := self.treeView.Selected;
   item := tCategoryItem(node.Data);
   self.form := TCategoryForm.Create(self, item.categoryIdx);
-  i := self.form.ShowModal;
+  self.form.ShowModal;
+  FormCreate(nil); //repopulate tree
 end;
 
 procedure TCategoryBase.loadBranch(var parentNode: TTreeNode; idxCat: tCategoryIdx);

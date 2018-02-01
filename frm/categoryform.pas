@@ -23,7 +23,7 @@ type
     Label2: TLabel;
     nameEdit: TLabeledEdit;
     procedure cancelButtonClick(Sender: TObject);
-    procedure FormActivate(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
     procedure saveButtonClick(Sender: TObject);
   private
     category    : tCategory;
@@ -65,7 +65,7 @@ begin
   close;
 end;
 
-procedure TCategoryForm.FormActivate(Sender: TObject);
+procedure TCategoryForm.FormCreate(Sender: TObject);
 var
   list     : tCategoryList;
   i, j     : integer;
@@ -83,7 +83,12 @@ begin
     end;
   self.categoryCombobox.ItemIndex := selected;
   if (self.category.id > 0) then
-    self.categoryCombobox.Enabled := false;
+    begin
+      self.categoryCombobox.Enabled := false;
+      self.nameEdit.Text := self.category.categoryName;
+      self.comisionEdit.Value := self.category.VAT;
+      self.descriptionEdit.Text := self.category.description;
+    end;
 end;
 
 procedure TCategoryForm.cancelButtonClick(Sender: TObject);

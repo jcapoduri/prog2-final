@@ -16,7 +16,7 @@ type
     closeButton: TBitBtn;
     componentListScrollBox: TScrollBox;
     procedure CloseButtonClicked(Sender: TObject);
-    procedure FormActivate(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
     list : tComponentList;
   public
@@ -32,7 +32,7 @@ implementation
 
 { tWidgetListForm }
 
-procedure tWidgetListForm.FormActivate(Sender: TObject);
+procedure tWidgetListForm.FormCreate(Sender: TObject);
 var
   i, count : integer;
   widget   : tForm;
@@ -63,7 +63,7 @@ constructor tWidgetListForm.Create(theOwner: tComponent;
 begin
   self.list := componentsList;
   Create(theOwner);
-  FormActivate(nil);
+  FormCreate(nil);
 end;
 
 end.

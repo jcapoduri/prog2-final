@@ -20,7 +20,7 @@ type
     procedure closeButtonClick(Sender: TObject);
     procedure doReportButtonClick(Sender: TObject);
     procedure exportToCSVButtonClick(Sender: TObject);
-    procedure FormActivate(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
 
   public
@@ -79,7 +79,7 @@ begin
   end;
 end;
 
-procedure TReportFormWidget.FormActivate(Sender: TObject);
+procedure TReportFormWidget.FormCreate(Sender: TObject);
 begin
   doReportButtonClick(Sender);
 end;

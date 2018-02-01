@@ -6,7 +6,7 @@ object ReportFormWidget: TReportFormWidget
   Caption = 'ReportFormWidget'
   ClientHeight = 339
   ClientWidth = 1146
-  OnActivate = FormActivate
+  OnCreate = FormCreate
   LCLVersion = '1.8.0.6'
   object dataGrid: TStringGrid
     Left = 8

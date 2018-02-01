@@ -6,7 +6,7 @@ object tWidgetListForm: tWidgetListForm
   Caption = 'widgetList'
   ClientHeight = 428
   ClientWidth = 847
-  OnActivate = FormActivate
+  OnCreate = FormCreate
   LCLVersion = '1.8.0.6'
   object componentListScrollBox: TScrollBox
     Left = 8

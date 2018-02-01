@@ -6,7 +6,7 @@ object CategoryForm: TCategoryForm
   Caption = 'Categoría'
   ClientHeight = 272
   ClientWidth = 320
-  OnActivate = FormActivate
+  OnCreate = FormCreate
   LCLVersion = '1.8.0.6'
   object nameEdit: TLabeledEdit
     Left = 8

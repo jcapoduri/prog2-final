@@ -6,7 +6,7 @@ object tPublicationSellWidget: tPublicationSellWidget
   Caption = 'Venta'
   ClientHeight = 600
   ClientWidth = 954
-  OnActivate = FormActivate
+  OnCreate = FormCreate
   LCLVersion = '1.8.0.6'
   Visible = True
   object imageDisplay: TImage

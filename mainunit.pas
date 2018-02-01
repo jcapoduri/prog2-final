@@ -40,7 +40,6 @@ type
     myPublicationMenuItem: TMenuItem;
     displayPanel: TPanel;
     login : TLoginForm;
-    catBase : TCategoryBase;
     procedure FormCreate(Sender: TObject);
     procedure categoryCRUDMenuItemClick(Sender: TObject);
     procedure mySellsBaseMenuItemClick(Sender: TObject);
@@ -54,6 +53,8 @@ type
     { private declarations }
   public
     { public declarations }
+    procedure cleanPanel;
+    procedure setComponentOnPanel(childItem : TForm);
   end;
 
 var
@@ -76,8 +77,8 @@ procedure TmainWidget.reportAllPublicationsMenuItemClick(Sender: TObject);
 var
   form : tUserReportPublicationForm;
 begin
-  form := tUserReportPublicationForm.Create(nil);
-  form.Show;
+  form := tUserReportPublicationForm.Create(self);
+  setComponentOnPanel(form);
 end;
 
 procedure TmainWidget.FormCreate(Sender: TObject);
@@ -90,9 +91,11 @@ begin
 end;
 
 procedure TmainWidget.categoryCRUDMenuItemClick(Sender: TObject);
+var
+  form : TCategoryBase;
 begin
-   Application.CreateForm(TCategoryBase, self.catBase);
-   self.catBase.Show;
+  form := TCategoryBase.Create(self);
+  setComponentOnPanel(form);
 end;
 
 procedure TmainWidget.mySellsBaseMenuItemClick(Sender: TObject);
@@ -113,7 +116,7 @@ begin
       list.Add(item);
     end;
   form := tWidgetListForm.Create(self, list);
-  form.Show;
+  setComponentOnPanel(form);
 end;
 
 procedure TmainWidget.myPublicationMenuItemClick(Sender: TObject);
@@ -137,7 +140,7 @@ begin
     end;
   
   form := tWidgetListForm.Create(self, componentList);
-  form.Show;
+  setComponentOnPanel(form);
 end;
 
 procedure TmainWidget.newPublicationMenuItemClick(Sender: TObject);
@@ -155,13 +158,37 @@ var
   form : tPublicationListForm;
 begin
   form := tPublicationListForm.Create(self, metru.core.loggedUser(metruApp), false);
-  form.show;
+  setComponentOnPanel(form);
 end;
 
 procedure TmainWidget.quitMenuItemClick(Sender: TObject);
 begin
   metru.core.logoff(metruApp);
   login.ShowModal;
+end;
+
+procedure TmainWidget.cleanPanel;
+var
+  i    : integer;
+  temp : tComponent;
+begin
+  for i := 0 to self.displayPanel.componentCount do
+    begin
+      temp := self.displayPanel.components[i];
+      self.displayPanel.removeComponent(temp);
+    end;
+end;
+
+procedure TmainWidget.setComponentOnPanel(childItem : TForm);
+begin
+  childItem.parent  := self.displayPanel;
+  childItem.BorderStyle:= bsNone;
+  childItem.top     := 0;
+  childItem.left    := 0;
+  childItem.width   := self.displayPanel.width;
+  childItem.height  := self.displayPanel.height;
+  childItem.anchors := [akTop, akLeft, akRight, akBottom];
+  childItem.visible := true;
 end;
 
 end.

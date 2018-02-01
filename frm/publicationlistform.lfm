@@ -6,7 +6,7 @@ object tPublicationListForm: tPublicationListForm
   Caption = 'Busqueda de publicacion'
   ClientHeight = 430
   ClientWidth = 1168
-  OnActivate = FormActivate
+  OnCreate = FormCreate
   LCLVersion = '1.8.0.6'
   object publicationContainer: TScrollBox
     Left = 8

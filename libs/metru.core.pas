@@ -324,10 +324,8 @@ implementation
     pos : idxRange;
   begin
     if (category.parent = NULLIDX) then
-      pos := lib.tree.lcrs.root(this.io.categories)
-    else
-      lib.tree.lcrs.search(this.io.categories, category.parent, pos);
-    category.parent := pos;
+      category.parent := lib.tree.lcrs.root(this.io.categories);
+
     lib.tree.lcrs.addChild(this.io.categories, pos, category);
   end;
 

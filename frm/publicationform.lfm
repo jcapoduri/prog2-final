@@ -6,7 +6,7 @@ object tPublicationForm: tPublicationForm
   Caption = 'Publicacion'
   ClientHeight = 400
   ClientWidth = 627
-  OnActivate = FormActivate
+  OnCreate = FormCreate
   LCLVersion = '1.8.0.6'
   object titleEdit: TLabeledEdit
     Left = 16

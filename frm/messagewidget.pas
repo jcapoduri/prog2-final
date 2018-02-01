@@ -51,7 +51,9 @@ end;
 
 procedure tMessageWidget.doneButtonClick(Sender: TObject);
 begin
+  self.message.answer := string(self.responseEdit.Caption);
   metru.core.postResponse(metruApp, messageIdx, string(self.responseEdit.Caption));
+  FormCreate(nil);
 end;
 
 procedure tMessageWidget.FormCreate(Sender: TObject);

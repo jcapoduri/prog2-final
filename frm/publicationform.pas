@@ -37,7 +37,7 @@ type
     constructor Create(parentComponent : TComponent; var User : tUser; pubIdx : tPublishIdx); overload;
     procedure addPictureButtonClick(Sender: TObject);
     procedure saveButtonClick(Sender: TObject);
-    procedure FormActivate(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
     publication    : tPublish;
     publicationIdx : tPublishIdx;
@@ -72,7 +72,7 @@ begin
   Close;
 end;
 
-procedure tPublicationForm.FormActivate(Sender: TObject);
+procedure tPublicationForm.FormCreate(Sender: TObject);
 var
   list     : tCategoryList;
   i        : integer;
