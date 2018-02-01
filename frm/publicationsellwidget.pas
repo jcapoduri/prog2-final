@@ -91,7 +91,7 @@ begin
         messageItem.parent  := self.messagesContainer;
         messageItem.top     := i * 106;
         messageItem.left    := 0;
-        messageItem.width   := self.messagesContainer.Width;
+        messageItem.width   := self.messagesContainer.Width - 20; // avoid double-scroll
         messageItem.Height  := 100;
         messageItem.Visible := true;
       end;

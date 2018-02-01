@@ -174,7 +174,7 @@ implementation
     lib.hash.open.insert(this.io.users, user);
 
     user.email      := 'jcapoduri@gmail.com';
-    user.password   := 'abcd1234';
+    user.password   := 'palo_y_a_la_bolsa';
     user.fullname   := 'Jorge Capoduri';
     user.address    := 'Yrigoyen 831';
     user.providence := 4;
@@ -198,7 +198,7 @@ implementation
     cat.categoryName := 'Tecnologia';
     cat.description  := 'Tecnologia';
     cat.VAT          := 10;
-    cat.parent       := 1;
+    cat.parent       := NULLIDX;
     cat.leftChild    := NULLIDX;
     cat.rightSibling := NULLIDX;
     createCateogry(metruApp, cat);
@@ -206,7 +206,7 @@ implementation
     cat.categoryName := 'Electrodomestico';
     cat.description  := 'Electrodomestico';
     cat.VAT          := 10;
-    cat.parent       := 1;
+    cat.parent       := NULLIDX;
     cat.leftChild    := NULLIDX;
     cat.rightSibling := NULLIDX;
     createCateogry(metruApp, cat);
@@ -214,7 +214,7 @@ implementation
     cat.categoryName := 'Computadoras';
     cat.description  := 'Computadoras';
     cat.VAT          := 10;
-    cat.parent       := 2;
+    cat.parent       := 1;
     cat.leftChild    := NULLIDX;
     cat.rightSibling := NULLIDX;
     createCateogry(metruApp, cat);
@@ -222,7 +222,7 @@ implementation
     cat.categoryName := 'Aires';
     cat.description  := 'Aires';
     cat.VAT          := 10;
-    cat.parent       := 3;
+    cat.parent       := 2;
     cat.leftChild    := NULLIDX;
     cat.rightSibling := NULLIDX;
     createCateogry(metruApp, cat);

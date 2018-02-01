@@ -4,6 +4,7 @@ object tMessageWidget: tMessageWidget
   Top = 383
   Width = 837
   BorderStyle = bsNone
+  BorderWidth = 1
   Caption = 'Mensaje'
   ClientHeight = 144
   ClientWidth = 837
