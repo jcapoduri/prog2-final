@@ -1,10 +1,10 @@
 object tPublicationSellWidget: tPublicationSellWidget
-  Left = 472
-  Height = 600
-  Top = 198
+  Left = 199
+  Height = 599
+  Top = 185
   Width = 954
   Caption = 'Venta'
-  ClientHeight = 600
+  ClientHeight = 599
   ClientWidth = 954
   OnCreate = FormCreate
   LCLVersion = '1.8.0.6'
@@ -14,6 +14,7 @@ object tPublicationSellWidget: tPublicationSellWidget
     Height = 320
     Top = 8
     Width = 240
+    Anchors = [akTop, akRight]
   end
   object titleLabel: TLabel
     Left = 8
@@ -37,6 +38,7 @@ object tPublicationSellWidget: tPublicationSellWidget
     Height = 15
     Top = 336
     Width = 33
+    Anchors = [akTop, akRight]
     Caption = 'Precio'
     ParentColor = False
   end
@@ -45,6 +47,7 @@ object tPublicationSellWidget: tPublicationSellWidget
     Height = 15
     Top = 336
     Width = 27
+    Anchors = [akTop, akRight]
     Caption = '$0.00'
     ParentColor = False
   end
@@ -58,11 +61,12 @@ object tPublicationSellWidget: tPublicationSellWidget
   end
   object messagesContainer: TScrollBox
     Left = 8
-    Height = 299
+    Height = 298
     Top = 213
     Width = 676
     HorzScrollBar.Page = 1
     VertScrollBar.Page = 1
+    Anchors = [akTop, akLeft, akRight, akBottom]
     TabOrder = 0
   end
   object buyButton: TBitBtn
@@ -70,6 +74,7 @@ object tPublicationSellWidget: tPublicationSellWidget
     Height = 30
     Top = 360
     Width = 75
+    Anchors = [akTop, akRight]
     Caption = 'Comprar!'
     OnClick = buyButtonClick
     TabOrder = 1
@@ -77,8 +82,9 @@ object tPublicationSellWidget: tPublicationSellWidget
   object sendQuestionButton: TBitBtn
     Left = 608
     Height = 64
-    Top = 520
+    Top = 519
     Width = 75
+    Anchors = [akLeft, akBottom]
     Caption = 'Enviar!'
     OnClick = sendQuestionButtonClick
     TabOrder = 2
@@ -87,8 +93,9 @@ object tPublicationSellWidget: tPublicationSellWidget
     Left = 8
     Height = 66
     Hint = 'Mensaje...'
-    Top = 520
+    Top = 519
     Width = 592
+    Anchors = [akLeft, akBottom]
     TabOrder = 3
   end
 end

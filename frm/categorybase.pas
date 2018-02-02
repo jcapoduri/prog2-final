@@ -64,6 +64,7 @@ var
 begin
   Application.createForm(TCategoryForm, self.form);
   i := self.form.ShowModal;
+  FormCreate(nil); //repopulate tree
 end;
 
 procedure TCategoryBase.deleteButtonClick(Sender: TObject);
@@ -73,7 +74,7 @@ var
 begin
   node := self.treeView.Selected;
   item := tCategoryItem(node.Data);
-  self.form.ShowModal;
+  metru.core.deleteCateogry(metruApp, item.categoryIdx);
   FormCreate(nil); //repopulate tree
 end;
 

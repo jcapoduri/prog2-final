@@ -433,12 +433,12 @@ implementation
   var
     node   : tNode;
   begin
-    node := _get(this, parentPos);
-    if keyGt(node.idUser, key) then
-      node.right := childPos
-    else
-      node.left := childPos;
-    _set(this, parentPos, node);
+      node := _get(this, parentPos);
+      if keyGt(node.idUser, key) then
+        node.right := childPos
+      else
+        node.left := childPos;
+      _set(this, parentPos, node);
   end;
 
   function _retrieveOrCreate(var this : tTrinaryTree; pk, sk : tKey) : idxRange;
@@ -466,12 +466,20 @@ implementation
             found  := _searchNodeBySk(this, sk, auxPos);
             if not found then
               begin
-                auxNode.id     := pk;
-                auxNode.idUser := sk;
-                auxNode.parent := pos;
-                auxPos         := _appendNode(this, auxNode);
-                _insertBySk(this, sk, pos, auxPos);
-              end;
+                if auxPos = NULLIDX then
+                  begin
+                    node.center := auxPos;
+                    _set(this, pos, node);
+                  end
+                else
+                  begin
+                    auxNode.id     := pk;
+                    auxNode.idUser := sk;
+                    auxNode.parent := pos;
+                    auxPos         := _appendNode(this, auxNode);
+                    _insertBySk(this, sk, node.center, auxPos);
+                  end;
+               end;
             pos := auxPos
           end;        
       end;

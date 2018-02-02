@@ -126,7 +126,7 @@ begin
     publication.itemType := tItemType.Used;
   publication.status     := tStatus.Publish;
   metru.core.createPublication(metruApp, publication);
-
+  Close;
 end;
 
 end.

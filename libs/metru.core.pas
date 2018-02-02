@@ -320,13 +320,11 @@ implementation
   end;
 
   procedure  createCateogry         (var this : tMetruCore; category : tCategory);
-  var
-    pos : idxRange;
   begin
     if (category.parent = NULLIDX) then
       category.parent := lib.tree.lcrs.root(this.io.categories);
 
-    lib.tree.lcrs.addChild(this.io.categories, pos, category);
+    lib.tree.lcrs.addChild(this.io.categories, category.parent, category);
   end;
 
   procedure  editCateogry           (var this : tMetruCore; catIdx : tCategoryIdx; category : tCategory);
