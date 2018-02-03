@@ -1,0 +1,86 @@
+object UserBlockingForm: TUserBlockingForm
+  Left = 562
+  Height = 145
+  Top = 386
+  Width = 464
+  Caption = 'Bloqueo/Desbloqueo de Usuarios'
+  ClientHeight = 145
+  ClientWidth = 464
+  LCLVersion = '1.8.0.6'
+  object emailEdit: TLabeledEdit
+    Left = 8
+    Height = 23
+    Top = 24
+    Width = 369
+    Anchors = [akTop, akLeft, akRight]
+    EditLabel.AnchorSideLeft.Control = emailEdit
+    EditLabel.AnchorSideRight.Control = emailEdit
+    EditLabel.AnchorSideRight.Side = asrBottom
+    EditLabel.AnchorSideBottom.Control = emailEdit
+    EditLabel.Left = 8
+    EditLabel.Height = 15
+    EditLabel.Top = 6
+    EditLabel.Width = 369
+    EditLabel.Caption = 'Ingrese e-mail del usuario'
+    EditLabel.ParentColor = False
+    TabOrder = 0
+    TextHint = 'usuario@mercatrucho.net'
+  end
+  object closeButton: TBitBtn
+    Left = 8
+    Height = 30
+    Top = 109
+    Width = 75
+    Anchors = [akLeft, akBottom]
+    Caption = 'Cerrar'
+    OnClick = closeButtonClick
+    TabOrder = 1
+  end
+  object toggleBlockButton: TBitBtn
+    Left = 382
+    Height = 30
+    Top = 109
+    Width = 75
+    Anchors = [akRight, akBottom]
+    Caption = 'Bloquear'
+    Enabled = False
+    OnClick = toggleBlockButtonClick
+    TabOrder = 2
+  end
+  object nameLabel: TLabel
+    Left = 10
+    Height = 1
+    Top = 56
+    Width = 1
+    ParentColor = False
+  end
+  object Label2: TLabel
+    Left = 304
+    Height = 15
+    Top = 56
+    Width = 35
+    Anchors = [akTop, akRight]
+    Caption = 'Estado'
+    ParentColor = False
+  end
+  object statusLabel: TLabel
+    Left = 416
+    Height = 1
+    Top = 56
+    Width = 1
+    Anchors = [akTop, akRight]
+    Font.Style = [fsBold]
+    ParentColor = False
+    ParentFont = False
+  end
+  object searchButton: TButton
+    Left = 382
+    Height = 25
+    Top = 24
+    Width = 75
+    Anchors = [akTop, akRight]
+    Caption = 'Buscar'
+    OnClick = searchButtonClick
+    TabOrder = 3
+  end
+end

@@ -69,7 +69,8 @@ type
   function  createUser   (var this : tMetruCore; user : tUser) : boolean;
   function  updateUser   (var this : tMetruCore; user : tUser) : boolean;
   function  banUser      (var this : tMetruCore; user : tUser) : boolean;
-  function  retrieveUser (var this : tMetruCore; id : integer; var user : tUser) : boolean;
+  function  retrieveUser (var this : tMetruCore; id : integer; var user : tUser) : boolean; overload;
+  function  retrieveUser (var this : tMetruCore; email : string; var user : tUser) : boolean; overload;
 
   { category functions }
   procedure createCateogry           (var this : tMetruCore; category : tCategory);
@@ -292,7 +293,7 @@ implementation
   begin
     ok := lib.hash.open.search(this.io.users, user.email, pos);
     if ok then
-      lib.hash.open.insert(this.io.users, user);        
+      lib.hash.open.update(this.io.users, user);        
     updateUser := ok;
   end;
   
@@ -308,7 +309,7 @@ implementation
     banUser := ok;
   end;
 
-  function  retrieveUser (var this : tMetruCore; id : integer; var user : tUser) : boolean;
+  function  retrieveUser (var this : tMetruCore; id : integer; var user : tUser) : boolean; overload;
   var
     idxUser : lib.hash.open.tHashValue;
     found   : boolean;
@@ -318,6 +319,18 @@ implementation
       user := fetchByIdx(this.io.users, idxUser);
     retrieveUser := found;
   end;
+
+  function  retrieveUser (var this : tMetruCore; email : string; var user : tUser) : boolean; overload;
+  var
+    idxUser : lib.hash.open.tHashValue;
+    found   : boolean;
+  begin
+    found := lib.hash.open.search(this.io.users, email, idxUser);
+    if found then
+      user := fetchByIdx(this.io.users, idxUser);
+    retrieveUser := found;
+  end;
+
 
   procedure  createCateogry         (var this : tMetruCore; category : tCategory);
   begin
