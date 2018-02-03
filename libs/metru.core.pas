@@ -62,15 +62,16 @@ type
   procedure kickoff (var this : tMetruCore);
 
   { User functions }
-  function  login        (var this : tMetruCore; email, pass : string; var blocked : boolean) : boolean;
-  function  isLogedIn    (var this : tMetruCore) : boolean;
-  function  loggedUser   (var this : tMetruCore) : tUser;
-  procedure logoff       (var this : tMetruCore);
-  function  createUser   (var this : tMetruCore; user : tUser) : boolean;
-  function  updateUser   (var this : tMetruCore; user : tUser) : boolean;
-  function  banUser      (var this : tMetruCore; user : tUser) : boolean;
-  function  retrieveUser (var this : tMetruCore; id : integer; var user : tUser) : boolean; overload;
-  function  retrieveUser (var this : tMetruCore; email : string; var user : tUser) : boolean; overload;
+  function  login            (var this : tMetruCore; email, pass : string; var blocked : boolean) : boolean;
+  function  isLogedIn        (var this : tMetruCore) : boolean;
+  function  isLogedUserAdmin (var this : tMetruCore) : boolean;
+  function  loggedUser       (var this : tMetruCore) : tUser;
+  procedure logoff           (var this : tMetruCore);
+  function  createUser       (var this : tMetruCore; user : tUser) : boolean;
+  function  updateUser       (var this : tMetruCore; user : tUser) : boolean;
+  function  banUser          (var this : tMetruCore; user : tUser) : boolean;
+  function  retrieveUser     (var this : tMetruCore; id : integer; var user : tUser) : boolean; overload;
+  function  retrieveUser     (var this : tMetruCore; email : string; var user : tUser) : boolean; overload;
 
   { category functions }
   procedure createCateogry           (var this : tMetruCore; category : tCategory);
@@ -263,6 +264,11 @@ implementation
     loggedUser := this.user;
   end;
 
+  function  isLogedUserAdmin (var this : tMetruCore) : boolean;
+  begin
+    isLogedUserAdmin := this.user.email = 'admistrador@mercatrucho.com';
+  end;
+
   procedure logoff     (var this : tMetruCore);
   begin
     this.user.status := false;
@@ -299,13 +305,26 @@ implementation
   
   function  banUser    (var this : tMetruCore; user : tUser) : boolean;
   var 
-    pos : tHashValue;
-    ok  : boolean;
+    pos      : tHashValue;
+    ok       : boolean;
+    list     : tPublishIdxList;
+    pub      : tPublish;  
+    i, count : integer;
   begin
     ok := lib.hash.open.search(this.io.users, user.email, pos);
     if ok then
-      {TODO : search if has active publication}
-      lib.hash.open.remove(this.io.users, user);
+      begin
+        list  := metru.core.retrievePublicationByUser(this, user);
+        count := length(list);
+        i     := 0;
+        while ok and (i < count) do
+          begin
+            metru.core.dereferencePublication(this, list[i], pub);
+            ok  := pub.status <> lib.tree.avl.Publish;
+          end;
+        if ok then
+          lib.hash.open.remove(this.io.users, user);
+      end;
     banUser := ok;
   end;
 

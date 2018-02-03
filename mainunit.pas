@@ -24,6 +24,8 @@ type
 
   TmainWidget = class(TForm)
     MainMenu1: TMainMenu;
+    MenuItem1: TMenuItem;
+    deleteUserMenuItem: TMenuItem;
     reportsMenuItem: TMenuItem;
     balanceTrinaryTreeMenuItem: TMenuItem;
     hashDispersionTestMenuItem: TMenuItem;
@@ -52,6 +54,7 @@ type
     displayPanel: TPanel;
     login : TLoginForm;
     procedure balanceTrinaryTreeMenuItemClick(Sender: TObject);
+    procedure deleteUserMenuItemClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure categoryCRUDMenuItemClick(Sender: TObject);
     procedure hashDispersionTestMenuItemClick(Sender: TObject);
@@ -131,6 +134,23 @@ end;
 procedure TmainWidget.balanceTrinaryTreeMenuItemClick(Sender: TObject);
 begin
 
+end;
+
+procedure TmainWidget.deleteUserMenuItemClick(Sender: TObject);
+var
+  buttonSelected : Integer;
+  user           : tUser;
+begin
+  user           := metru.core.loggedUser(metruApp);
+  buttonSelected := MessageDlg('Esta seguro que desea cerrar su cuenta de MercaTrucho',mtCustom, [mbYes,mbCancel], 0);
+  if buttonSelected = mrYes then
+    if metru.core.banUser(metruApp, user) then
+      begin
+        MessageDlg('Usuario borrado con exito',mtCustom, [mbOk], 0);
+        self.quitMenuItemClick(Sender);
+      end
+    else
+      MessageDlg('No pudo cerrarse la cuenta, por favor cierre todas sus publicaciones e intente de nuevo',mtCustom, [mbOk], 0);
 end;
 
 procedure TmainWidget.categoryCRUDMenuItemClick(Sender: TObject);

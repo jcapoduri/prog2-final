@@ -30,6 +30,13 @@ object mainWidget: TmainWidget
         Caption = 'Editar'
         OnClick = userEditMenuItemClick
       end
+      object deleteUserMenuItem: TMenuItem
+        Caption = 'Eliminar cuenta'
+        OnClick = deleteUserMenuItemClick
+      end
+      object MenuItem1: TMenuItem
+        Caption = '-'
+      end
       object quitMenuItem: TMenuItem
         Caption = 'Salir'
         OnClick = quitMenuItemClick
