@@ -13,6 +13,7 @@ uses
   categorybase in 'frm\cateogorybase.pas',
   selllistform,
   widgetlistform,
+  UserForm,
   userblockform,
   userReportPublicationForm,
   metru.core   in 'libs\metru.core.pas';
@@ -65,6 +66,7 @@ type
     procedure reportAllPublicationsMenuItemClick(Sender: TObject);
     procedure reportByCategoryMenuItemClick(Sender: TObject);
     procedure reportByMaxPerCateogryMenuItemClick(Sender: TObject);
+    procedure userEditMenuItemClick(Sender: TObject);
   private
     { private declarations }
   public
@@ -105,6 +107,16 @@ end;
 procedure TmainWidget.reportByMaxPerCateogryMenuItemClick(Sender: TObject);
 begin
 
+end;
+
+procedure TmainWidget.userEditMenuItemClick(Sender: TObject);
+var
+  userForm : TUserForm;
+  usr      : tUser;
+begin
+  usr      := metru.core.loggedUser(metruApp);
+  userForm := TUserForm.Create(self, usr);
+  userForm.Show;
 end;
 
 procedure TmainWidget.FormCreate(Sender: TObject);
@@ -220,17 +232,18 @@ end;
 procedure TmainWidget.cleanPanel;
 var
   i    : integer;
-  temp : tComponent;
+  temp : tControl;
 begin
-  for i := 0 to self.displayPanel.componentCount do
+  for i := 0 to self.displayPanel.ControlCount - 1 do
     begin
-      temp := self.displayPanel.components[i];
-      self.displayPanel.removeComponent(temp);
+      temp := self.displayPanel.Controls[i];
+      self.displayPanel.RemoveControl(temp);
     end;
 end;
 
 procedure TmainWidget.setComponentOnPanel(childItem : TForm);
 begin
+  cleanPanel;
   childItem.parent  := self.displayPanel;
   childItem.BorderStyle:= bsNone;
   childItem.top     := 0;

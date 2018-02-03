@@ -28,6 +28,7 @@ object mainWidget: TmainWidget
       Caption = 'Usuario'
       object userEditMenuItem: TMenuItem
         Caption = 'Editar'
+        OnClick = userEditMenuItemClick
       end
       object quitMenuItem: TMenuItem
         Caption = 'Salir'

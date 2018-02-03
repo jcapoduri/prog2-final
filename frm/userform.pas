@@ -32,8 +32,9 @@ type
     procedure cancelButtonClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure saveButtonClick(Sender: TObject);
+    constructor Create(_owner : tComponent; usr : tUser); overload;
   private
-
+    user : tUser;
   public
 
   end;
@@ -50,7 +51,14 @@ implementation
 
 procedure TUserForm.FormCreate(Sender: TObject);
 begin
-
+  if user.id > 0 then
+    begin
+      emailEdit.Text         := user.email;      
+      addressEdit.Text       := user.address;
+      nameEdit.Text          := user.fullname;
+      State.ItemIndex        := user.providence;
+      pictureDialog.FileName := user.photoUrl;
+    end;
 end;
 
 procedure TUserForm.cancelButtonClick(Sender: TObject);
@@ -66,8 +74,8 @@ end;
 
 procedure TUserForm.saveButtonClick(Sender: TObject);
 var
-  user : tUser;
   regularExpression : TRegExpr;
+  createdOrUpdated : boolean;
 begin
   { assert if valid }
   errorLabel.Caption := '';
@@ -76,21 +84,36 @@ begin
 
   if EmptyStr = emailEdit.Text                  then errorLabel.Caption := errorLabel.Caption + 'Tiene que ingresar un email.';
   if not regularExpression.Exec(emailEdit.Text) then errorLabel.Caption := errorLabel.Caption + 'Tiene que ingresar un email valido.';
-  if Length(pass1Edit.Text) < 8                 then errorLabel.Caption := errorLabel.Caption + 'Tiene que ingresar una contraseña de al menos 8 caracteres.';
-  if pass1Edit.Text <> pass2Edit.Text           then errorLabel.Caption := errorLabel.Caption + 'Las contraseña deben coincidir.';
+  if (user.id = 0) or (pass1Edit.Text <> EmptyStr) then
+    begin
+      if Length(pass1Edit.Text) < 8                 then errorLabel.Caption := errorLabel.Caption + 'Tiene que ingresar una contraseña de al menos 8 caracteres.';
+      if pass1Edit.Text <> pass2Edit.Text           then errorLabel.Caption := errorLabel.Caption + 'Las contraseña deben coincidir.';
+    end;
 
   if errorLabel.Caption <> EmptyStr then exit;
 
   user.email      := LowerCase(emailEdit.Text);
-  user.password   := LowerCase(pass1Edit.Text);
+  if (user.id = 0) or (pass1Edit.Text <> EmptyStr) then
+    user.password   := LowerCase(pass1Edit.Text);
   user.address    := LowerCase(addressEdit.Text);
   user.fullname   := LowerCase(nameEdit.Text);
   user.providence := State.Items.IndexOf(State.Text);
   user.photoUrl   := LowerCase(pictureDialog.FileName);
-  if metru.core.createUser(metruApp, user) then
+  if user.id = 0 then
+    createdOrUpdated := metru.core.createUser(metruApp, user)
+  else
+    createdOrUpdated := metru.core.updateUser(metruApp, user);
+
+  if createdOrUpdated then
     close
   else
     errorLabel.Caption := 'El email ya esta registrado';
+end;
+
+constructor TUserForm.Create(_owner: tComponent; usr: tUser);
+begin
+  self.user := usr;
+  inherited Create(_owner);
 end;
 
 end.
