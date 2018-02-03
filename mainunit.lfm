@@ -63,7 +63,7 @@ object mainWidget: TmainWidget
         OnClick = mySellsBaseMenuItemClick
       end
     end
-    object MenuItem1: TMenuItem
+    object reportsMenuItem: TMenuItem
       Caption = 'Reportes'
       object reportAllPublicationsMenuItem: TMenuItem
         Caption = 'Listado de articulos publicados'
@@ -71,13 +71,46 @@ object mainWidget: TmainWidget
       end
       object reportByCategoryMenuItem: TMenuItem
         Caption = 'Listado de totales de categoría'
+        OnClick = reportByCategoryMenuItemClick
       end
       object reportByMaxPerCateogryMenuItem: TMenuItem
         Caption = 'Listado de Categorias por Mayores Totales'
+        OnClick = reportByMaxPerCateogryMenuItemClick
+      end
+      object reportBySellerMenuItem: TMenuItem
+        Caption = 'Listado de mensajes de vendedor'
+      end
+      object reportByBuyerMenuItem: TMenuItem
+        Caption = 'Listado de mensajes de comprador'
+      end
+      object reportOfPublicationByMenuItem: TMenuItem
+        Caption = 'Listado de publicaciones de un usuario'
+      end
+      object reportByPurchasesMenuItem: TMenuItem
+        Caption = 'Listado de Compras'
+      end
+      object reportCategoryMenuItem: TMenuItem
+        Caption = 'Listado de una categoría'
       end
     end
     object advanceBaseMenuItem: TMenuItem
       Caption = 'Avanzado'
+      object balanceTrinaryTreeMenuItem: TMenuItem
+        Caption = 'Balanceo de Arbol de mensajes'
+        OnClick = balanceTrinaryTreeMenuItemClick
+      end
+      object hashDispersionTestMenuItem: TMenuItem
+        Caption = 'Test de dispersion de Hashing'
+        OnClick = hashDispersionTestMenuItemClick
+      end
+      object lockUserMenuItem: TMenuItem
+        Caption = 'Bloqueo/Desbloqueo de Usuarios'
+        OnClick = lockUserMenuItemClick
+      end
+      object messagesPopulationMenuItem: TMenuItem
+        Caption = 'Generar conversaciones en publicacion'
+        OnClick = messagesPopulationMenuItemClick
+      end
     end
   end
 end

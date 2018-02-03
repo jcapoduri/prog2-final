@@ -13,6 +13,7 @@ uses
   categorybase in 'frm\cateogorybase.pas',
   selllistform,
   widgetlistform,
+  userblockform,
   userReportPublicationForm,
   metru.core   in 'libs\metru.core.pas';
 
@@ -22,7 +23,16 @@ type
 
   TmainWidget = class(TForm)
     MainMenu1: TMainMenu;
-    MenuItem1: TMenuItem;
+    reportsMenuItem: TMenuItem;
+    balanceTrinaryTreeMenuItem: TMenuItem;
+    hashDispersionTestMenuItem: TMenuItem;
+    lockUserMenuItem: TMenuItem;
+    reportByPurchasesMenuItem: TMenuItem;
+    reportCategoryMenuItem: TMenuItem;
+    reportOfPublicationByMenuItem: TMenuItem;
+    reportBySellerMenuItem: TMenuItem;
+    reportByBuyerMenuItem: TMenuItem;
+    messagesPopulationMenuItem: TMenuItem;
     reportByMaxPerCateogryMenuItem: TMenuItem;
     reportByCategoryMenuItem: TMenuItem;
     reportAllPublicationsMenuItem: TMenuItem;
@@ -40,8 +50,12 @@ type
     myPublicationMenuItem: TMenuItem;
     displayPanel: TPanel;
     login : TLoginForm;
+    procedure balanceTrinaryTreeMenuItemClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure categoryCRUDMenuItemClick(Sender: TObject);
+    procedure hashDispersionTestMenuItemClick(Sender: TObject);
+    procedure lockUserMenuItemClick(Sender: TObject);
+    procedure messagesPopulationMenuItemClick(Sender: TObject);
     procedure mySellsBaseMenuItemClick(Sender: TObject);
     procedure myPublicationMenuItemClick(Sender: TObject);
     procedure newPublicationMenuItemClick(Sender: TObject);
@@ -49,6 +63,8 @@ type
     procedure quitMenuItemClick(Sender: TObject);
     procedure EmbedForm(ArgParent : TWinControl; ArgForm : TCustomForm);
     procedure reportAllPublicationsMenuItemClick(Sender: TObject);
+    procedure reportByCategoryMenuItemClick(Sender: TObject);
+    procedure reportByMaxPerCateogryMenuItemClick(Sender: TObject);
   private
     { private declarations }
   public
@@ -81,6 +97,16 @@ begin
   setComponentOnPanel(form);
 end;
 
+procedure TmainWidget.reportByCategoryMenuItemClick(Sender: TObject);
+begin
+
+end;
+
+procedure TmainWidget.reportByMaxPerCateogryMenuItemClick(Sender: TObject);
+begin
+
+end;
+
 procedure TmainWidget.FormCreate(Sender: TObject);
 begin
   Application.CreateForm(TLoginForm, login);
@@ -90,12 +116,35 @@ begin
   login.ShowModal;
 end;
 
+procedure TmainWidget.balanceTrinaryTreeMenuItemClick(Sender: TObject);
+begin
+
+end;
+
 procedure TmainWidget.categoryCRUDMenuItemClick(Sender: TObject);
 var
   form : TCategoryBase;
 begin
   form := TCategoryBase.Create(self);
   setComponentOnPanel(form);
+end;
+
+procedure TmainWidget.hashDispersionTestMenuItemClick(Sender: TObject);
+begin
+
+end;
+
+procedure TmainWidget.lockUserMenuItemClick(Sender: TObject);
+var
+  form : TUserBlockingForm;
+begin
+  form := TUserBlockingForm.Create(self);
+  form.show;
+end;
+
+procedure TmainWidget.messagesPopulationMenuItemClick(Sender: TObject);
+begin
+
 end;
 
 procedure TmainWidget.mySellsBaseMenuItemClick(Sender: TObject);
@@ -164,6 +213,7 @@ end;
 procedure TmainWidget.quitMenuItemClick(Sender: TObject);
 begin
   metru.core.logoff(metruApp);
+  cleanPanel;
   login.ShowModal;
 end;
 
