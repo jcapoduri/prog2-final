@@ -148,8 +148,11 @@ implementation
   var
     lvl : tLevel;
   begin
-    seek (this.levels, pos);
-    read (this.levels, lvl);
+    lvl.totalNodes := 0;
+    if filesize(this.levels) <= pos then
+      write(this.levels, lvl);  
+    seek(this.levels, pos);
+    read(this.levels, lvl);
     _getLevel := lvl;
   end;
 
@@ -157,6 +160,50 @@ implementation
   begin
     seek(this.levels, pos);
     write(this.levels, lvl);
+  end;
+
+  function _nodeDistanceToRoot(var this : tTrinaryTree; node: tNode) : integer;
+  var 
+    auxNode  : tNode;
+    distance : integer;
+  begin
+    distance := 0;
+    auxNode := node;
+    while auxNode.parent <> NULLIDX do
+      auxNode := _get(this, auxNode.parent);
+    _nodeDistanceToRoot := distance;
+  end;
+
+  procedure _increaseLevel(var this : tTrinaryTree; node: tNode);
+  var
+    level  : tLevel;
+    lvlNro : integer;
+    rc     : tControlRecord;
+  begin
+    rc               := _getControl(this);
+    lvlNro           := _nodeDistanceToRoot(this, node);
+    level            := _getLevel(this, lvlNro);
+    level.totalNodes := level.totalNodes + 1;
+    _setLevel(this, lvlNro, level);
+    if rc.lastLevel < lvlNro then
+      rc.lastLevel := lvlNro;
+    _setControl(this, rc);
+  end;
+
+  procedure _decreaseLevel(var this : tTrinaryTree; node: tNode);
+  var
+    level  : tLevel;
+    lvlNro : integer;
+    rc     : tControlRecord;
+  begin
+    rc               := _getControl(this);
+    lvlNro           := _nodeDistanceToRoot(this, node);
+    level            := _getLevel(this, lvlNro);
+    level.totalNodes := level.totalNodes - 1;
+    _setLevel(this, lvlNro, level);
+    if (rc.lastLevel = lvlNro) and (level.totalNodes = 0) then
+      rc.lastLevel := rc.lastLevel - 1;
+    _setControl(this, rc);
   end;
 
   function _max(a, b : integer) : integer;
@@ -455,6 +502,7 @@ implementation
         node.parent := pos;
         auxPos      := _appendNode(this, node);
         _insertByPk(this, pk, pos, auxPos);
+        _increaseLevel(this, node);
         pos         := auxPos;
       end
     else
