@@ -50,6 +50,8 @@ type
   procedure remove       (var this : tOpenHash; node : tNode);
   function  fetch        (var this : tOpenHash; email: tKey) : tNode;
   function  fetchByIdx   (var this : tOpenHash; pos: tHashValue) : tNode;
+  function  fetchFirst   (var this : tOpenHash; var pos: idxRange) : boolean;
+  function  fetchNext    (var this : tOpenHash; var pos: idxRange) : boolean;
 
 implementation
   { Helpers }
@@ -310,6 +312,40 @@ implementation
     node := _get(this, pos);
     _closeHash(this);
     fetchByIdx := node;
+  end;
+
+  function  fetchFirst       (var this : tOpenHash; var pos: idxRange) : boolean;
+  var
+    found : boolean;
+    node  : tNode;
+    idx   : idxRange;
+  begin
+    pos := 0;
+    fetchFirst := fetchNext(this, pos);
+  end;
+
+  function  fetchNext        (var this : tOpenHash; var pos: idxRange) : boolean;
+  var
+    found : boolean;
+    node  : tNode;
+    idx   : idxRange;
+  begin
+    idx   := pos;
+    found := false;
+    _openHash(this);
+    while (not found) and (idx <= MAX) do
+      begin
+        node := _get(this, pos);
+        if (node.id > NULLIDX) then
+          found := true
+        else
+          idx := idx + 1;
+      end;
+    _closeHash(this);
+    if found then
+      pos      := idx;
+
+    fetchNext := found;
   end;
   
 end.

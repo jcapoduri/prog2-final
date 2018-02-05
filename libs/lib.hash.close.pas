@@ -366,5 +366,5 @@ implementation
     _closeHash(this);
     fetch := node;
   end;
-  
+
 end.

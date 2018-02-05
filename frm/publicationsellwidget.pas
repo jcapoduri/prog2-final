@@ -68,7 +68,7 @@ begin
   self.titleLabel.Caption := self.publication.itemName;
   self.descriptionLabel.Caption := self.publication.details;
   self.priceLabel.Caption:= FloatToStr(self.publication.price);
-  if (publication.idUser = user.id) then {if publication is my own, disable purchase}
+  if (publication.idUser = user.id) or (publication.status <> tStatus.Publish) or (publication.etimestamp < Now) then {if publication is my own, disable purchase}
      self.buyButton.Enabled := false;
   populateMessages;
 end;

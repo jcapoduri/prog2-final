@@ -159,6 +159,46 @@ object tPublicationForm: tPublicationForm
     ParentColor = False
     ParentFont = False
   end
+  object statusNameLabel: TLabel
+    Left = 16
+    Height = 15
+    Top = 328
+    Width = 41
+    Caption = 'Estado: '
+    ParentColor = False
+    Visible = False
+  end
+  object statusLabel: TLabel
+    Left = 120
+    Height = 15
+    Top = 328
+    Width = 59
+    Caption = 'statusLabel'
+    ParentColor = False
+    Visible = False
+  end
+  object pauseButton: TBitBtn
+    Left = 200
+    Height = 30
+    Top = 325
+    Width = 75
+    Caption = 'Pausar'
+    Enabled = False
+    OnClick = pauseButtonClick
+    TabOrder = 9
+    Visible = False
+  end
+  object voidButton: TBitBtn
+    Left = 280
+    Height = 30
+    Top = 325
+    Width = 75
+    Caption = 'Anular'
+    Enabled = False
+    OnClick = voidButtonClick
+    TabOrder = 10
+    Visible = False
+  end
   object pictureDialog: TOpenPictureDialog
     left = 488
     top = 216

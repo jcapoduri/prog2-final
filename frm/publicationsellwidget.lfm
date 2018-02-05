@@ -18,11 +18,14 @@ object tPublicationSellWidget: tPublicationSellWidget
   end
   object titleLabel: TLabel
     Left = 8
-    Height = 15
+    Height = 28
     Top = 8
-    Width = 48
+    Width = 89
     Caption = 'titleLabel'
+    Font.Height = -20
+    Font.Style = [fsBold]
     ParentColor = False
+    ParentFont = False
   end
   object descriptionLabel: TLabel
     Left = 8

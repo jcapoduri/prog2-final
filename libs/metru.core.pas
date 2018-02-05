@@ -37,6 +37,7 @@ type
   tItemType       = lib.tree.avl.tItemType;
   tStatus         = lib.tree.avl.tStatus;
   tUser           = lib.hash.open.tUser;
+  tUserIterator   = lib.hash.open.tHashValue;
   tMessage        = lib.tree.trinary.tMessage;
   tMessageIdx     = lib.tree.trinary.idxRange;
   tMessageList    = array of tMessageIdx;
@@ -62,16 +63,18 @@ type
   procedure kickoff (var this : tMetruCore);
 
   { User functions }
-  function  login            (var this : tMetruCore; email, pass : string; var blocked : boolean) : boolean;
-  function  isLogedIn        (var this : tMetruCore) : boolean;
-  function  isLogedUserAdmin (var this : tMetruCore) : boolean;
-  function  loggedUser       (var this : tMetruCore) : tUser;
-  procedure logoff           (var this : tMetruCore);
-  function  createUser       (var this : tMetruCore; user : tUser) : boolean;
-  function  updateUser       (var this : tMetruCore; user : tUser) : boolean;
-  function  banUser          (var this : tMetruCore; user : tUser) : boolean;
-  function  retrieveUser     (var this : tMetruCore; id : integer; var user : tUser) : boolean; overload;
-  function  retrieveUser     (var this : tMetruCore; email : string; var user : tUser) : boolean; overload;
+  function  login             (var this : tMetruCore; email, pass : string; var blocked : boolean) : boolean;
+  function  isLogedIn         (var this : tMetruCore) : boolean;
+  function  isLogedUserAdmin  (var this : tMetruCore) : boolean;
+  function  loggedUser        (var this : tMetruCore) : tUser;
+  procedure logoff            (var this : tMetruCore);
+  function  createUser        (var this : tMetruCore; user : tUser) : boolean;
+  function  updateUser        (var this : tMetruCore; user : tUser) : boolean;
+  function  banUser           (var this : tMetruCore; user : tUser) : boolean;
+  function  retrieveUser      (var this : tMetruCore; id : integer; var user : tUser) : boolean; overload;
+  function  retrieveUser      (var this : tMetruCore; email : string; var user : tUser) : boolean; overload;
+  function  retrieveFirstUser (var this : tMetruCore; iterator : tUserIterator) : boolean;
+  function  retrieveNextUser  (var this : tMetruCore; iterator : tUserIterator) : boolean;
 
   { category functions }
   procedure createCateogry           (var this : tMetruCore; category : tCategory);
@@ -85,8 +88,8 @@ type
 
   { publication functions }
   procedure createPublication             (var this : tMetruCore; publication : tPublish);
-  procedure editPublication               (var this : tMetruCore; publication : tPublish);
-  procedure deletePublication             (var this : tMetruCore; publication : tPublish);
+  procedure editPublication               (var this : tMetruCore; pubIdx : tPublishIdx; publication : tPublish);
+  procedure deletePublication             (var this : tMetruCore; pubIdx : tPublishIdx);
   function  retrieveAllPublication        (var this : tMetruCore) : tPublishIdxList;
   function  retrievePublicationByCategory (var this : tMetruCore; var category : tCategory) : tPublishIdxList;
   function  retrievePublicationByUser     (var this : tMetruCore; var user : tUser) : tPublishIdxList;
@@ -350,6 +353,13 @@ implementation
     retrieveUser := found;
   end;
 
+  function  retrieveFirstUser (var this : tMetruCore; iterator : tUserIterator) : boolean;
+  begin
+  end;
+
+  function  retrieveNextUser  (var this : tMetruCore; iterator : tUserIterator) : boolean;
+  begin
+  end;
 
   procedure  createCateogry         (var this : tMetruCore; category : tCategory);
   begin
@@ -487,12 +497,14 @@ implementation
     lib.tree.avl.append(this.io.publications, publication);
   end;
 
-  procedure editPublication           (var this : tMetruCore; publication : tPublish);
+  procedure editPublication           (var this : tMetruCore; pubIdx : tPublishIdx; publication : tPublish);
   begin
+    lib.tree.avl.update(this.io.publications, pubIdx, publication);
   end;
   
-  procedure deletePublication         (var this : tMetruCore; publication : tPublish);
+  procedure deletePublication         (var this : tMetruCore; pubIdx : tPublishIdx);
   begin
+    lib.tree.avl.remove(this.io.publications, pubIdx);
   end;
 
   function retrievePublicationByCategory (var this : tMetruCore; var category : tCategory) : tPublishIdxList;
@@ -675,7 +687,7 @@ implementation
     lib.hash.close.insert(this.io.sells, purchase);
 
     publication.status        :=  lib.tree.avl.Sold;
-    lib.tree.avl.update(this.io.publications, publication);
+    lib.tree.avl.update(this.io.publications, pubIdx, publication);
   end;
 
   procedure doPayment             (var this : tMetruCore; sellIdx : tSellIdx);

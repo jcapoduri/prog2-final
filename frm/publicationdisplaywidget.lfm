@@ -8,7 +8,7 @@ object tPublicationDisplayWidget: tPublicationDisplayWidget
   Caption = 'Form2'
   ClientHeight = 119
   ClientWidth = 696
-  OnActivate = FormActivate
+  OnCreate = FormCreate
   LCLVersion = '1.8.0.6'
   object imagePreview: TImage
     Left = 7
@@ -18,31 +18,34 @@ object tPublicationDisplayWidget: tPublicationDisplayWidget
   end
   object titleLabel: TLabel
     Left = 114
-    Height = 1
+    Height = 15
     Top = 8
-    Width = 1
+    Width = 20
+    Caption = 'title'
     ParentColor = False
   end
   object descriptionLabel: TLabel
     Left = 114
-    Height = 79
+    Height = 48
     Top = 32
     Width = 494
     AutoSize = False
+    Caption = 'desc'
     ParentColor = False
     WordWrap = True
   end
   object priceLabel: TLabel
-    Left = 685
-    Height = 1
+    Left = 659
+    Height = 15
     Top = 8
-    Width = 1
+    Width = 27
     Anchors = [akTop, akRight]
+    Caption = '$0.00'
     ParentColor = False
   end
   object openButton: TButton
-    Left = 615
-    Height = 25
+    Left = 611
+    Height = 30
     Top = 86
     Width = 75
     Anchors = [akRight, akBottom]
@@ -51,13 +54,45 @@ object tPublicationDisplayWidget: tPublicationDisplayWidget
     TabOrder = 0
   end
   object editButton: TBitBtn
-    Left = 615
+    Left = 533
     Height = 30
-    Top = 48
+    Top = 86
     Width = 75
     Anchors = [akRight, akBottom]
     Caption = 'Editar'
     OnClick = editButtonClick
     TabOrder = 1
+    Visible = False
+  end
+  object statusLabel: TLabel
+    Left = 615
+    Height = 15
+    Top = 27
+    Width = 32
+    Anchors = [akTop, akRight]
+    Caption = 'Status'
+    ParentColor = False
+  end
+  object deleteButton: TBitBtn
+    Left = 456
+    Height = 30
+    Top = 86
+    Width = 75
+    Anchors = [akRight, akBottom]
+    Caption = 'Borrar'
+    OnClick = deleteButtonClick
+    TabOrder = 2
+    Visible = False
+  end
+  object blockButton: TBitBtn
+    Left = 376
+    Height = 30
+    Top = 86
+    Width = 75
+    Anchors = [akRight, akBottom]
+    Caption = 'Bloquear'
+    OnClick = blockButtonClick
+    TabOrder = 3
+    Visible = False
   end
 end

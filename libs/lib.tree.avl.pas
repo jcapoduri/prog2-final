@@ -59,8 +59,8 @@ type
   function  searchByUser       (var this : tAVLtree; key : tKey; var pos: idxRange) : boolean;
   function  searchByCategory   (var this : tAVLtree; key : tKey; var pos: idxRange) : boolean;
   procedure append             (var this : tAVLtree; publication : tPublish);
-  procedure update             (var this : tAVLtree; publication : tPublish);
-  procedure remove             (var this : tAVLtree; publication : tPublish);
+  procedure update             (var this : tAVLtree; pos : idxRange; publication : tPublish);
+  procedure remove             (var this : tAVLtree; pubIdx : idxRange);
   function  fetch              (var this : tAVLtree; pos: idxRange) : tPublish;
   function  fetchByUser        (var this : tAVLtree; pos: idxRange) : idxRange;
   function  fetchByCategory    (var this : tAVLtree; pos: idxRange) : idxRange;
@@ -767,16 +767,10 @@ implementation
     _closeTree(this);
   end;
 
-  procedure update             (var this : tAVLtree; publication : tPublish);
-  var
-    pos  : idxRange;
-    node : tNode;
+  procedure update             (var this : tAVLtree; pos: idxRange; publication : tPublish);
   begin
     _openTree(this);
-    _searchByUser(this, publication.idUser, pos);
-    node := _getByUser(this, pos);
-    _setPublication(this, node.index, publication);
-    _append(this, publication);
+    _setPublication(this, pos, publication);
     _closeTree(this);
   end;
 
@@ -874,11 +868,13 @@ implementation
       end;
   end;
 
-  procedure remove          (var this: tAVLtree; publication: tPublish);
+  procedure remove          (var this: tAVLtree; pubIdx: idxRange);
   var
     pos : idxRange;
+    publication: tPublish;
   begin
     _openTree(this);
+    publication := _getPublishByPos(this, pubIdx);
     searchByUser(this, publication.idUser, pos);
     _removeByUser(this, pos);
     _balanceIfNeeded(this, this.idxByUser, pos);
