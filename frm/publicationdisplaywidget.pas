@@ -72,8 +72,25 @@ begin
 end;
 
 procedure tPublicationDisplayWidget.blockButtonClick(Sender: TObject);
+var
+  buttonSelected : Integer;
+  operation      : string;
 begin
-
+  if publication.status = tStatus.Blocked then
+    operation := 'desbloquear'
+  else
+    operation := 'bloquear';
+  buttonSelected := MessageDlg('Esta seguro que desea' + operation + 'esta publicacion?',mtCustom, [mbYes,mbCancel], 0);
+  if buttonSelected = mrYes then
+    begin
+      if publication.status = tStatus.Blocked then
+        publication.status := tStatus.Publish
+      else
+        publication.status := tStatus.Blocked;
+      metru.core.editPublication(metruApp, self.publicationIdx, publication);
+      if Assigned(self.onUpdate) then
+        onUpdate(self);
+    end;
 end;
 
 procedure tPublicationDisplayWidget.editButtonClick(Sender: TObject);
@@ -94,14 +111,18 @@ begin
   case self.publication.status of
     tStatus.Publish: begin
                        self.statusLabel.Caption  := 'Publicado';
-                       self.blockButton.Visible  := self.isAdmin;
                        self.editButton.Visible   := self.isOwn;
                        self.deleteButton.Visible := self.isOwn;
+                       self.blockButton.Visible := self.isAdmin;
                      end;
     tStatus.Paused:  self.statusLabel.Caption := 'Pausado';
     tStatus.Sold:    self.statusLabel.Caption := 'Vendido';
     tStatus.Void:    self.statusLabel.Caption := 'Anulado';
-    tStatus.Blocked: self.statusLabel.Caption := 'Bloqueado';
+    tStatus.Blocked: begin
+                       self.blockButton.Visible := self.isAdmin;
+                       self.statusLabel.Caption := 'Bloqueado';
+                       self.blockButton.Caption := 'Desbloquear';
+                     end;
   end;
 end;
 
