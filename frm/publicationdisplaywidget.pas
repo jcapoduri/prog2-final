@@ -113,7 +113,7 @@ begin
                        self.statusLabel.Caption  := 'Publicado';
                        self.editButton.Visible   := self.isOwn;
                        self.deleteButton.Visible := self.isOwn;
-                       self.blockButton.Visible := self.isAdmin;
+                       self.blockButton.Visible  := self.isAdmin;
                      end;
     tStatus.Paused:  self.statusLabel.Caption := 'Pausado';
     tStatus.Sold:    self.statusLabel.Caption := 'Vendido';

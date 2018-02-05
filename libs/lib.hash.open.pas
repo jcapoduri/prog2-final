@@ -42,7 +42,7 @@ type
 
   procedure loadHash     (var this : tOpenHash; path, filename : string);
   procedure newEmptyHash (var this : tOpenHash; path, filename : string);
-  {function  isEmpty      (var this : tOpenHash) : boolean;}
+  function  hash         (var this : tOpenHash; email : tKey) : tHashValue;
   function  search       (var this : tOpenHash; email : tKey; var pos: tHashValue) : boolean;
   function  searchById   (var this : tOpenHash; id :longint; var pos: tHashValue) : boolean;
   procedure insert       (var this : tOpenHash; node : tNode);
@@ -103,6 +103,11 @@ implementation
   begin
     hashing := MD5Print(MD5String(email));
     _hash   := StrToInt64(LeftStr('$' + hashing, 16)) mod MAX;
+  end;
+
+  function  hash(var this : tOpenHash; email : tKey) : tHashValue;
+  begin
+    hash := _hash(email);
   end;
 
   function _nextPos(pos : tHashValue) : tHashValue;

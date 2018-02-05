@@ -56,6 +56,7 @@ type
   procedure update           (var this : tCloseHash; pos: idxRange; sell : tSell);
   procedure remove           (var this : tCloseHash; pos: idxRange);
   function  fetch            (var this : tCloseHash; pos: idxRange) : tSell;
+  function  hash             (var this : tCloseHash; id : tKey) : tHashValue;
 
 implementation
   { Helpers }
@@ -121,6 +122,11 @@ implementation
   function  _hash(id : tKey) : tHashValue;
   begin
     _hash := id mod MAX;
+  end;
+
+  function  hash(var this : tCloseHash; id : tKey) : tHashValue;
+  begin
+    hash := _hash(id);
   end;
 
   function _append (var this : tCloseHash; var item : tNode) : idxRange;

@@ -37,7 +37,7 @@ type
   tItemType       = lib.tree.avl.tItemType;
   tStatus         = lib.tree.avl.tStatus;
   tUser           = lib.hash.open.tUser;
-  tUserIterator   = lib.hash.open.tHashValue;
+  tUserIterator   = lib.hash.open.idxRange;
   tMessage        = lib.tree.trinary.tMessage;
   tMessageIdx     = lib.tree.trinary.idxRange;
   tMessageList    = array of tMessageIdx;
@@ -73,8 +73,8 @@ type
   function  banUser           (var this : tMetruCore; user : tUser) : boolean;
   function  retrieveUser      (var this : tMetruCore; id : integer; var user : tUser) : boolean; overload;
   function  retrieveUser      (var this : tMetruCore; email : string; var user : tUser) : boolean; overload;
-  function  retrieveFirstUser (var this : tMetruCore; iterator : tUserIterator) : boolean;
-  function  retrieveNextUser  (var this : tMetruCore; iterator : tUserIterator) : boolean;
+  function  retrieveFirstUser (var this : tMetruCore; var iterator : tUserIterator) : boolean;
+  function  retrieveNextUser  (var this : tMetruCore; var iterator : tUserIterator) : boolean;
 
   { category functions }
   procedure createCateogry           (var this : tMetruCore; category : tCategory);
@@ -353,12 +353,14 @@ implementation
     retrieveUser := found;
   end;
 
-  function  retrieveFirstUser (var this : tMetruCore; iterator : tUserIterator) : boolean;
+  function  retrieveFirstUser (var this : tMetruCore; var iterator : tUserIterator) : boolean;
   begin
+    retrieveFirstUser := lib.hash.open.fetchFirst(this.io.users, iterator);
   end;
 
-  function  retrieveNextUser  (var this : tMetruCore; iterator : tUserIterator) : boolean;
+  function  retrieveNextUser  (var this : tMetruCore; var iterator : tUserIterator) : boolean;
   begin
+    retrieveNextUser := lib.hash.open.fetchNext(this.io.users, iterator);
   end;
 
   procedure  createCateogry         (var this : tMetruCore; category : tCategory);

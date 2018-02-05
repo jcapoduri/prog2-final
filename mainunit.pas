@@ -16,6 +16,7 @@ uses
   UserForm,
   userblockform,
   userReportPublicationForm,
+  messagegeneratorform,
   metru.core   in 'libs\metru.core.pas';
 
 type
@@ -175,8 +176,11 @@ begin
 end;
 
 procedure TmainWidget.messagesPopulationMenuItemClick(Sender: TObject);
+var
+  form : TmessageGeneratorForm;
 begin
-
+  form := TmessageGeneratorForm.Create(self);
+  form.ShowModal;
 end;
 
 procedure TmainWidget.mySellsBaseMenuItemClick(Sender: TObject);
