@@ -149,9 +149,12 @@ implementation
     lvl : tLevel;
   begin
     lvl.totalNodes := 0;
-    if filesize(this.levels) <= pos then
-      write(this.levels, lvl);  
     seek(this.levels, pos);
+    if filesize(this.levels) <= pos then
+      begin
+        write(this.levels, lvl);
+        seek(this.levels, pos);
+      end;
     read(this.levels, lvl);
     _getLevel := lvl;
   end;
@@ -170,7 +173,10 @@ implementation
     distance := 0;
     auxNode := node;
     while auxNode.parent <> NULLIDX do
-      auxNode := _get(this, auxNode.parent);
+      begin
+        auxNode  := _get(this, auxNode.parent);
+        distance := distance + 1;
+      end;
     _nodeDistanceToRoot := distance;
   end;
 
@@ -514,17 +520,17 @@ implementation
             found  := _searchNodeBySk(this, sk, auxPos);
             if not found then
               begin
-                if auxPos = NULLIDX then
+                auxNode.id     := pk;
+                auxNode.idUser := sk;
+                auxNode.parent := pos;
+                auxPos         := _appendNode(this, auxNode);
+                if node.center = NULLIDX then
                   begin
                     node.center := auxPos;
                     _set(this, pos, node);
                   end
                 else
-                  begin
-                    auxNode.id     := pk;
-                    auxNode.idUser := sk;
-                    auxNode.parent := pos;
-                    auxPos         := _appendNode(this, auxNode);
+                  begin                    
                     _insertBySk(this, sk, node.center, auxPos);
                   end;
                end;
@@ -569,7 +575,7 @@ implementation
         rc.root             := NULLIDX;
         rc.erasedMessages   := NULLIDX;
         rc.erasedIndexes    := NULLIDX;
-        rc.lastLevel        := 0;
+        rc.lastLevel        := -1;
         rc.balanceThreshold := BALANCETHRESHOLD;
         _setControl(this, rc);
       end;
@@ -595,7 +601,7 @@ implementation
     rc.root             := NULLIDX;
     rc.erasedMessages   := NULLIDX;
     rc.erasedIndexes    := NULLIDX;
-    rc.lastLevel        := 0;
+    rc.lastLevel        := -1;
     rc.balanceThreshold := BALANCETHRESHOLD;
     _setControl(this, rc);
 

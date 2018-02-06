@@ -73,6 +73,7 @@ type
   function  banUser           (var this : tMetruCore; user : tUser) : boolean;
   function  retrieveUser      (var this : tMetruCore; id : integer; var user : tUser) : boolean; overload;
   function  retrieveUser      (var this : tMetruCore; email : string; var user : tUser) : boolean; overload;
+  function  retrieveUser      (var this : tMetruCore; iterator : tUserIterator; var user : tUser) : boolean; overload;
   function  retrieveFirstUser (var this : tMetruCore; var iterator : tUserIterator) : boolean;
   function  retrieveNextUser  (var this : tMetruCore; var iterator : tUserIterator) : boolean;
 
@@ -181,6 +182,54 @@ implementation
     user.email      := 'jcapoduri@gmail.com';
     user.password   := 'palo_y_a_la_bolsa';
     user.fullname   := 'Jorge Capoduri';
+    user.address    := 'Yrigoyen 831';
+    user.providence := 4;
+    user.ctimestamp := Now;
+    user.photoUrl   := '';
+    user.status     := false;
+    user.utimestamp := Now;
+    user.blocked    := false;
+    lib.hash.open.insert(this.io.users, user);
+
+    user.email      := 'alexalv@juan23.edu.ar';
+    user.password   := 'palo_y_a_la_bolsa';
+    user.fullname   := 'Claudio Alvarez';
+    user.address    := 'El Juan 23';
+    user.providence := 2;
+    user.ctimestamp := Now;
+    user.photoUrl   := '';
+    user.status     := false;
+    user.utimestamp := Now;
+    user.blocked    := false;
+    lib.hash.open.insert(this.io.users, user);
+
+    user.email      := 'natalia.vallone87@gmail.com';
+    user.password   := 'palo_y_a_la_bolsa';
+    user.fullname   := 'Naty  Carulias';
+    user.address    := 'Yrigoyen 831';
+    user.providence := 4;
+    user.ctimestamp := Now;
+    user.photoUrl   := '';
+    user.status     := false;
+    user.utimestamp := Now;
+    user.blocked    := false;
+    lib.hash.open.insert(this.io.users, user);
+
+    user.email      := 'donbarredora@gmail.com';
+    user.password   := 'palo_y_a_la_bolsa';
+    user.fullname   := 'Don barredora';
+    user.address    := 'Yrigoyen 831';
+    user.providence := 4;
+    user.ctimestamp := Now;
+    user.photoUrl   := '';
+    user.status     := false;
+    user.utimestamp := Now;
+    user.blocked    := false;
+    lib.hash.open.insert(this.io.users, user);
+
+    user.email      := 'cloetonko@gmail.com';
+    user.password   := 'palo_y_a_la_bolsa';
+    user.fullname   := 'El terror de los 7 mares';
     user.address    := 'Yrigoyen 831';
     user.providence := 4;
     user.ctimestamp := Now;
@@ -351,6 +400,12 @@ implementation
     if found then
       user := fetchByIdx(this.io.users, idxUser);
     retrieveUser := found;
+  end;
+
+  function  retrieveUser (var this : tMetruCore; iterator : tUserIterator; var user : tUser) : boolean; overload;
+  begin
+    user := fetchByIdx(this.io.users, iterator);
+    retrieveUser := true;
   end;
 
   function  retrieveFirstUser (var this : tMetruCore; var iterator : tUserIterator) : boolean;

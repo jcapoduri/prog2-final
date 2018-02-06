@@ -235,7 +235,31 @@ begin
 end;
 
 procedure dumpMessageControl();
+var
+  rc : lib.tree.trinary.tControlRecord;
+  io : lib.tree.trinary.tTrinaryTree;
+  i  : integer;
+  lvl : tLevel;
 begin
+  lib.tree.trinary.loadTree(io, 'data/', 'messages');
+  reset(io.control);
+  reset(io.levels);
+  seek(io.control, 0);
+  read(io.control, rc);
+  writeln('Raiz: ', rc.root);
+  writeln('Indice de nodos eliminados: ', rc.erasedIndexes);
+  writeln('Indice de mensajes eliminados: ', rc.erasedMessages);
+  writeln('Ultimo nivel: ', rc.lastLevel);
+  writeln('Balance threshold: ', rc.balanceThreshold);
+  for i:= 0 to rc.lastLevel do
+    begin
+      seek(io.levels, i);
+      read(io.levels, lvl);
+      writeln('Nivel ', i, '::nodos = ', lvl.totalNodes);
+    end;
+  close(io.control);
+  close(io.levels);
+  readln;
 end;
 
 procedure dumpMessageTree();
@@ -300,6 +324,177 @@ begin
 end;
 
 { end message menu block }
+
+
+{ publication menu block }
+procedure dumpPublicationData();
+var
+  publication : lib.tree.avl.tPublish;
+  io          : lib.tree.avl.tAVLtree;
+  idx, maxIdx : idxRange;
+begin
+  lib.tree.avl.loadTree(io, 'data/', 'publication');
+  reset(io.data);
+  maxIdx := filesize(io.data) - 1;
+  close(io.data);
+  write('pos | ');
+  write('id | ');
+  write('idCategory | ');
+  write('idUser | ');
+  write('itemName | ');
+  write('details | ');
+  write('price | ');
+  write('ctimestamp | ');
+  write('etimestamp | ');
+  write('itemType | ');
+  write('status | ');
+  writeln;
+  for idx := 0 to maxIdx do
+    begin
+      publication := lib.tree.avl.fetch(io, idx);
+      write(idx, ' | ');
+      write(publication.id, ' | ');
+      write(publication.idCategory, ' | ');
+      write(publication.idUser, ' | ');
+      write(publication.itemName, ' | ');
+      write(publication.details, ' | ');
+      write(publication.price, ' | ');
+      write(publication.ctimestamp, ' | ');
+      write(publication.etimestamp, ' | ');
+      write(publication.itemType, ' | ');
+      write(publication.status);
+      writeln;
+    end;
+  wait('presione una tecla para continuar');
+end;
+
+procedure dumpMessageUserTree();
+var
+  node        : lib.tree.avl.tNode;
+  io          : lib.tree.avl.tAVLtree;
+  idx, maxIdx : idxRange;
+begin
+  lib.tree.avl.loadTree(io, 'data/', 'publication');
+  reset(io.idxByUser);
+  maxIdx := filesize(io.idxByUser) - 1;
+  write('pos | ');
+  write('key | ');
+  write('index | ');
+  write('parent | ');
+  write('left | ');
+  write('right');
+  writeln;
+  for idx := 0 to maxIdx do
+    begin
+      seek(io.idxByUser, idx);
+      read(io.idxByUser, node);
+      write(idx, ' | ');
+      write(node.key, ' | ');
+      write(node.index, ' | ');
+      write(node.parent, ' | ');
+      write(node.left, ' | ');
+      write(node.right);
+      writeln;
+    end;
+  close(io.idxByUser);  
+  wait('presione una tecla para continuar');
+end;
+
+procedure dumpMessageCategoryTree();
+var
+  node        : lib.tree.avl.tNode;
+  io          : lib.tree.avl.tAVLtree;
+  idx, maxIdx : idxRange;
+begin
+  lib.tree.avl.loadTree(io, 'data/', 'publication');
+  reset(io.idxByCategory);
+  maxIdx := filesize(io.idxByCategory) - 1;
+  write('pos | ');
+  write('key | ');
+  write('index | ');
+  write('parent | ');
+  write('left | ');
+  write('right');
+  writeln;
+  for idx := 0 to maxIdx do
+    begin
+      seek(io.idxByCategory, idx);
+      read(io.idxByCategory, node);
+      write(idx, ' | ');
+      write(node.key, ' | ');
+      write(node.index, ' | ');
+      write(node.parent, ' | ');
+      write(node.left, ' | ');
+      write(node.right);
+      writeln;
+    end;
+  close(io.idxByCategory);  
+  wait('presione una tecla para continuar');
+end;
+
+procedure generatePublication(); 
+var
+  user        : tUser;
+  it          : tUserIterator;
+  keep        : boolean;
+  pub         : tPublish;
+  list        : tCategoryList;
+  cat         : tCategory;
+  i, j, count : integer;
+begin
+  metru.core.setup(metruApp);
+  keep  := metru.core.retrieveFirstUser(metruApp, it);
+  list  := metru.core.retrieveAllLeafCateogies(metruApp);
+  i     := 0;
+  count := length(list);
+  while keep do
+    begin
+      metru.core.retrieveUser(metruApp, it, user);
+      for j:= 0 to 3 do
+        begin
+          metru.core.dereferenceCategory(metruApp, list[i], cat);
+          pub.id         := 0;
+          pub.idCategory := cat.id;
+          pub.idUser     := user.id;
+          pub.itemName   := 'Item generado al azar ' + user.fullname + ' ' + cat.categoryName;
+          pub.details    := 'Item generado al azar';
+          pub.price      := 12.23;
+          pub.ctimestamp := Now;
+          pub.etimestamp := Now;
+          pub.itemType   := New;
+          pub.status     := tStatus.Publish;
+          writeln('generando publication para ' + user.fullname + ' en categoria ' + cat.categoryName);
+          metru.core.createPublication(metruApp, pub);
+        end;
+      i := (i + 1) mod count;
+      keep := metru.core.retrieveNextUser(metruApp, it);
+    end;
+  wait('presione una tecla para continuar');
+end;
+
+function publicationmenu() : integer;
+begin
+  ClrScr;
+  writeln('Menu Publicaciones (1-5)');
+  writeln('1- Dump de estructura de datos');
+  writeln('2- Dump de estructura de control');
+  writeln('3- Dump de estructura de arbol de usuario');
+  writeln('4- Dump de estructura de arbol de categorias');
+  writeln('5- Agregar 3 publicaciones por usuario');
+  writeln('0- Salir');
+  publicationmenu := readValidNumber(0, 5);
+end;
+
+procedure publicationmenuAct(op : integer);
+begin
+  case op of
+    1: dumpPublicationData;
+    3: dumpMessageUserTree;
+    4: dumpMessageCategoryTree;
+    5: generatePublication;
+  end;
+end;
+{ end publication menu block }
 
 
 { sells menu block }
@@ -421,6 +616,7 @@ begin
   case op of
     1: actMenu(@usermenu, @usermenuAct);
     2: actMenu(@categorymenu, @categorymenuAct);
+    3: actMenu(@publicationmenu, @publicationmenuAct);
     4: actMenu(@messagemenu, @messagemenuAct);
     5: actMenu(@sellsmenu, @sellsmenuAct);
     6: resetApp;

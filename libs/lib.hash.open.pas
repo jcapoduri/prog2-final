@@ -325,7 +325,7 @@ implementation
     node  : tNode;
     idx   : idxRange;
   begin
-    pos := 0;
+    pos := -1;
     fetchFirst := fetchNext(this, pos);
   end;
 
@@ -335,12 +335,12 @@ implementation
     node  : tNode;
     idx   : idxRange;
   begin
-    idx   := pos;
+    idx   := pos + 1;
     found := false;
     _openHash(this);
     while (not found) and (idx <= MAX) do
       begin
-        node := _get(this, pos);
+        node := _get(this, idx);
         if (node.id > NULLIDX) then
           found := true
         else
