@@ -474,7 +474,7 @@ implementation
     else
       begin
         node := _get(this, parentPos);
-        if keyGt(node.id, key) then
+        if keyGt(key, node.id) then
           node.right := childPos
         else
           node.left := childPos;
@@ -487,7 +487,7 @@ implementation
     node   : tNode;
   begin
       node := _get(this, parentPos);
-      if keyGt(node.idUser, key) then
+      if keyGt(key, node.idUser) then
         node.right := childPos
       else
         node.left := childPos;
@@ -533,9 +533,7 @@ implementation
                     _set(this, pos, node);
                   end
                 else
-                  begin                    
-                    _insertBySk(this, sk, parentPos, auxPos);
-                  end;
+                  _insertBySk(this, sk, parentPos, auxPos);
                end;
             pos := auxPos
           end;        

@@ -49,6 +49,7 @@ var
   i, count         : integer;
   user, pubUser    : tUser;
   publication      : tPublish;
+  pubIdx           : tPublishIdx;
   found            : boolean;
   list             : tPublishIdxList;
   it               : tUserIterator;
@@ -68,6 +69,7 @@ begin
       else
         i := i + 1;
     end;
+  pubIdx := list[i];
   if found then
     begin
       found := metru.core.retrieveFirstUser(metruApp, it);
@@ -76,7 +78,7 @@ begin
       while found and (i < count) do
         begin
           metru.core.retrieveUser(metruApp, it, usr);
-          metru.core.postMessage(metruApp, publication.id, usr,
+          metru.core.postMessage(metruApp, pubIdx, usr,
             'Hola. Me llamo ' + user.fullname + ' - Fecha ' + DateTimeToStr(Now),
             'Gracias. Me llamo ' + pubUser.fullname + ' - Vendo : ' + publication.itemName
           );
