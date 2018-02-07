@@ -78,6 +78,23 @@ begin
   wait('presione una tecla para continuar');
 end;
 
+procedure dumpCategoryControl();
+var
+  ctrl : lib.tree.lcrs.tControlRecord;
+  io   : tLCRStree;
+begin
+  ClrScr;
+  lib.tree.lcrs.loadTree(io, 'data/', 'categories');
+  reset(io.control);
+  seek(io.control, 0);
+  read(io.control, ctrl);
+  close(io.control);
+  writeln('Ultimo ID: ' , ctrl.lastID);
+  writeln('Raiz: ', ctrl.root);
+  writeln('Indice borrado: ', ctrl.erased);
+  wait('presione una tecla para continuar');
+end;
+
 function categorymenu() : integer;
 begin
   ClrScr;
@@ -92,6 +109,7 @@ procedure categorymenuAct(op : integer);
 begin
   case op of
     1: dumpCategoryTree;
+    2: dumpCategoryControl;
   end;
 end;
 
@@ -388,12 +406,12 @@ begin
     begin
       seek(io.idxByUser, idx);
       read(io.idxByUser, node);
-      write(idx, ' | ');
-      write(node.key, ' | ');
-      write(node.index, ' | ');
-      write(node.parent, ' | ');
-      write(node.left, ' | ');
-      write(node.right);
+      write(idx:3, ' | ');
+      write(node.key:3, ' | ');
+      write(node.index:3, ' | ');
+      write(node.parent:3, ' | ');
+      write(node.left:3, ' | ');
+      write(node.right:3);
       writeln;
     end;
   close(io.idxByUser);  
@@ -420,16 +438,34 @@ begin
     begin
       seek(io.idxByCategory, idx);
       read(io.idxByCategory, node);
-      write(idx, ' | ');
-      write(node.key, ' | ');
-      write(node.index, ' | ');
-      write(node.parent, ' | ');
-      write(node.left, ' | ');
-      write(node.right);
+      write(idx:3, ' | ');
+      write(node.key:3, ' | ');
+      write(node.index:3, ' | ');
+      write(node.parent:3, ' | ');
+      write(node.left:3, ' | ');
+      write(node.right:3);
       writeln;
     end;
   close(io.idxByCategory);  
   wait('presione una tecla para continuar');
+end;
+
+procedure dumpPublicationControl();
+var
+  rc : lib.tree.avl.tControlRecord;
+  io : lib.tree.avl.tAVLtree;
+begin
+  lib.tree.avl.loadTree(io, 'data/', 'publication');
+  reset(io.control);
+  seek(io.control, 0);
+  read(io.control, rc);
+  writeln('Raiz User: ', rc.root1);
+  writeln('Raiz Categoria: ', rc.root2);
+  writeln('Indice de user eliminados: ', rc.erased1);
+  writeln('Indice de categorias eliminados: ', rc.erased2);
+  writeln('Ultimo ID: ', rc.lastID);
+  close(io.control);
+  readln;
 end;
 
 procedure generatePublication(); 
@@ -450,7 +486,7 @@ begin
   while keep do
     begin
       metru.core.retrieveUser(metruApp, it, user);
-      for j:= 0 to 3 do
+      for j:= 0 to 2 do
         begin
           metru.core.dereferenceCategory(metruApp, list[i], cat);
           pub.id         := 0;
@@ -489,6 +525,7 @@ procedure publicationmenuAct(op : integer);
 begin
   case op of
     1: dumpPublicationData;
+    2: dumpPublicationControl;
     3: dumpMessageUserTree;
     4: dumpMessageCategoryTree;
     5: generatePublication;

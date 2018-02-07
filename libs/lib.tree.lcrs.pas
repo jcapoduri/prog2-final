@@ -82,7 +82,9 @@ implementation
   function  _getControl (var this : tLCRStree) : tControlRecord;
   var
     rc : tControlRecord;
+    i  : integer;
   begin
+    i := filesize(this.control);
     seek (this.control, 0);
     read (this.control, rc);
     _getControl := rc;
@@ -254,6 +256,7 @@ implementation
         rewrite(this.data);
         rewrite(this.control);
         rc.root := NULLIDX;
+        rc.lastID := 0;
         rc.erased := NULLIDX;
         _setControl(this, rc);
       end;

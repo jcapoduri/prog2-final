@@ -367,35 +367,78 @@ implementation
       end;
   end;
 
-  function _searchByUser      (var this : tAVLtree; key : tKey; var pos: idxRange) : boolean;
+
+  procedure _searchInsertPosByUser    (var this : tAVLtree; key : tKey; var pos: idxRange);
   var
-    found, searchNext : boolean;
     curNodeIdx        : idxRange;
     curNode           : tNode;
     rc                : tControlRecord;
   begin
-    found      := false;
     rc         := _getControl(this);
     curNodeIdx := rc.root1;
-    searchNext := not (pos = NULLIDX);
 
-    while (curNodeIdx <> NULLIDX) and (not found) do
+    while (curNodeIdx <> NULLIDX) do
       begin
         curNode := _getByUser(this, curNodeIdx);
-        if keyEq(curNode.key, key) and not searchNext then
+        pos := curNodeIdx;
+        if keyGt(key, curNode.key) then
+          curNodeIdx := curNode.right
+        else
+          curNodeIdx := curNode.left;
+      end;
+  end;
+
+  procedure _searchInsertPosByCateory   (var this : tAVLtree; key : tKey; var pos: idxRange);
+  var
+    curNodeIdx        : idxRange;
+    curNode           : tNode;
+    rc                : tControlRecord;
+  begin
+    rc         := _getControl(this);
+    curNodeIdx := rc.root2;
+
+    while (curNodeIdx <> NULLIDX) do
+      begin
+        curNode := _getByCategory(this, curNodeIdx);
+        pos := curNodeIdx;
+        if keyGt(key, curNode.key) then
+          curNodeIdx := curNode.right
+        else
+          curNodeIdx := curNode.left;
+      end;
+  end;
+
+  function _searchByUser      (var this : tAVLtree; key : tKey; curNodeIdx : idxRange; var lastFound: idxRange; var searchNext : boolean) : boolean;
+  var
+    curNode : tNode;
+    found   : boolean;
+  begin
+    found := false;
+    if curNodeIdx <> NULLIDX then
+      begin
+        curNode := _getByUser(this, curNodeIdx);
+        if keyEq(curNode.key, key) then
           begin
-            found := true;
-            pos   := curNodeIdx;
+            if searchNext then
+              begin
+                if (lastFound = curNodeIdx) then
+                  searchNext := false;
+                found := _searchByUser(this, key, curNode.left, lastFound, searchNext);
+                if not found then
+                  found := _searchByUser(this, key, curNode.right, lastFound, searchNext);
+              end
+            else
+              begin
+                found := true;
+                lastFound   := curNodeIdx;
+              end;
           end
         else
           begin
-            if searchNext and (pos = curNodeIdx) then
-              searchNext := false;
-            pos := curNodeIdx;
             if keyGt(key, curNode.key) then
-              curNodeIdx := curNode.right
+              found := _searchByUser(this, key, curNode.right, lastFound, searchNext)
             else
-              curNodeIdx := curNode.left;
+              found := _searchByUser(this, key, curNode.left, lastFound, searchNext);
           end;
       end;
     _searchByUser := found;
@@ -404,53 +447,64 @@ implementation
   function searchByUser      (var this : tAVLtree; key : tKey; var pos: idxRange) : boolean;
   var
     found      : boolean;
+    rc         : tControlRecord;
+    searchNext : boolean;
   begin
     _openTree(this);
-    found := _searchByUser(this, key, pos);
+    searchNext := pos <> NULLIDX;
+    rc    := _getControl(this);
+    found := _searchByUser(this, key, rc.root1, pos, searchNext);
     _closeTree(this);
     searchByUser := found;
   end;
 
-  function  _searchByCategory    (var this : tAVLtree; key : tKey; var pos: idxRange) : boolean;
+  function  _searchByCategory      (var this : tAVLtree; key : tKey; curNodeIdx : idxRange; var lastFound: idxRange; var searchNext : boolean) : boolean;
   var
-    found, searchNext : boolean;
-    curNodeIdx        : idxRange;
-    curNode           : tNode;
-    rc                : tControlRecord;
+    curNode : tNode;
+    found   : boolean;
   begin
-    found      := false;
-    rc         := _getControl(this);
-    curNodeIdx := rc.root2;
-    searchNext := not (pos = NULLIDX);
-
-    while (curNodeIdx <> NULLIDX) and (not found) do
+    found := false;
+    if curNodeIdx <> NULLIDX then
       begin
         curNode := _getByCategory(this, curNodeIdx);
-        if keyEq(curNode.key, key) and not searchNext then
+        if keyEq(curNode.key, key) then
           begin
-            found := true;
-            pos   := curNodeIdx;
+            if searchNext then
+              begin
+                if (lastFound = curNodeIdx) then
+                  searchNext := false;
+                found := _searchByCategory(this, key, curNode.left, lastFound, searchNext);
+                if not found then
+                  found := _searchByCategory(this, key, curNode.right, lastFound, searchNext);
+              end
+            else
+              begin
+                found := true;
+                lastFound   := curNodeIdx;
+              end;
           end
         else
           begin
-            if searchNext and (pos = curNodeIdx) then
-              searchNext := false;
-            pos := curNodeIdx;
             if keyGt(key, curNode.key) then
-              curNodeIdx := curNode.right
+              found := _searchByCategory(this, key, curNode.right, lastFound, searchNext)
             else
-              curNodeIdx := curNode.left;
+              found := _searchByCategory(this, key, curNode.left, lastFound, searchNext);
           end;
       end;
     _searchByCategory := found;
   end;
 
+
   function searchByCategory      (var this : tAVLtree; key : tKey; var pos: idxRange) : boolean;
   var
     found      : boolean;
+    rc         : tControlRecord;
+    searchNext : boolean;
   begin
     _openTree(this);
-    found := _searchByCategory(this, key, pos);
+    searchNext := pos <> NULLIDX;
+    rc    := _getControl(this);
+    found := _searchByCategory(this, key, rc.root2, pos, searchNext);
     _closeTree(this);
     searchByCategory := found;
   end;
@@ -531,13 +585,13 @@ implementation
     posUser := NULLIDX;
     posCat  := NULLIDX;
     { add user node }
-    _searchByUser(this, publication.idUser, posUser);
+    _searchInsertPosByUser(this, publication.idUser, posUser);
     nodeUser.key    := publication.idUser;
     nodeUser.parent := posUser;
     auxIdxUser      := _appendByUser(this, nodeUser);
 
     { add category node }
-    _searchByCategory(this, publication.idCategory, posCat);
+    _searchInsertPosByCateory(this, publication.idCategory, posCat);
     nodeCat.key    := publication.idCategory;
     nodeCat.parent := posCat;
     auxIdxCat      := _appendByCategory(this, nodeCat);
