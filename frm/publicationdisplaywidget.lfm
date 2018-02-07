@@ -17,7 +17,7 @@ object tPublicationDisplayWidget: tPublicationDisplayWidget
     Width = 99
   end
   object titleLabel: TLabel
-    Left = 114
+    Left = 144
     Height = 15
     Top = 8
     Width = 20
@@ -94,5 +94,13 @@ object tPublicationDisplayWidget: tPublicationDisplayWidget
     OnClick = blockButtonClick
     TabOrder = 3
     Visible = False
+  end
+  object idLabel: TLabel
+    Left = 114
+    Height = 15
+    Top = 8
+    Width = 17
+    Caption = 'ID: '
+    ParentColor = False
   end
 end

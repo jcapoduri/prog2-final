@@ -496,9 +496,9 @@ implementation
 
   function _retrieveOrCreate(var this : tTrinaryTree; pk, sk : tKey) : idxRange;
   var
-    found       : boolean;
-    pos, auxPos : idxRange;
-    node, auxNode : tNode;
+    found                  : boolean;
+    pos, auxPos, parentPos : idxRange;
+    node, auxNode          : tNode;
   begin
     found := _searchNodeByPk(this, pk, pos);
     if not found then
@@ -516,13 +516,16 @@ implementation
         node := _get(this, pos);
         if (node.idUser <> sk) then
           begin
-            auxPos := node.center;
-            found  := _searchNodeBySk(this, sk, auxPos);
+            parentPos := node.center;
+            found     := _searchNodeBySk(this, sk, parentPos);
             if not found then
               begin
                 auxNode.id     := pk;
                 auxNode.idUser := sk;
-                auxNode.parent := pos;
+                if node.center = NULLIDX then
+                  auxNode.parent := pos
+                else
+                  auxNode.parent := parentPos;
                 auxPos         := _appendNode(this, auxNode);
                 if node.center = NULLIDX then
                   begin
@@ -531,7 +534,7 @@ implementation
                   end
                 else
                   begin                    
-                    _insertBySk(this, sk, node.center, auxPos);
+                    _insertBySk(this, sk, parentPos, auxPos);
                   end;
                end;
             pos := auxPos

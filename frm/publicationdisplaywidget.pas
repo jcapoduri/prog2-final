@@ -19,6 +19,7 @@ type
     descriptionLabel: TLabel;
     deleteButton: TBitBtn;
     imagePreview: TImage;
+    idLabel: TLabel;
     statusLabel: TLabel;
     openButton: TButton;
     priceLabel: TLabel;
@@ -108,6 +109,7 @@ begin
   descriptionLabel.Caption := publication.details;
   titleLabel.Caption       := publication.itemName;
   priceLabel.Caption       := FloatToStr(publication.price);
+  idLabel.Caption          := 'ID: ' + IntToStr(publication.id);
   case self.publication.status of
     tStatus.Publish: begin
                        self.statusLabel.Caption  := 'Publicado';

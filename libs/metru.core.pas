@@ -98,6 +98,7 @@ type
 
   { message related functions }
   function postMessage        (var this : tMetruCore; pubIdx : tPublishIdx; user : tUser; msg : string) : boolean;
+  function postMessage        (var this : tMetruCore; pubIdx : tPublishIdx; user : tUser; msg, response : string) : boolean;
   function postResponse       (var this : tMetruCore; msgIdx : tMessageIdx; response : string) : boolean;
   function retrieveMessages   (var this : tMetruCore; pubIdx : tPublishIdx) : tMessageList;
   function dereferenceMessage (var this : tMetruCore; idx : tMessageIdx; var message : tMessage) : boolean;
@@ -639,6 +640,18 @@ implementation
     dereferencePublication(this, pubIdx, publication);
     message.question  := msg;
     message.answer    := '';
+    message.timestamp := Now;
+    lib.tree.trinary.insertMessage(this.io.messages, publication.id, user.id, message);
+  end;
+
+  function postMessage  (var this : tMetruCore; pubIdx : tPublishIdx; user : tUser; msg, response : string) : boolean;
+  var
+    message     : tMessage;
+    publication : tPublish;
+  begin
+    dereferencePublication(this, pubIdx, publication);
+    message.question  := msg;
+    message.answer    := response;
     message.timestamp := Now;
     lib.tree.trinary.insertMessage(this.io.messages, publication.id, user.id, message);
   end;

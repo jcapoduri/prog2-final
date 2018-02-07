@@ -290,7 +290,7 @@ begin
   reset(io.index);
   maxIdx := filesize(io.index) - 1;
   write('pos | ');
-  write('id | ');
+  write('id  | ');
   write('idUser | ');
   write('parent | ');
   write('first | ');
@@ -303,15 +303,15 @@ begin
     begin
       seek(io.index, idx);
       read(io.index, node);
-      write(idx, ' | ');
-      write(node.id, ' | ');
-      write(node.idUser, ' | ');
-      write(node.parent, ' | ');
-      write(node.first, ' | ');
-      write(node.last, ' | ');
-      write(node.left, ' | ');
-      write(node.center, ' | ');
-      write(node.right, ' | ');
+      write(idx:3, ' | ');
+      write(node.id:3, ' | ');
+      write(node.idUser:6, ' | ');
+      write(node.parent:6, ' | ');
+      write(node.first:5, ' | ');
+      write(node.last:4, ' | ');
+      write(node.left:4, ' | ');
+      write(node.center:6, ' | ');
+      write(node.right:3, ' | ');
       writeln;
     end;
   close(io.index);  

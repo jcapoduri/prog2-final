@@ -1,4 +1,4 @@
-object fmessageGeneratorForm: TmessageGeneratorForm
+object messageGeneratorForm: TmessageGeneratorForm
   Left = 641
   Height = 180
   Top = 329
