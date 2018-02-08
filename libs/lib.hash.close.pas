@@ -57,6 +57,7 @@ type
   procedure remove           (var this : tCloseHash; pos: idxRange);
   function  fetch            (var this : tCloseHash; pos: idxRange) : tSell;
   function  hash             (var this : tCloseHash; id : tKey) : tHashValue;
+  function  getBucketCount   (var this : tCloseHash) : integer;
 
 implementation
   { Helpers }
@@ -371,6 +372,11 @@ implementation
     node  := _get(this, pos);
     _closeHash(this);
     fetch := node;
+  end;
+
+  function  getBucketCount   (var this : tCloseHash) : integer;
+  begin
+    getBucketCount := MAX;
   end;
 
 end.

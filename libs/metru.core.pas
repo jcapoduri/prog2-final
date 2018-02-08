@@ -111,6 +111,12 @@ type
   function  retrieveAllMyPurchase       (var this : tMetruCore; user : tUser) : tSellIdxList;
   function  dereferenceSell             (var this : tMetruCore; idx : tSellIdx; var sell : tSell) : boolean;
 
+  { advanced functions }
+  function  getMaxUserBuckets (var this : tMetruCore) : integer;
+  function  getMaxSellBuckets (var this : tMetruCore) : integer;
+  function  hashUser          (var this : tMetruCore; email : string) : integer;
+  function  hashSell          (var this : tMetruCore; id : integer) : integer;
+
 var
   metruApp : tMetruCore;
 
@@ -834,4 +840,25 @@ implementation
     sell  := lib.hash.close.fetch(this.io.sells, idx);
     dereferenceSell := found;
   end;
+
+  function  getMaxUserBuckets     (var this : tMetruCore) : integer;
+  begin
+    getMaxUserBuckets := lib.hash.open.getBucketCount(this.io.users);
+  end;
+
+  function  getMaxSellBuckets (var this : tMetruCore) : integer;
+  begin
+    getMaxSellBuckets := lib.hash.close.getBucketCount(this.io.sells);
+  end;
+
+  function  hashUser          (var this : tMetruCore; email : string) : integer;
+  begin
+    hashUser := lib.hash.open.hash(this.io.users, email);
+  end;
+
+  function  hashSell          (var this : tMetruCore; id : integer) : integer;
+  begin
+    hashSell := lib.hash.close.hash(this.io.sells, id);
+  end;
+
 end.

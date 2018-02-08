@@ -52,6 +52,7 @@ type
   function  fetchByIdx   (var this : tOpenHash; pos: tHashValue) : tNode;
   function  fetchFirst   (var this : tOpenHash; var pos: idxRange) : boolean;
   function  fetchNext    (var this : tOpenHash; var pos: idxRange) : boolean;
+  function  getBucketCount (var this : tOpenHash) : integer;
 
 implementation
   { Helpers }
@@ -351,6 +352,11 @@ implementation
       pos      := idx;
 
     fetchNext := found;
+  end;
+
+  function  getBucketCount (var this : tOpenHash) : integer;
+  begin
+    getBucketCount := MAX;
   end;
   
 end.
