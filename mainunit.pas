@@ -16,6 +16,7 @@ uses
   UserForm,
   userblockform,
   userReportPublicationForm,
+  categoryReportForm,
   messagegeneratorform,
   metru.core   in 'libs\metru.core.pas';
 
@@ -104,8 +105,11 @@ begin
 end;
 
 procedure TmainWidget.reportByCategoryMenuItemClick(Sender: TObject);
+var
+  form : TCategoryReportForm;
 begin
-
+  form := TCategoryReportForm.Create(self);
+  setComponentOnPanel(form);
 end;
 
 procedure TmainWidget.reportByMaxPerCateogryMenuItemClick(Sender: TObject);
