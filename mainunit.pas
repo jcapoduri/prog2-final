@@ -17,6 +17,7 @@ uses
   userblockform,
   userReportPublicationForm,
   categoryReportForm,
+  blockedUserReportForm,
   messagegeneratorform,
   metru.core   in 'libs\metru.core.pas';
 
