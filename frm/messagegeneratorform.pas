@@ -53,7 +53,6 @@ var
   found            : boolean;
   list             : tPublishIdxList;
   it               : tUserIterator;
-  usr              : tUser;
 begin
   totalUser := self.usersSpinEditor.Value;
   pubId     := self.publicationSpinEditor.Value;
@@ -77,8 +76,8 @@ begin
       metru.core.retrieveUser(metruApp, publication.idUser, pubUser);
       while found and (i < count) do
         begin
-          metru.core.retrieveUser(metruApp, it, usr);
-          metru.core.postMessage(metruApp, pubIdx, usr,
+          metru.core.retrieveUser(metruApp, it, user);
+          metru.core.postMessage(metruApp, pubIdx, user,
             'Hola. Me llamo ' + user.fullname + ' - Fecha ' + DateTimeToStr(Now),
             'Gracias. Me llamo ' + pubUser.fullname + ' - Vendo : ' + publication.itemName
           );
