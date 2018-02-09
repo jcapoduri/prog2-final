@@ -355,7 +355,6 @@ implementation
   var
     pivotNode, newBranchRoot, auxNode : tNode;
     newBranchRootIdx, parentIdx          : idxRange;
-    rc                                   : tControlRecord;
     hLeft, hRight                        : integer;
   begin
     pivotNode        := _get(this, pivot);
@@ -442,10 +441,10 @@ implementation
     node           : tNode;
     balanced       : boolean;
   begin
-    node       := _get(this, pivot);
-    hLeft      := _height(this, node.left);
-    hRight     := _height(this, node.right);
-    wasRotated := true;
+    node     := _get(this, pivot);
+    hLeft    := _height(this, node.left);
+    hRight   := _height(this, node.right);
+    balanced := true;
     if abs(hLeft - hRight) > 1 then
       begin
         balanced := false;
@@ -457,21 +456,37 @@ implementation
     _balanceBranch := balanced;
   end;
 
-  procedure _balance (var this : tTrinaryTree; var pivot : idxRange);
+  function _balance (var this : tTrinaryTree; var pivot : idxRange) : boolean;
   var
-    node  : tNode; 
+    node     : tNode;
+    balanced : boolean;
   begin
-    
+    if pivot = NULLIDX then
+      balanced := true
+    else
+      begin
+        begin
+          node     := _get(this, pivot);
+          balanced := _balance(this, node.left) and _balance(this, node.right) and _balanceBranch(this, pivot);
+        end
+      end;
+    _balance := balanced;
   end;
 
   procedure balance (var this : tTrinaryTree);
   var
-    rc    : tControlRecord;
-    pivot : idxRange;
+    rc       : tControlRecord;
+    pivot    : idxRange;
+    balanced : boolean;
   begin
     _openTree(this);
-    rc    := _getControl(rc);
-    pivot := rc.root;
+    repeat
+      begin
+        rc       := _getControl(this);
+        pivot    := rc.root;
+        balanced := _balance(this, pivot);
+      end
+    until balanced;
     _closeTree(this);
   end;
   { end balance function }
@@ -532,7 +547,7 @@ implementation
 
     while (curNodeIdx <> NULLIDX) and (not found) do
       begin
-        curNode := _get(this, curNodeIdx);
+        curN0ode := _get(this, curNodeIdx);
         if keyEq(curNode.id, key) then
           begin
             found := true;

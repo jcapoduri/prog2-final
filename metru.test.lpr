@@ -205,6 +205,45 @@ end;
 
 { message menu block }
 
+procedure bulkInsertMessageIntoPublication(pubIdx : tPublishIdx);
+var
+  totalUser, pubId : integer;
+  i, count         : integer;
+  user, pubUser    : tUser;
+  publication      : tPublish;
+  found            : boolean;
+  it               : tUserIterator;
+begin
+  metru.core.dereferencePublication(metruApp, pubIdx, publication);
+  found := metru.core.retrieveFirstUser(metruApp, it);
+  metru.core.retrieveUser(metruApp, publication.idUser, pubUser);
+  while found do
+    begin
+      metru.core.retrieveUser(metruApp, it, user);
+      metru.core.postMessage(metruApp, pubIdx, user,
+        'Hola. Me llamo ' + user.fullname + ' - Fecha ' + DateTimeToStr(Now),
+        'Gracias. Me llamo ' + pubUser.fullname + ' - Vendo : ' + publication.itemName
+      );
+      found := metru.core.retrieveNextUser(metruApp, it);
+    end;
+end;
+
+procedure bulkInsertMessage();
+var
+  totalUser, pubId : integer;
+  i, count         : integer;
+  publication      : tPublish;
+  found            : boolean;
+  list             : tPublishIdxList;
+begin
+  list      := metru.core.retrieveAllPublication(metruApp);
+  count     := length(list);
+  found     := false;
+  i         := 0;
+  for i := 0 to count do
+    bulkInsertMessageIntoPublication(list[i]);
+end;
+
 procedure insertMessage();
 var
   message     : lib.tree.trinary.tMessage;
@@ -326,7 +365,7 @@ begin
   writeln('1- Dump de estructura de datos');
   writeln('2- Dump de estructura de control');
   writeln('3- Dump de estructura de arbol');
-  writeln('4- Emular mensajes');
+  writeln('4- Emular mensajes (un mensaje de cada usuario en cada publicacion)');
   writeln('0- Salir');
   messagemenu := readValidNumber(0, 4);
 end;
@@ -337,7 +376,7 @@ begin
     1: dumpMessageData;
     2: dumpMessageControl;
     3: dumpMessageTree;
-    4: insertMessage;
+    4: bulkInsertMessage;
   end;
 end;
 
