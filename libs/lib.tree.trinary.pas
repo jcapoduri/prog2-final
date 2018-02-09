@@ -71,6 +71,7 @@ type
   function  getTotalLevels        (var this : tTrinaryTree) : integer;
   function  getThreshold          (var this : tTrinaryTree) : integer;
   function  getTotalNodesPerLevel (var this : tTrinaryTree; lvl : integer) : integer;
+  procedure balance               (var this : tTrinaryTree);
 
 implementation
   { Helpers }
@@ -473,11 +474,26 @@ implementation
     _balance := balanced;
   end;
 
+  procedure _checkLevel (var this : tTrinaryTree; pivot : idxRange);
+  var
+    node : tNode;
+  begin
+    if pivot <> NULLIDX then
+      begin
+        node := _get(this, pivot);
+        _checkLevel(this, node.left);
+        _checkLevel(this, node.right);
+        _increaseLevel(this, node);
+      end;
+  end;
+
   procedure balance (var this : tTrinaryTree);
   var
     rc       : tControlRecord;
     pivot    : idxRange;
     balanced : boolean;
+    i        : integer;
+    level    : tLevel;
   begin
     _openTree(this);
     repeat
@@ -487,6 +503,17 @@ implementation
         balanced := _balance(this, pivot);
       end
     until balanced;
+    
+    { recreate levels }
+    rc       := _getControl(this);
+    { reset levels }
+    level.totalNodes := 0;
+    for i := 0 to rc.lastLevel do
+      _setLevel(this, i, level);
+    rc.lastLevel := -1;
+    _setControl(this, rc);
+    _checkLevel(this, rc.root);
+
     _closeTree(this);
   end;
   { end balance function }

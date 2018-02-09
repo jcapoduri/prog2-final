@@ -120,6 +120,7 @@ type
   function  getMessagesTotalLevels        (var this : tMetruCore) : integer;
   function  getMessagesThreshold          (var this : tMetruCore) : integer;
   function  getMessagesTotalNodesPerLevel (var this : tMetruCore; lvl : integer) : integer;
+  procedure balanceMessageTree            (var this : tMetruCore);
 
 var
   metruApp : tMetruCore;
@@ -869,12 +870,19 @@ implementation
   begin
     getMessagesTotalLevels := lib.tree.trinary.getTotalLevels(this.io.messages)
   end;
+  
   function  getMessagesThreshold          (var this : tMetruCore) : integer;
   begin
     getMessagesThreshold := lib.tree.trinary.getThreshold(this.io.messages)
   end;
+  
   function  getMessagesTotalNodesPerLevel (var this : tMetruCore; lvl : integer) : integer;
   begin
     getMessagesTotalNodesPerLevel := lib.tree.trinary.getTotalNodesPerLevel(this.io.messages, lvl);
+  end;
+
+  procedure balanceMessageTree            (var this : tMetruCore);
+  begin
+    lib.tree.trinary.balance(this.io.messages);
   end;
 end.

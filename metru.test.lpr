@@ -357,6 +357,47 @@ begin
   readln;
 end;
 
+procedure dumpPrimaryMessageTree();
+var
+  node        : lib.tree.trinary.tNode;
+  io          : lib.tree.trinary.tTrinaryTree;
+  idx, maxIdx : idxRange;
+begin
+  lib.tree.trinary.loadTree(io, 'data/', 'messages');
+  reset(io.index);
+  maxIdx := filesize(io.index) - 1;
+  write('pos | ');
+  write('id  | ');
+  write('idUser | ');
+  write('parent | ');
+  write('first | ');
+  write('last | ');
+  write('left | ');
+  write('center | ');
+  write('right');
+  writeln;
+  for idx := 0 to maxIdx do
+    begin
+      seek(io.index, idx);
+      read(io.index, node);
+      if node.center <> -1 then
+        begin
+          write(idx:3, ' | ');
+          write(node.id:3, ' | ');
+          write(node.idUser:6, ' | ');
+          write(node.parent:6, ' | ');
+          write(node.first:5, ' | ');
+          write(node.last:4, ' | ');
+          write(node.left:4, ' | ');
+          write(node.center:6, ' | ');
+          write(node.right:3, ' | ');
+          writeln;
+        end;
+    end;
+  close(io.index);  
+  readln;
+end;
+
 
 function messagemenu() : integer;
 begin
@@ -365,9 +406,10 @@ begin
   writeln('1- Dump de estructura de datos');
   writeln('2- Dump de estructura de control');
   writeln('3- Dump de estructura de arbol');
-  writeln('4- Emular mensajes (un mensaje de cada usuario en cada publicacion)');
+  writeln('4- Dump de estructura de arbol primario');
+  writeln('5- Emular mensajes (un mensaje de cada usuario en cada publicacion)');
   writeln('0- Salir');
-  messagemenu := readValidNumber(0, 4);
+  messagemenu := readValidNumber(0, 5);
 end;
 
 procedure messagemenuAct(op : integer);
@@ -376,7 +418,8 @@ begin
     1: dumpMessageData;
     2: dumpMessageControl;
     3: dumpMessageTree;
-    4: bulkInsertMessage;
+    4: dumpPrimaryMessageTree;
+    5: bulkInsertMessage;
   end;
 end;
 
