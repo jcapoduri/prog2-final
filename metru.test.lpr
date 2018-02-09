@@ -230,18 +230,18 @@ end;
 
 procedure bulkInsertMessage();
 var
-  totalUser, pubId : integer;
   i, count         : integer;
-  publication      : tPublish;
   found            : boolean;
   list             : tPublishIdxList;
 begin
+  metru.core.setup(metruApp);
   list      := metru.core.retrieveAllPublication(metruApp);
-  count     := length(list);
+  count     := length(list) - 1;
   found     := false;
   i         := 0;
   for i := 0 to count do
     bulkInsertMessageIntoPublication(list[i]);
+  wait('presione una tecla para continuar');
 end;
 
 procedure insertMessage();

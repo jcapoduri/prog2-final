@@ -547,7 +547,7 @@ implementation
 
     while (curNodeIdx <> NULLIDX) and (not found) do
       begin
-        curN0ode := _get(this, curNodeIdx);
+        curNode := _get(this, curNodeIdx);
         if keyEq(curNode.id, key) then
           begin
             found := true;
@@ -659,7 +659,7 @@ implementation
         node.idUser := NULLIDX;
         node.parent := pos;
         parentPos   := _appendNode(this, node);
-        _insertByPk(this, pk, pos, auxPos);
+        _insertByPk(this, pk, pos, parentPos);
         _increaseLevel(this, node);
         { create node for messages}
         auxNode.id     := pk;
