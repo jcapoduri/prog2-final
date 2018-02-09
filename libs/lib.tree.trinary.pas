@@ -68,18 +68,9 @@ type
   function  retrieveNextMsgIdx    (var this : tTrinaryTree; pk : tKey; var idxMsg : idxRange) : boolean; overload;
   function  retrieveAllLinkedKeys (var this : tTrinaryTree; pk : tKey) : tLinkedKeys;
 
-  { check below here}
-  {function  search           (var this : tTrinaryTree; key : tKey; var pos: idxRange) : boolean;
-  procedure insert           (var this : tTrinaryTree; pos: idxRange; key : tKey);
-  procedure remove           (var this : tTrinaryTree; pos: idxRange);
-  function  fetch            (var this : tTrinaryTree; pos: idxRange) : tNode;
-  function  root             (var this : tTrinaryTree) : idxRange;
-  function  leftChild        (var this : tTrinaryTree; pos: idxRange) : idxRange;
-  function  rightChild       (var this : tTrinaryTree; pos: idxRange) : idxRange;
-  function  parent           (var this : tTrinaryTree; pos: idxRange) : idxRange;
-  function  nextItem         (var this : tTrinaryTree; node: tNode) : tNode;}
-
-
+  function  getTotalLevels        (var this : tTrinaryTree) : integer;
+  function  getThreshold          (var this : tTrinaryTree) : integer;
+  function  getTotalNodesPerLevel (var this : tTrinaryTree; lvl : integer) : integer;
 
 implementation
   { Helpers }
@@ -356,6 +347,134 @@ implementation
         _set(this, parentIdx, parentNode);
       end;
   end;
+
+  { balance function }
+  procedure _balanceRight (var this : tTrinaryTree; var pivot : idxRange); forward;
+
+  procedure _balanceLeft(var this : tTrinaryTree; var pivot : idxRange);
+  var
+    pivotNode, newBranchRoot, auxNode : tNode;
+    newBranchRootIdx, parentIdx          : idxRange;
+    rc                                   : tControlRecord;
+    hLeft, hRight                        : integer;
+  begin
+    pivotNode        := _get(this, pivot);
+    parentIdx        := pivotNode.parent;
+    newBranchRootIdx := pivotNode.right;
+    newBranchRoot    := _get(this, newBranchRootIdx);
+
+    {check if need to re-balance}
+    hLeft            := _height(this, newBranchRoot.left);
+    hRight           := _height(this, newBranchRoot.right);
+    if (hLeft > hRight) then
+      begin
+        _balanceRight(this, newBranchRootIdx);
+        pivotNode        := _get(this, pivot);
+        newBranchRootIdx := pivotNode.right;
+        newBranchRoot    := _get(this, newBranchRootIdx);
+      end;
+
+    pivotNode.right      := newBranchRoot.left;
+    newBranchRoot.left   := pivot;
+    newBranchRoot.parent := parentIdx;
+    pivotNode.parent     := newBranchRootIdx;
+
+    _updateParent(this, parentIdx, pivot, newBranchRootIdx);
+
+    if pivotNode.right <> NULLIDX then
+      begin
+        auxNode          := _get(this, pivotNode.right);
+        auxNode.parent   := pivot;
+        _set(this, pivotNode.right, auxNode);
+      end;
+
+    _set(this, pivot, pivotNode);
+    _set(this, newBranchRootIdx, newBranchRoot);
+
+    pivot := newBranchRootIdx;
+  end;
+
+  procedure _balanceRight (var this : tTrinaryTree; var pivot : idxRange);
+  var
+    pivotNode, newBranchRoot, auxNode : tNode;
+    newBranchRootIdx, parentIdx       : idxRange;
+    hLeft, hRight                     : integer;
+  begin
+    pivotNode        := _get(this, pivot);
+    parentIdx        := pivotNode.parent;
+    newBranchRootIdx := pivotNode.left;
+    newBranchRoot    := _get(this, newBranchRootIdx);
+
+    {check if need to re-balance}
+    hLeft            := _height(this, newBranchRoot.left);
+    hRight           := _height(this, newBranchRoot.right);
+    if (hRight > hLeft) then
+      begin
+        _balanceLeft(this, newBranchRootIdx);
+        pivotNode        := _get(this, pivot);
+        newBranchRootIdx := pivotNode.left;
+        newBranchRoot    := _get(this, newBranchRootIdx);
+      end;
+
+    pivotNode.left       := newBranchRoot.right;
+    newBranchRoot.right  := pivot;
+    newBranchRoot.parent := parentIdx;
+    pivotNode.parent     := newBranchRootIdx;
+
+    _updateParent(this, parentIdx, pivot, newBranchRootIdx);
+
+    if pivotNode.left <> NULLIDX then
+      begin
+        auxNode          := _get(this, pivotNode.left);
+        auxNode.parent   := pivot;
+        _set(this, pivotNode.left, auxNode);
+      end;
+
+    _set(this, pivot, pivotNode);
+    _set(this, newBranchRootIdx, newBranchRoot);
+
+    pivot := newBranchRootIdx;
+  end;
+
+  function _balanceBranch (var this : tTrinaryTree; var pivot : idxRange) : boolean;
+  var
+    hLeft, hRight  : integer;
+    node           : tNode;
+    balanced       : boolean;
+  begin
+    node       := _get(this, pivot);
+    hLeft      := _height(this, node.left);
+    hRight     := _height(this, node.right);
+    wasRotated := true;
+    if abs(hLeft - hRight) > 1 then
+      begin
+        balanced := false;
+        if hLeft > hRight then
+          _balanceRight (this, pivot)
+        else
+          _balanceLeft  (this, pivot);
+      end;
+    _balanceBranch := balanced;
+  end;
+
+  procedure _balance (var this : tTrinaryTree; var pivot : idxRange);
+  var
+    node  : tNode; 
+  begin
+    
+  end;
+
+  procedure balance (var this : tTrinaryTree);
+  var
+    rc    : tControlRecord;
+    pivot : idxRange;
+  begin
+    _openTree(this);
+    rc    := _getControl(rc);
+    pivot := rc.root;
+    _closeTree(this);
+  end;
+  { end balance function }
 
   function _getBiggerFromBranch (var this : tTrinaryTree; var pivot : idxRange) : tKey;
   var
@@ -871,4 +990,35 @@ implementation
       end;
     retrieveAllLinkedKeys := list;
   end;
+
+  function  getTotalLevels        (var this : tTrinaryTree) : integer;
+  var
+    rc : tControlRecord;
+  begin
+    _openTree(this);
+    rc := _getControl(this);
+    _closeTree(this);
+    getTotalLevels := rc.lastLevel;
+  end;
+
+  function  getThreshold          (var this : tTrinaryTree) : integer;
+  var
+    rc : tControlRecord;
+  begin
+    _openTree(this);
+    rc := _getControl(this);
+    _closeTree(this);
+    getThreshold := rc.balanceThreshold;
+  end;
+
+  function  getTotalNodesPerLevel (var this : tTrinaryTree; lvl : integer) : integer;
+  var
+    level : tLevel;
+  begin
+    _openTree(this);
+    level := _getLevel(this, lvl);
+    _closeTree(this);
+    getTotalNodesPerLevel := level.totalNodes;
+  end;
+
 end.
