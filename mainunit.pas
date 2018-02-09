@@ -15,6 +15,8 @@ uses
   widgetlistform,
   UserForm,
   userblockform,
+  messageCheckForm,
+  HashDispersionTestForm,
   userReportPublicationForm,
   categoryReportForm,
   blockedUserReportForm,
@@ -138,8 +140,11 @@ begin
 end;
 
 procedure TmainWidget.balanceTrinaryTreeMenuItemClick(Sender: TObject);
+var
+  form : TmessageCheckFrm;
 begin
-
+  form := TmessageCheckFrm.Create(self);
+  setComponentOnPanel(form);
 end;
 
 procedure TmainWidget.deleteUserMenuItemClick(Sender: TObject);
@@ -168,8 +173,11 @@ begin
 end;
 
 procedure TmainWidget.hashDispersionTestMenuItemClick(Sender: TObject);
+var
+  form : THashDispersionTestForm;
 begin
-
+  form := THashDispersionTestForm.Create(self);
+  setComponentOnPanel(form);
 end;
 
 procedure TmainWidget.lockUserMenuItemClick(Sender: TObject);
