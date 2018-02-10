@@ -233,7 +233,7 @@ begin
   for i := low(result) to high(result) do
     begin
       _parent := self as TComponent;
-      item    :=  tPublicationDisplayWidget.Create(_parent, result[i], true);
+      item    :=  tPublicationDisplayWidget.Create(_parent, result[i]);
       componentList.Add(item);
     end;
   

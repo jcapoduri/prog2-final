@@ -25,7 +25,8 @@ type
     priceLabel: TLabel;
     titleLabel: TLabel;
     procedure blockButtonClick(Sender: TObject);
-    constructor Create(var _owner : TComponent; pubIdx: tPublishIdx; isOwn : boolean); overload;
+    constructor Create(var _owner : TComponent; pubIdx: tPublishIdx; usr : tUser); overload;
+    constructor Create(var _owner : TComponent; pubIdx: tPublishIdx); overload;
     procedure deleteButtonClick(Sender: TObject);
     procedure editButtonClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -49,12 +50,20 @@ implementation
 
 { tPublicationDisplayWidget }
 
-constructor tPublicationDisplayWidget.Create(var _owner: TComponent;
-  pubIdx: tPublishIdx; isOwn : boolean); overload;
+constructor tPublicationDisplayWidget.Create(var _owner: TComponent; pubIdx: tPublishIdx;  usr : tUser); overload;
 begin
   self.publicationIdx := pubIdx;
   metru.core.dereferencePublication(metruApp, pubIdx, self.publication);
-  self.isOwn       := isOwn;
+  self.isOwn       := publication.idUser = usr.id;
+  self.isAdmin     := metru.core.isLogedUserAdmin(metruApp);
+  Create(_owner);
+end;
+
+constructor tPublicationDisplayWidget.Create(var _owner: TComponent; pubIdx: tPublishIdx); overload;
+begin
+  self.publicationIdx := pubIdx;
+  metru.core.dereferencePublication(metruApp, pubIdx, self.publication);
+  self.isOwn       := true;
   self.isAdmin     := metru.core.isLogedUserAdmin(metruApp);
   Create(_owner);
 end;
