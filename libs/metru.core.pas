@@ -34,6 +34,7 @@ type
   tSellList       = array of tSell;
   tSellIdxList    = array of tSellIdx;
   tCalification   = lib.hash.close.tCalification;
+  tSellItemType   = lib.hash.close.tItemType;
   tItemType       = lib.tree.avl.tItemType;
   tStatus         = lib.tree.avl.tStatus;
   tUser           = lib.hash.open.tUser;
@@ -109,6 +110,8 @@ type
   procedure doReviewPurchase            (var this : tMetruCore; sellIdx : tSellIdx; review : tCalification);
   function  retrievePurchaseIfAvailable (var this : tMetruCore; pubIdx : tPublishIdx; var purchase : tSellIdx) : boolean;
   function  retrieveAllMyPurchase       (var this : tMetruCore; user : tUser) : tSellIdxList;
+  function  retrieveFirstSell           (var this : tMetruCore; var pos: tSellIdx) : boolean;
+  function  retrieveNextSell            (var this : tMetruCore; var pos: tSellIdx) : boolean;
   function  dereferenceSell             (var this : tMetruCore; idx : tSellIdx; var sell : tSell) : boolean;
 
   { advanced functions }
@@ -835,6 +838,16 @@ implementation
       end;
 
     retrieveAllMyPurchase := list;
+  end;
+
+  function  retrieveFirstSell           (var this : tMetruCore; var pos: tSellIdx) : boolean;
+  begin
+    retrieveFirstSell := lib.hash.close.fetchFirst(this.io.sells, pos);
+  end;
+
+  function  retrieveNextSell            (var this : tMetruCore; var pos: tSellIdx) : boolean;
+  begin
+    retrieveNextSell := lib.hash.close.fetchNext(this.io.sells, pos);
   end;
 
   function  dereferenceSell             (var this : tMetruCore; idx : tSellIdx; var sell : tSell) : boolean;

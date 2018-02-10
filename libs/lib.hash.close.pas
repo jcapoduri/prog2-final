@@ -58,6 +58,8 @@ type
   function  fetch            (var this : tCloseHash; pos: idxRange) : tSell;
   function  hash             (var this : tCloseHash; id : tKey) : tHashValue;
   function  getBucketCount   (var this : tCloseHash) : integer;
+  function  fetchFirst       (var this : tCloseHash; var pos: idxRange) : boolean;
+  function  fetchNext        (var this : tCloseHash; var pos: idxRange) : boolean;
 
 implementation
   { Helpers }
@@ -377,6 +379,64 @@ implementation
   function  getBucketCount   (var this : tCloseHash) : integer;
   begin
     getBucketCount := MAX;
+  end;
+
+  function  fetchFirst       (var this : tCloseHash; var pos: idxRange) : boolean;
+  var
+    hashIdx : tHashValue;
+    found   : boolean;
+    node    : tHashNode;
+  begin
+    _openHash(this);
+    found   := false;
+    hashIdx := 0;
+    pos     := NULLIDX;
+    while (not found) and (hashIdx <= MAX) do
+      begin
+        node := _getHash(this, hashIdx);
+        if node.total > 0 then
+          found := true
+        else
+          hashIdx := hashIdx + 1;
+      end;
+    if found then
+      pos := node.first;
+    _closeHash(this);
+    fetchFirst := found;
+  end;
+
+  function  fetchNext        (var this : tCloseHash; var pos: idxRange) : boolean;
+  var
+    hashIdx : tHashValue;
+    found, keepLoking : boolean;
+    node    : tHashNode;
+    sell    : tSell;
+  begin
+    _openHash(this);
+    sell := _get(this, pos);
+    if sell.next <> NULLIDX then
+      pos := sell.next
+    else
+      begin { search current end node and use next }
+        found      := false;
+        keepLoking := true;
+        hashIdx    := 0;
+        pos        := NULLIDX;
+        while (not found) and (hashIdx <= MAX) do
+          begin
+            node := _getHash(this, hashIdx);
+            if (node.total > 0) and (not keepLoking) then
+              found := true;
+            if (node.last = pos) then
+              keepLoking := false;
+            hashIdx := hashIdx + 1;
+          end;
+        if found then
+          pos := node.first; 
+      end;
+
+    _closeHash(this);
+    fetchNext := found;
   end;
 
 end.
