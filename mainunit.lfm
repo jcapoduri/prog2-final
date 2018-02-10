@@ -91,8 +91,13 @@ object mainWidget: TmainWidget
       object reportByBuyerMenuItem: TMenuItem
         Caption = 'Listado de mensajes de comprador'
       end
+      object topSellersReportMenuItem: TMenuItem
+        Caption = 'Listado de mayores vendedores'
+        OnClick = topSellersReportMenuItemClick
+      end
       object reportOfPublicationByMenuItem: TMenuItem
         Caption = 'Listado de publicaciones de un usuario'
+        OnClick = reportOfPublicationByMenuItemClick
       end
       object reportByPurchasesMenuItem: TMenuItem
         Caption = 'Listado de Compras'

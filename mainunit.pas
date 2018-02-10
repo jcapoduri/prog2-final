@@ -19,6 +19,10 @@ uses
   HashDispersionTestForm,
   userReportPublicationForm,
   categoryReportForm,
+  purchasesByUserReportPublicationForm,
+  detailedCategoryReportPublicationForm,
+  topNUserReportPublicationForm,
+  sellsReportPublicationForm,
   blockedUserReportForm,
   messagegeneratorform,
   metru.core   in 'libs\metru.core.pas';
@@ -31,6 +35,7 @@ type
     MainMenu1: TMainMenu;
     MenuItem1: TMenuItem;
     deleteUserMenuItem: TMenuItem;
+    topSellersReportMenuItem: TMenuItem;
     reportsMenuItem: TMenuItem;
     balanceTrinaryTreeMenuItem: TMenuItem;
     hashDispersionTestMenuItem: TMenuItem;
@@ -74,6 +79,8 @@ type
     procedure reportAllPublicationsMenuItemClick(Sender: TObject);
     procedure reportByCategoryMenuItemClick(Sender: TObject);
     procedure reportByMaxPerCateogryMenuItemClick(Sender: TObject);
+    procedure reportOfPublicationByMenuItemClick(Sender: TObject);
+    procedure topSellersReportMenuItemClick(Sender: TObject);
     procedure userEditMenuItemClick(Sender: TObject);
   private
     { private declarations }
@@ -116,8 +123,27 @@ begin
 end;
 
 procedure TmainWidget.reportByMaxPerCateogryMenuItemClick(Sender: TObject);
+var
+  form : tDetailedCategoryPublicationForm;
 begin
+  form := tDetailedCategoryPublicationForm.Create(self);
+  setComponentOnPanel(form);
+end;
 
+procedure TmainWidget.reportOfPublicationByMenuItemClick(Sender: TObject);
+var
+  form : tPurchasesByUserReportPublicationForm;
+begin
+  form := tPurchasesByUserReportPublicationForm.Create(self);
+  setComponentOnPanel(form);
+end;
+
+procedure TmainWidget.topSellersReportMenuItemClick(Sender: TObject);
+var
+  form : tTopNUserReportPublicationForm;
+begin
+  form := tTopNUserReportPublicationForm.Create(self);
+  setComponentOnPanel(form);
 end;
 
 procedure TmainWidget.userEditMenuItemClick(Sender: TObject);
