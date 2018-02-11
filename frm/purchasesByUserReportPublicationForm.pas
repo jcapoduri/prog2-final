@@ -50,7 +50,7 @@ begin
   if ok then
     begin
       sellsList := metru.core.retrieveAllMyPurchase(metruApp, usr);
-      count     := count;
+      count     := length(sellsList);
       dataGrid.RowCount := count + 1;
       for i := 0 to count - 1 do
         begin

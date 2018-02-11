@@ -20,8 +20,13 @@ uses
   userReportPublicationForm,
   categoryReportForm,
   purchasesByUserReportPublicationForm,
+  publicationByUserReportPublicationForm,
   detailedCategoryReportPublicationForm,
+  detailedSellsReportPublicationForm,
   topNUserReportPublicationForm,
+  buyerUserMessagesReportPublicationForm,
+  sellerUserMessagesReportPublicationForm,
+  expiredpublicationsbycategoryreportform,
   sellsReportPublicationForm,
   blockedUserReportForm,
   messagegeneratorform,
@@ -35,6 +40,9 @@ type
     MainMenu1: TMainMenu;
     MenuItem1: TMenuItem;
     deleteUserMenuItem: TMenuItem;
+    blockedUserReportMenuItem: TMenuItem;
+    publicationByUserReportMenuItem: TMenuItem;
+    purchaseDetailedReportMenuItem: TMenuItem;
     topSellersReportMenuItem: TMenuItem;
     reportsMenuItem: TMenuItem;
     balanceTrinaryTreeMenuItem: TMenuItem;
@@ -42,7 +50,7 @@ type
     lockUserMenuItem: TMenuItem;
     reportByPurchasesMenuItem: TMenuItem;
     reportCategoryMenuItem: TMenuItem;
-    reportOfPublicationByMenuItem: TMenuItem;
+    reportOfPurchaseByMenuItem: TMenuItem;
     reportBySellerMenuItem: TMenuItem;
     reportByBuyerMenuItem: TMenuItem;
     messagesPopulationMenuItem: TMenuItem;
@@ -64,6 +72,7 @@ type
     displayPanel: TPanel;
     login : TLoginForm;
     procedure balanceTrinaryTreeMenuItemClick(Sender: TObject);
+    procedure blockedUserReportMenuItemClick(Sender: TObject);
     procedure deleteUserMenuItemClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure categoryCRUDMenuItemClick(Sender: TObject);
@@ -74,12 +83,18 @@ type
     procedure myPublicationMenuItemClick(Sender: TObject);
     procedure newPublicationMenuItemClick(Sender: TObject);
     procedure publicationAllMenuItemClick(Sender: TObject);
+    procedure publicationByUserReportMenuItemClick(Sender: TObject);
+    procedure purchaseDetailedReportMenuItemClick(Sender: TObject);
     procedure quitMenuItemClick(Sender: TObject);
     procedure EmbedForm(ArgParent : TWinControl; ArgForm : TCustomForm);
     procedure reportAllPublicationsMenuItemClick(Sender: TObject);
+    procedure reportByBuyerMenuItemClick(Sender: TObject);
     procedure reportByCategoryMenuItemClick(Sender: TObject);
     procedure reportByMaxPerCateogryMenuItemClick(Sender: TObject);
-    procedure reportOfPublicationByMenuItemClick(Sender: TObject);
+    procedure reportByPurchasesMenuItemClick(Sender: TObject);
+    procedure reportBySellerMenuItemClick(Sender: TObject);
+    procedure reportCategoryMenuItemClick(Sender: TObject);
+    procedure reportOfPurchaseByMenuItemClick(Sender: TObject);
     procedure topSellersReportMenuItemClick(Sender: TObject);
     procedure userEditMenuItemClick(Sender: TObject);
   private
@@ -114,6 +129,14 @@ begin
   setComponentOnPanel(form);
 end;
 
+procedure TmainWidget.reportByBuyerMenuItemClick(Sender: TObject);
+var
+  form : tSellerUserMessagesReportPublicationForm;
+begin
+  form := tSellerUserMessagesReportPublicationForm.Create(self);
+  setComponentOnPanel(form);
+end;
+
 procedure TmainWidget.reportByCategoryMenuItemClick(Sender: TObject);
 var
   form : TCategoryReportForm;
@@ -130,7 +153,31 @@ begin
   setComponentOnPanel(form);
 end;
 
-procedure TmainWidget.reportOfPublicationByMenuItemClick(Sender: TObject);
+procedure TmainWidget.reportByPurchasesMenuItemClick(Sender: TObject);
+var
+  form : tSellsReportPublicationForm;
+begin
+  form := tSellsReportPublicationForm.Create(self);
+  setComponentOnPanel(form);
+end;
+
+procedure TmainWidget.reportBySellerMenuItemClick(Sender: TObject);
+var
+  form : tBuyerUserMessagesReportPublicationForm;
+begin
+  form := tBuyerUserMessagesReportPublicationForm.Create(self);
+  setComponentOnPanel(form);
+end;
+
+procedure TmainWidget.reportCategoryMenuItemClick(Sender: TObject);
+var
+  form : TExpiredPublicationsByCategoryReportRorm;
+begin
+  form := TExpiredPublicationsByCategoryReportRorm.Create(self);
+  setComponentOnPanel(form);
+end;
+
+procedure TmainWidget.reportOfPurchaseByMenuItemClick(Sender: TObject);
 var
   form : tPurchasesByUserReportPublicationForm;
 begin
@@ -170,6 +217,14 @@ var
   form : TmessageCheckFrm;
 begin
   form := TmessageCheckFrm.Create(self);
+  setComponentOnPanel(form);
+end;
+
+procedure TmainWidget.blockedUserReportMenuItemClick(Sender: TObject);
+var
+  form : tBlockedUserReportForm;
+begin
+  form := tBlockedUserReportForm.Create(self);
   setComponentOnPanel(form);
 end;
 
@@ -282,6 +337,22 @@ var
   form : tPublicationListForm;
 begin
   form := tPublicationListForm.Create(self, metru.core.loggedUser(metruApp), false);
+  setComponentOnPanel(form);
+end;
+
+procedure TmainWidget.publicationByUserReportMenuItemClick(Sender: TObject);
+var
+  form : tPublicationByUserReportPublicationForm;
+begin
+  form := tPublicationByUserReportPublicationForm.Create(self);
+  setComponentOnPanel(form);
+end;
+
+procedure TmainWidget.purchaseDetailedReportMenuItemClick(Sender: TObject);
+var
+  form : tDetailedSellsReportPublicationForm;
+begin
+  form := tDetailedSellsReportPublicationForm.Create(self);
   setComponentOnPanel(form);
 end;
 

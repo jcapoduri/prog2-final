@@ -85,25 +85,41 @@ object mainWidget: TmainWidget
         Caption = 'Listado de Categorias por Mayores Totales'
         OnClick = reportByMaxPerCateogryMenuItemClick
       end
+      object blockedUserReportMenuItem: TMenuItem
+        Caption = 'Listado de usuarios bloqueados'
+        OnClick = blockedUserReportMenuItemClick
+      end
       object reportBySellerMenuItem: TMenuItem
         Caption = 'Listado de mensajes de vendedor'
+        OnClick = reportBySellerMenuItemClick
       end
       object reportByBuyerMenuItem: TMenuItem
         Caption = 'Listado de mensajes de comprador'
+        OnClick = reportByBuyerMenuItemClick
       end
       object topSellersReportMenuItem: TMenuItem
         Caption = 'Listado de mayores vendedores'
         OnClick = topSellersReportMenuItemClick
       end
-      object reportOfPublicationByMenuItem: TMenuItem
-        Caption = 'Listado de publicaciones de un usuario'
-        OnClick = reportOfPublicationByMenuItemClick
+      object reportOfPurchaseByMenuItem: TMenuItem
+        Caption = 'Listado de compras de un usuario'
+        OnClick = reportOfPurchaseByMenuItemClick
+      end
+      object publicationByUserReportMenuItem: TMenuItem
+        Caption = 'Listado de publicaciones por usuario'
+        OnClick = publicationByUserReportMenuItemClick
       end
       object reportByPurchasesMenuItem: TMenuItem
         Caption = 'Listado de Compras'
+        OnClick = reportByPurchasesMenuItemClick
+      end
+      object purchaseDetailedReportMenuItem: TMenuItem
+        Caption = 'Listado de Compras Detallado'
+        OnClick = purchaseDetailedReportMenuItemClick
       end
       object reportCategoryMenuItem: TMenuItem
-        Caption = 'Listado de una categoría'
+        Caption = 'Listado expirados de una categoría'
+        OnClick = reportCategoryMenuItemClick
       end
     end
     object advanceBaseMenuItem: TMenuItem

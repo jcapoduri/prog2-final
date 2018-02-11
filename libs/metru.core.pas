@@ -95,6 +95,7 @@ type
   function  retrieveAllPublication        (var this : tMetruCore) : tPublishIdxList;
   function  retrievePublicationByCategory (var this : tMetruCore; var category : tCategory) : tPublishIdxList;
   function  retrievePublicationByUser     (var this : tMetruCore; var user : tUser) : tPublishIdxList;
+  function  retrievePublicationById       (var this : tMetruCore; key : integer; var pubIdx : tPublishIdx) : boolean;
   function  dereferencePublication        (var this : tMetruCore; idx : tPublishIdx; var publication : tPublish) : boolean;
 
   { message related functions }
@@ -393,6 +394,33 @@ implementation
           lib.hash.open.remove(this.io.users, user);
       end;
     banUser := ok;
+  end;
+
+  function  retrievePublicationById       (var this : tMetruCore; key : integer; var pubIdx : tPublishIdx) : boolean;
+  var
+    publication  : tPublish;
+    pubList      : tPublishIdxList;
+    i, count     : integer;
+    found        : boolean;
+  begin
+    pubList := metru.core.retrieveAllPublication(this);
+    found   := false;
+    count   := length(pubList);
+    i       := 0;
+    pubIdx  := NULLIDX;
+
+    while (not found) and (i < count) do
+      begin
+        metru.core.dereferencePublication(this, pubList[i], publication);
+        if publication.id = key then
+          found := true
+        else 
+          i := i + 1;
+      end;
+
+    if found then pubIdx := pubList[i];
+    
+    retrievePublicationById := found;
   end;
 
   function  retrieveUser (var this : tMetruCore; id : integer; var user : tUser) : boolean; overload;
