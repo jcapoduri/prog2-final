@@ -581,6 +581,7 @@ begin
           pub.etimestamp := Now;
           pub.itemType   := New;
           pub.status     := tStatus.Publish;
+          pub.image      := EmptyStr;
           writeln('generando publication para ' + user.fullname + ' en categoria ' + cat.categoryName);
           metru.core.createPublication(metruApp, pub);
         end;

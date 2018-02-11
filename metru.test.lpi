@@ -8,6 +8,7 @@
         <MainUnitHasCreateFormStatements Value="False"/>
         <MainUnitHasTitleStatement Value="False"/>
         <MainUnitHasScaledStatement Value="False"/>
+        <AlwaysBuild Value="True"/>
       </Flags>
       <SessionStorage Value="InProjectDir"/>
       <MainUnit Value="0"/>
@@ -26,6 +27,11 @@
         <FormatVersion Value="1"/>
       </local>
     </RunParams>
+    <RequiredPackages Count="1">
+      <Item1>
+        <PackageName Value="LCL"/>
+      </Item1>
+    </RequiredPackages>
     <Units Count="8">
       <Unit0>
         <Filename Value="metru.test.lpr"/>

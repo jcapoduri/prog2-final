@@ -25,6 +25,7 @@ type
                      etimestamp : TDateTime;
                      itemType   : tItemType;
                      status     : tStatus;
+                     image      : string[64];
                    end;
   tPublishList   = array of tPublish;
   tNode          = record
