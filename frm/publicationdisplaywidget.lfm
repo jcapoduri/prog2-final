@@ -15,6 +15,8 @@ object tPublicationDisplayWidget: tPublicationDisplayWidget
     Height = 103
     Top = 8
     Width = 99
+    Proportional = True
+    Stretch = True
   end
   object titleLabel: TLabel
     Left = 144

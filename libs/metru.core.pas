@@ -9,6 +9,7 @@ uses
   ,lib.tree.trinary in 'libs\lib.tree.trinary.pas'
   ,lib.hash.open    in 'libs\lib.hash.open.pas'
   ,lib.hash.close   in 'libs\lib.hash.close.pas'
+  ,lib.images       in 'libs\lib.images.pas'
   ;
 
 const
@@ -18,6 +19,7 @@ const
   CATEGORYFILE     = 'categories';
   SELLSFILE        = 'sells';
   MESSAGEFILE      = 'messages';
+  IMAGESPATH       = 'images';
   PUBLICATIONFILE  = 'publication';
 
 type
@@ -44,6 +46,7 @@ type
   tMessageList    = array of tMessageIdx;
 
   tMetruIO =   record
+                 images     : tImageContainer;
                  users        : tOpenHash;
                  categories   : tLCRStree;
                  messages     : tTrinaryTree;
@@ -63,12 +66,17 @@ type
   procedure setup   (var this : tMetruCore);
   procedure kickoff (var this : tMetruCore);
 
+  { images }
+  function  storeImage     (var this : tMetruCore; pathToImage : string) : string;
+  function  retrieveImage  (var this : tMetruCore; uniqId : string) : string;
+
   { User functions }
   function  login             (var this : tMetruCore; email, pass : string; var blocked : boolean) : boolean;
   function  isLogedIn         (var this : tMetruCore) : boolean;
   function  isLogedUserAdmin  (var this : tMetruCore) : boolean;
   function  loggedUser        (var this : tMetruCore) : tUser;
   procedure logoff            (var this : tMetruCore);
+  procedure reloadUser        (var this : tMetruCore);
   function  createUser        (var this : tMetruCore; user : tUser) : boolean;
   function  updateUser        (var this : tMetruCore; user : tUser) : boolean;
   function  banUser           (var this : tMetruCore; user : tUser) : boolean;
@@ -169,6 +177,7 @@ implementation
     lib.tree.lcrs.loadTree(this.io.categories, BASEPATH, CATEGORYFILE);
     lib.tree.trinary.loadTree(this.io.messages, BASEPATH, MESSAGEFILE);
     lib.hash.close.loadHash(this.io.sells, BASEPATH, SELLSFILE);
+    lib.images.setupContainer(this.io.images, BASEPATH + IMAGESPATH);
     lib.tree.avl.loadTree(this.io.publications, BASEPATH, PUBLICATIONFILE);
   end;
 
@@ -181,6 +190,7 @@ implementation
     lib.tree.lcrs.newEmptyTree(this.io.categories, BASEPATH, CATEGORYFILE);
     lib.tree.trinary.newEmptyTree(this.io.messages, BASEPATH, MESSAGEFILE);
     lib.hash.close.newEmptyHash(this.io.sells, BASEPATH, SELLSFILE);
+    lib.images.setupContainer(this.io.images, BASEPATH + IMAGESPATH);
     lib.tree.avl.newEmptyTree(this.io.publications, BASEPATH, PUBLICATIONFILE);
     { setup users}
     user.email      := 'admistrador@mercatrucho.com';
@@ -298,6 +308,16 @@ implementation
     createCateogry(metruApp, cat);
   end;
 
+  function  storeImage     (var this : tMetruCore; pathToImage : string) : string;
+  begin
+    storeImage := lib.images.storeImage(this.io.images, pathToImage);
+  end;
+
+  function  retrieveImage  (var this : tMetruCore; uniqId : string) : string;
+  begin
+    retrieveImage := lib.images.retrieveImage(this.io.images, uniqId);
+  end;
+
   function  login      (var this : tMetruCore; email, pass : string; var blocked : boolean) : boolean;
   var
     found : boolean;
@@ -356,7 +376,8 @@ implementation
     user.blocked    := false;
     ok              := not lib.hash.open.search(this.io.users, user.email, pos);
     if ok then
-      lib.hash.open.insert(this.io.users, user);        
+      lib.hash.open.insert(this.io.users, user);
+
     createUser := ok;
   end;
 
@@ -449,6 +470,11 @@ implementation
   begin
     user := fetchByIdx(this.io.users, iterator);
     retrieveUser := true;
+  end;
+
+  procedure reloadUser        (var this : tMetruCore);
+  begin
+    retrieveUser(this, this.user.email, this.user);
   end;
 
   function  retrieveFirstUser (var this : tMetruCore; var iterator : tUserIterator) : boolean;

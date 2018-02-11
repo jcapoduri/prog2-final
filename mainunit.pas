@@ -200,7 +200,8 @@ var
 begin
   usr      := metru.core.loggedUser(metruApp);
   userForm := TUserForm.Create(self, usr);
-  userForm.Show;
+  userForm.ShowModal;
+  metru.core.reloadUser(metruApp);
 end;
 
 procedure TmainWidget.FormCreate(Sender: TObject);

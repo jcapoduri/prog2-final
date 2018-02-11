@@ -119,6 +119,8 @@ begin
   titleLabel.Caption       := publication.itemName;
   priceLabel.Caption       := FloatToStr(publication.price);
   idLabel.Caption          := 'ID: ' + IntToStr(publication.id);
+  if publication.image <> EmptyStr then
+    imagePreview.Picture.LoadFromFile(metru.core.retrieveImage(metruApp,  publication.image));
   case self.publication.status of
     tStatus.Publish: begin
                        self.statusLabel.Caption  := 'Publicado';

@@ -20,7 +20,7 @@ type
     pauseButton: TBitBtn;
     voidButton: TBitBtn;
     errorLabel: TLabel;
-    Image1: TImage;
+    imagePreview: TImage;
     statusNameLabel: TLabel;
     statusLabel: TLabel;
     saveButton: TBitBtn;
@@ -124,6 +124,8 @@ begin
       self.priceEdit.Value          := publication.price;
       self.expireDateEdit.Date      := publication.etimestamp;
       self.isNewCheckBox.Checked    := publication.itemType = tItemType.New;
+      if publication.image <> EmptyStr then
+        imagePreview.Picture.LoadFromFile(metru.core.retrieveImage(metruApp,  publication.image));
     end;
 end;
 
@@ -142,7 +144,7 @@ end;
 procedure tPublicationForm.addPictureButtonClick(Sender: TObject);
 begin
    if pictureDialog.Execute then
-     previewWidget.Picture.LoadFromFile(pictureDialog.FileName);
+     imagePreview.Picture.LoadFromFile(pictureDialog.FileName);
 end;
 
 procedure tPublicationForm.pauseButtonClick(Sender: TObject);
@@ -173,12 +175,18 @@ begin
   publication.price      := self.priceEdit.Value;
   publication.ctimestamp := Now;
   publication.etimestamp := self.expireDateEdit.Date;
+  if pictureDialog.FileName <> EmptyStr then
+    publication.image := metru.core.storeImage(metruApp, pictureDialog.FileName);
+    
   if (self.isNewCheckBox.Checked) then
     publication.itemType := tItemType.New
   else
     publication.itemType := tItemType.Used;
   publication.status     := tStatus.Publish;
-  metru.core.createPublication(metruApp, publication);
+  if publicationIdx <> NULLIDX then
+    metru.core.editPublication(metruApp, publicationIdx, publication)
+  else
+    metru.core.createPublication(metruApp, publication);
   Close;
 end;
 

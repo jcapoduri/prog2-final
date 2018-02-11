@@ -112,12 +112,14 @@ object tPublicationForm: tPublicationForm
     Caption = 'Es nuevo'
     TabOrder = 5
   end
-  object Image1: TImage
+  object imagePreview: TImage
     Left = 411
     Height = 196
     Top = 8
     Width = 202
     Anchors = [akTop, akRight]
+    Proportional = True
+    Stretch = True
   end
   object addPhotoButton: TBitBtn
     Left = 539

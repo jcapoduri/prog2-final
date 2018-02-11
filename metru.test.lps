@@ -4,19 +4,20 @@
     <PathDelim Value="\"/>
     <Version Value="10"/>
     <BuildModes Active="Default"/>
-    <Units Count="8">
+    <Units Count="11">
       <Unit0>
         <Filename Value="metru.test.lpr"/>
         <IsPartOfProject Value="True"/>
-        <TopLine Value="716"/>
-        <CursorPos Y="748"/>
+        <IsVisibleTab Value="True"/>
+        <TopLine Value="561"/>
+        <CursorPos X="38" Y="584"/>
         <UsageCount Value="31"/>
         <Loaded Value="True"/>
       </Unit0>
       <Unit1>
         <Filename Value="libs\lib.tree.avl.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="5"/>
+        <EditorIndex Value="6"/>
         <TopLine Value="34"/>
         <CursorPos X="19" Y="61"/>
         <UsageCount Value="31"/>
@@ -25,7 +26,7 @@
       <Unit2>
         <Filename Value="libs\lib.tree.lcrs.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="4"/>
+        <EditorIndex Value="5"/>
         <TopLine Value="339"/>
         <CursorPos Y="356"/>
         <UsageCount Value="31"/>
@@ -34,7 +35,7 @@
       <Unit3>
         <Filename Value="libs\lib.hash.open.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="3"/>
+        <EditorIndex Value="4"/>
         <TopLine Value="320"/>
         <CursorPos X="31" Y="343"/>
         <UsageCount Value="31"/>
@@ -52,10 +53,9 @@
       <Unit5>
         <Filename Value="libs\lib.tree.trinary.pas"/>
         <IsPartOfProject Value="True"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
         <TopLine Value="533"/>
-        <CursorPos Y="550"/>
+        <CursorPos X="49" Y="544"/>
         <UsageCount Value="31"/>
         <Loaded Value="True"/>
       </Unit5>
@@ -71,133 +71,151 @@
       <Unit7>
         <Filename Value="libs\metru.core.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="2"/>
+        <EditorIndex Value="3"/>
         <TopLine Value="649"/>
         <CursorPos Y="666"/>
         <UsageCount Value="26"/>
         <Loaded Value="True"/>
       </Unit7>
+      <Unit8>
+        <Filename Value="libs\lib.images.pas"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="4"/>
+        <CursorPos X="18" Y="6"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit8>
+      <Unit9>
+        <Filename Value="C:\lazarus\fpc\3.0.4\source\rtl\win\sysutils.pp"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="10"/>
+      </Unit9>
+      <Unit10>
+        <Filename Value="C:\lazarus\fpc\3.0.4\source\packages\hash\src\md5.pp"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="10"/>
+      </Unit10>
     </Units>
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="libs\lib.tree.trinary.pas"/>
-        <Caret Line="98" TopLine="81"/>
+        <Caret Line="546" TopLine="526"/>
       </Position1>
       <Position2>
         <Filename Value="libs\lib.tree.trinary.pas"/>
-        <Caret Line="550" TopLine="533"/>
+        <Caret Line="548" TopLine="526"/>
       </Position2>
       <Position3>
-        <Filename Value="metru.test.lpr"/>
-        <Caret Line="215" Column="110" TopLine="205"/>
+        <Filename Value="libs\lib.tree.trinary.pas"/>
+        <Caret Line="565" TopLine="533"/>
       </Position3>
       <Position4>
         <Filename Value="libs\lib.tree.trinary.pas"/>
-        <Caret Line="550" TopLine="530"/>
+        <Caret Line="654" TopLine="637"/>
       </Position4>
       <Position5>
         <Filename Value="libs\lib.tree.trinary.pas"/>
-        <Caret Line="548" Column="99" TopLine="533"/>
+        <Caret Line="655" TopLine="637"/>
       </Position5>
       <Position6>
         <Filename Value="libs\lib.tree.trinary.pas"/>
-        <Caret Line="90" Column="30" TopLine="81"/>
+        <Caret Line="658" TopLine="637"/>
       </Position6>
       <Position7>
         <Filename Value="libs\lib.tree.trinary.pas"/>
-        <Caret Line="659" Column="104" TopLine="641"/>
+        <Caret Line="659" TopLine="637"/>
       </Position7>
       <Position8>
         <Filename Value="libs\lib.tree.trinary.pas"/>
-        <Caret Line="543" TopLine="526"/>
+        <Caret Line="660" TopLine="637"/>
       </Position8>
       <Position9>
         <Filename Value="libs\lib.tree.trinary.pas"/>
-        <Caret Line="544" TopLine="526"/>
+        <Caret Line="661" TopLine="637"/>
       </Position9>
       <Position10>
         <Filename Value="libs\lib.tree.trinary.pas"/>
-        <Caret Line="545" TopLine="526"/>
+        <Caret Line="654" TopLine="640"/>
       </Position10>
       <Position11>
         <Filename Value="libs\lib.tree.trinary.pas"/>
-        <Caret Line="546" TopLine="526"/>
+        <Caret Line="550" TopLine="533"/>
       </Position11>
       <Position12>
-        <Filename Value="libs\lib.tree.trinary.pas"/>
-        <Caret Line="548" TopLine="526"/>
+        <Filename Value="metru.test.lpr"/>
+        <Caret Line="383" Column="21" TopLine="367"/>
       </Position12>
       <Position13>
-        <Filename Value="libs\lib.tree.trinary.pas"/>
-        <Caret Line="565" TopLine="533"/>
+        <Filename Value="metru.test.lpr"/>
+        <Caret Line="643" Column="29" TopLine="617"/>
       </Position13>
       <Position14>
-        <Filename Value="libs\lib.tree.trinary.pas"/>
-        <Caret Line="654" TopLine="637"/>
+        <Filename Value="metru.test.lpr"/>
+        <Caret Line="564" Column="53" TopLine="547"/>
       </Position14>
       <Position15>
-        <Filename Value="libs\lib.tree.trinary.pas"/>
-        <Caret Line="655" TopLine="637"/>
+        <Filename Value="metru.test.lpr"/>
+        <Caret Line="748" TopLine="716"/>
       </Position15>
       <Position16>
-        <Filename Value="libs\lib.tree.trinary.pas"/>
-        <Caret Line="658" TopLine="637"/>
+        <Filename Value="metru.test.lpr"/>
+        <Caret Line="247" Column="11" TopLine="230"/>
       </Position16>
       <Position17>
-        <Filename Value="libs\lib.tree.trinary.pas"/>
-        <Caret Line="659" TopLine="637"/>
+        <Filename Value="metru.test.lpr"/>
+        <Caret Line="643" Column="29" TopLine="627"/>
       </Position17>
       <Position18>
-        <Filename Value="libs\lib.tree.trinary.pas"/>
-        <Caret Line="660" TopLine="637"/>
+        <Filename Value="metru.test.lpr"/>
+        <Caret Line="247" Column="11" TopLine="231"/>
       </Position18>
       <Position19>
-        <Filename Value="libs\lib.tree.trinary.pas"/>
-        <Caret Line="661" TopLine="637"/>
+        <Filename Value="metru.test.lpr"/>
+        <Caret Line="748" TopLine="716"/>
       </Position19>
       <Position20>
         <Filename Value="libs\lib.tree.trinary.pas"/>
-        <Caret Line="654" TopLine="640"/>
+        <Caret Line="544" Column="49" TopLine="533"/>
       </Position20>
       <Position21>
-        <Filename Value="libs\lib.tree.trinary.pas"/>
-        <Caret Line="550" TopLine="533"/>
+        <Filename Value="libs\lib.images.pas"/>
+        <Caret Line="6" Column="18"/>
       </Position21>
       <Position22>
         <Filename Value="metru.test.lpr"/>
-        <Caret Line="383" Column="21" TopLine="367"/>
+        <Caret Line="664" Column="46" TopLine="650"/>
       </Position22>
       <Position23>
         <Filename Value="metru.test.lpr"/>
-        <Caret Line="384" Column="12" TopLine="387"/>
+        <Caret Line="208" Column="43" TopLine="194"/>
       </Position23>
       <Position24>
         <Filename Value="metru.test.lpr"/>
-        <Caret Line="643" Column="29" TopLine="617"/>
+        <Caret Line="213" Column="14" TopLine="194"/>
       </Position24>
       <Position25>
         <Filename Value="metru.test.lpr"/>
-        <Caret Line="564" Column="53" TopLine="547"/>
+        <Caret Line="217" Column="66" TopLine="194"/>
       </Position25>
       <Position26>
         <Filename Value="metru.test.lpr"/>
-        <Caret Line="748" TopLine="716"/>
+        <Caret Line="219" Column="48" TopLine="194"/>
       </Position26>
       <Position27>
         <Filename Value="metru.test.lpr"/>
-        <Caret Line="247" Column="11" TopLine="230"/>
+        <Caret Line="225" Column="78" TopLine="197"/>
       </Position27>
       <Position28>
         <Filename Value="metru.test.lpr"/>
-        <Caret Line="643" Column="29" TopLine="627"/>
+        <Caret Line="238" Column="49" TopLine="222"/>
       </Position28>
       <Position29>
         <Filename Value="metru.test.lpr"/>
-        <Caret Line="247" Column="11" TopLine="231"/>
+        <Caret Line="243" Column="37" TopLine="222"/>
       </Position29>
       <Position30>
         <Filename Value="metru.test.lpr"/>
-        <Caret Line="748" TopLine="716"/>
+        <Caret Line="429" Column="14" TopLine="434"/>
       </Position30>
     </JumpHistory>
   </ProjectSession>
