@@ -17,17 +17,18 @@ type
   tHashValue     = NULLIDX..MAX;
   tKey           = longint;
   tNode          = record
-                     idBuyer      : longint;
-                     idItem       : tKey;
-                     itemName     : string[255];
-                     price        : Currency;
-                     publishDate  : TDateTime;
-                     sellDate     : TDateTime;
-                     itemType     : tItemType;
-                     calification : tCalification;
-                     tax          : double;
-                     previous     : idxRange;
-                     next         : idxRange;
+                     idBuyer          : longint;
+                     idItem           : tKey;
+                     itemName         : string[255];
+                     price            : Currency;
+                     publishDate      : TDateTime;
+                     sellDate         : TDateTime;
+                     itemType         : tItemType;
+                     calification     : tCalification;
+                     tax              : double;
+                     alreadyCollected : boolean;
+                     previous         : idxRange;
+                     next             : idxRange;
                    end;
   tSell          = tNode;
   tControlRecord = record
@@ -52,8 +53,13 @@ type
   function  isEmpty          (var this : tCloseHash) : boolean;
   function  search           (var this : tCloseHash; key : tKey; var pos: idxRange) : boolean;
   procedure insert           (var this : tCloseHash; sell : tSell);
+  procedure update           (var this : tCloseHash; pos: idxRange; sell : tSell);
   procedure remove           (var this : tCloseHash; pos: idxRange);
   function  fetch            (var this : tCloseHash; pos: idxRange) : tSell;
+  function  hash             (var this : tCloseHash; id : tKey) : tHashValue;
+  function  getBucketCount   (var this : tCloseHash) : integer;
+  function  fetchFirst       (var this : tCloseHash; var pos: idxRange) : boolean;
+  function  fetchNext        (var this : tCloseHash; var pos: idxRange) : boolean;
 
 implementation
   { Helpers }
@@ -119,6 +125,11 @@ implementation
   function  _hash(id : tKey) : tHashValue;
   begin
     _hash := id mod MAX;
+  end;
+
+  function  hash(var this : tCloseHash; id : tKey) : tHashValue;
+  begin
+    hash := _hash(id);
   end;
 
   function _append (var this : tCloseHash; var item : tNode) : idxRange;
@@ -259,7 +270,6 @@ implementation
     hashNode         : tHashNode;
     previousSell     : tSell;
   begin
-    {TODO}
     _openHash(this);
     key      := _hash(sell.idItem);
     pos      := _append(this, sell);
@@ -284,6 +294,14 @@ implementation
     _setHash(this, key, hashNode);
     _closeHash(this);
   end;
+
+  procedure update           (var this : tCloseHash; pos: idxRange; sell : tSell);
+  begin
+    _openHash(this);
+    _set(this, pos, sell);
+    _closeHash(this);
+  end;
+
 
   procedure remove           (var this : tCloseHash; pos: idxRange);
   var
@@ -357,5 +375,68 @@ implementation
     _closeHash(this);
     fetch := node;
   end;
-  
+
+  function  getBucketCount   (var this : tCloseHash) : integer;
+  begin
+    getBucketCount := MAX;
+  end;
+
+  function  fetchFirst       (var this : tCloseHash; var pos: idxRange) : boolean;
+  var
+    hashIdx : tHashValue;
+    found   : boolean;
+    node    : tHashNode;
+  begin
+    _openHash(this);
+    found   := false;
+    hashIdx := 0;
+    pos     := NULLIDX;
+    while (not found) and (hashIdx <= MAX) do
+      begin
+        node := _getHash(this, hashIdx);
+        if node.total > 0 then
+          found := true
+        else
+          hashIdx := hashIdx + 1;
+      end;
+    if found then
+      pos := node.first;
+    _closeHash(this);
+    fetchFirst := found;
+  end;
+
+  function  fetchNext        (var this : tCloseHash; var pos: idxRange) : boolean;
+  var
+    hashIdx : tHashValue;
+    found, keepLoking : boolean;
+    node    : tHashNode;
+    sell    : tSell;
+  begin
+    _openHash(this);
+    sell := _get(this, pos);
+    if sell.next <> NULLIDX then
+      pos := sell.next
+    else
+      begin { search current end node and use next }
+        found      := false;
+        keepLoking := true;
+        hashIdx    := 0;
+        pos        := NULLIDX;
+        while (not found) and (hashIdx <= MAX) do
+          begin
+            node := _getHash(this, hashIdx);
+            if (node.total > 0) and (not keepLoking) then
+              found := true;
+            if (node.last = pos) then
+              keepLoking := false;
+            hashIdx := hashIdx + 1;
+          end;
+        if found then
+          pos := node.first; 
+      end;
+
+    _closeHash(this);
+    fetchNext := found;
+  end;
+
 end.

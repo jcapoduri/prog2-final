@@ -22,9 +22,10 @@ type
                      fullname   : string[255];
                      address    : string[255];
                      providence : 0..25;
+                     status     : boolean;
                      ctimestamp : TDateTime; {creation timestamp}
                      photoUrl   : string[255];
-                     status     : boolean;
+                     blocked    : boolean;
                      utimestamp : TDateTime; {login timestamp}                     
                    end;
   tUser          = tNode;
@@ -39,13 +40,19 @@ type
                      control : tControl;
                    end;
 
-  procedure loadHash         (var this : tOpenHash; path, filename : string);
-  procedure newEmptyHash     (var this : tOpenHash; path, filename : string);
-  {function  isEmpty          (var this : tOpenHash) : boolean;}
-  function  search           (var this : tOpenHash; email : tKey; var pos: tHashValue) : boolean;
-  procedure insert           (var this : tOpenHash; node : tNode);
-  procedure remove           (var this : tOpenHash; node : tNode);
-  function  fetch            (var this : tOpenHash; email: tKey) : tNode;
+  procedure loadHash     (var this : tOpenHash; path, filename : string);
+  procedure newEmptyHash (var this : tOpenHash; path, filename : string);
+  function  hash         (var this : tOpenHash; email : tKey) : tHashValue;
+  function  search       (var this : tOpenHash; email : tKey; var pos: tHashValue) : boolean;
+  function  searchById   (var this : tOpenHash; id :longint; var pos: tHashValue) : boolean;
+  procedure insert       (var this : tOpenHash; node : tNode);
+  procedure update       (var this : tOpenHash; node : tNode);
+  procedure remove       (var this : tOpenHash; node : tNode);
+  function  fetch        (var this : tOpenHash; email: tKey) : tNode;
+  function  fetchByIdx   (var this : tOpenHash; pos: tHashValue) : tNode;
+  function  fetchFirst   (var this : tOpenHash; var pos: idxRange) : boolean;
+  function  fetchNext    (var this : tOpenHash; var pos: idxRange) : boolean;
+  function  getBucketCount (var this : tOpenHash) : integer;
 
 implementation
   { Helpers }
@@ -97,6 +104,11 @@ implementation
   begin
     hashing := MD5Print(MD5String(email));
     _hash   := StrToInt64(LeftStr('$' + hashing, 16)) mod MAX;
+  end;
+
+  function  hash(var this : tOpenHash; email : tKey) : tHashValue;
+  begin
+    hash := _hash(email);
   end;
 
   function _nextPos(pos : tHashValue) : tHashValue;
@@ -176,14 +188,13 @@ implementation
     _closeHash(this);
   end;
 
-  function  search           (var this : tOpenHash; email : tKey; var pos: tHashValue) : boolean;
+  function  _search          (var this : tOpenHash; email : tKey; var pos: tHashValue) : boolean;
   var
     rc      : tControlRecord;
     found   : boolean;
     auxPos  : tHashValue;
     node    : tNode;
   begin
-    _openHash(this);
     rc      := _getControl(this);
     found   := false;
     pos     := NULLIDX;
@@ -202,13 +213,46 @@ implementation
                 if (node.email = email) then
                   found := true
                 else
-                  auxPos := _nextPos(pos);
+                  auxPos := _nextPos(auxPos);
               end;
           end;
       end;
 
+    _search := found;
+  end;
+
+  function  search           (var this : tOpenHash; email : tKey; var pos: tHashValue) : boolean;
+  var
+    found   : boolean;
+  begin
+    _openHash(this);
+    found   := _search(this, email, pos);
     _closeHash(this);
     search := found;
+  end;
+
+  function  searchById   (var this : tOpenHash; id :longint; var pos: tHashValue) : boolean;
+  var
+    found   : boolean;
+    auxPos  : integer; 
+    node    : tNode;   
+  begin
+    _openHash(this);
+    found   := false;
+    auxPos  := 0;
+    while (auxPos <= MAX) and (not found) do
+      begin
+        node := _get(this, auxPos);
+        if (node.id = id) then
+          found := true
+        else
+          auxPos := auxPos + 1;
+      end;
+
+    if found then 
+      pos := auxPos;
+    _closeHash(this);
+    searchById := found;
   end;
 
   procedure insert           (var this : tOpenHash; node : tNode);
@@ -219,9 +263,23 @@ implementation
     _openHash(this);
     pos := _getBucket(this, node.email);
     rc  := _getControl(this);
+    rc.count  := rc.count + 1;
+    rc.lastID := rc.lastID + 1;
+    node.id   := rc.lastID;
     _set(this, pos, node);
-    rc.count := rc.count + 1;
     _setControl(this, rc);
+    _closeHash(this);
+  end;
+
+  procedure update           (var this : tOpenHash; node : tNode);
+  var
+    pos : tHashValue;
+    found : boolean;
+  begin
+    _openHash(this);
+    found := _search(this, node.email, pos);
+    if (found) then
+      _set(this, pos, node);
     _closeHash(this);
   end;
 
@@ -235,7 +293,7 @@ implementation
     node.id := NULLIDX;
     _set(this, pos, node);
     rc       := _getControl(this);
-    rc.count := rc.count + 1;
+    rc.count := rc.count - 1;
     _setControl(this, rc);
     _closeHash(this);
   end;
@@ -250,6 +308,55 @@ implementation
     node := _get(this, pos);
     _closeHash(this);
     fetch := node;
+  end;
+
+  function  fetchByIdx   (var this : tOpenHash; pos: tHashValue) : tNode;
+  var
+    node : tNode;
+  begin
+    _openHash(this);
+    node := _get(this, pos);
+    _closeHash(this);
+    fetchByIdx := node;
+  end;
+
+  function  fetchFirst       (var this : tOpenHash; var pos: idxRange) : boolean;
+  var
+    found : boolean;
+    node  : tNode;
+    idx   : idxRange;
+  begin
+    pos := -1;
+    fetchFirst := fetchNext(this, pos);
+  end;
+
+  function  fetchNext        (var this : tOpenHash; var pos: idxRange) : boolean;
+  var
+    found : boolean;
+    node  : tNode;
+    idx   : idxRange;
+  begin
+    idx   := pos + 1;
+    found := false;
+    _openHash(this);
+    while (not found) and (idx <= MAX) do
+      begin
+        node := _get(this, idx);
+        if (node.id > NULLIDX) then
+          found := true
+        else
+          idx := idx + 1;
+      end;
+    _closeHash(this);
+    if found then
+      pos      := idx;
+
+    fetchNext := found;
+  end;
+
+  function  getBucketCount (var this : tOpenHash) : integer;
+  begin
+    getBucketCount := MAX;
   end;
   
 end.

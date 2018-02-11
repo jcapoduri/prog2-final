@@ -12,8 +12,6 @@ const
 type
   idxRange       = NULLIDX..MAXINT;
   tKey           = longint;
-  tItemType      = (New, Used);
-  tStatus        = (Publish, Paused, Sold, Void, Blocked);
   tNode          = record
                      id           : longint;
                      categoryName : string[255];
@@ -50,6 +48,7 @@ type
   function  firstChild       (var this : tLCRStree; pos: idxRange) : idxRange;
   function  nextSibling      (var this : tLCRStree; pos: idxRange) : idxRange;
   function  parent           (var this : tLCRStree; pos: idxRange) : idxRange;
+  function  isLeaf           (var this : tLCRStree; var node : tNode) : boolean;
 
 implementation
   { Helpers }
@@ -83,7 +82,9 @@ implementation
   function  _getControl (var this : tLCRStree) : tControlRecord;
   var
     rc : tControlRecord;
+    i  : integer;
   begin
+    i := filesize(this.control);
     seek (this.control, 0);
     read (this.control, rc);
     _getControl := rc;
@@ -92,6 +93,16 @@ implementation
   function _isLeaf(var node : tNode) : boolean;
   begin
     _isLeaf := (node.leftChild = NULLIDX) and (node.rightSibling = NULLIDX);
+  end;
+
+  function isLeaf(var this : tLCRStree; var node : tNode) : boolean;
+  var
+    itIs : boolean;
+  begin
+    _openTree(this);
+    itIs   := (node.leftChild = NULLIDX) and (node.rightSibling = NULLIDX);
+    _closeTree(this);
+    isLeaf := itIs;
   end;
 
   function _parent(var this : tLCRStree; var idx : idxRange) : idxRange;
@@ -152,9 +163,23 @@ implementation
     _setControl(this, rc);
   end;
 
+  procedure _detachTree (var this : tLCRStree; pos : idxRange);
+  var
+    node : tNode;
+  begin
+    if pos <> NULLIDX then
+      begin
+        node := _get(this, pos);
+        _detachTree(this, node.rightSibling);
+        _detachTree(this, node.leftChild);
+        _detach(this, pos, node);
+      end;
+  end;
+
   procedure _remove          (var this: tLCRStree; pos: idxRange);
   var
     node, parent   : tNode;
+    auxNode        : tNode;
     rc             : tControlRecord;
     auxIdx         : idxRange;
     replacementKey : tKey;
@@ -183,21 +208,26 @@ implementation
       end
     else
       begin
-        if node.rightSibling = NULLIDX then
+        parent  := _get(this, node.parent);
+        auxNode := _get(this, parent.leftChild);
+        if parent.leftChild = pos then
           begin
-            auxIdx         := node.leftChild;
-            //FIXME
-            //replacementKey := _getBiggerFromBranch(this, auxIdx);
+            parent.leftChild := auxNode.rightSibling;
+            _set(this, node.parent, parent);
           end
         else
           begin
-            auxIdx         := node.rightSibling;
-            //FIXME
-            //replacementKey := _getSmallerFromBranch(this, auxIdx);
+            auxIdx  := auxNode.rightSibling;
+            auxNode := _get(this, auxIdx);
+            while auxNode.rightSibling <> pos do
+              begin
+                auxIdx  := auxNode.rightSibling;
+                auxNode := _get(this, auxIdx);
+              end;
+            auxNode.rightSibling := node.rightSibling;
+            _set(this, auxIdx, auxNode);  
           end;
-        node.id := replacementKey;
-        _set(this, pos, node);
-        _remove(this, auxIdx);
+        _detachTree(this, node.leftChild);
       end;
   end;
 
@@ -226,6 +256,7 @@ implementation
         rewrite(this.data);
         rewrite(this.control);
         rc.root := NULLIDX;
+        rc.lastID := 0;
         rc.erased := NULLIDX;
         _setControl(this, rc);
       end;
@@ -369,7 +400,6 @@ implementation
     auxIdx       : idxRange;
   begin
     _openTree(this);
-    //item.id    := key;
     item.parent := pos;
     auxIdx      := _append(this, item);
 

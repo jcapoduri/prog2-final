@@ -1,0 +1,109 @@
+object ExpiredPublicationsByCategoryReportRorm: TExpiredPublicationsByCategoryReportRorm
+  Left = 283
+  Height = 339
+  Top = 251
+  Width = 1146
+  Caption = 'ReportFormWidget'
+  ClientHeight = 339
+  ClientWidth = 1146
+  OnCreate = FormCreate
+  LCLVersion = '1.8.0.6'
+  object dataGrid: TStringGrid
+    Left = 8
+    Height = 262
+    Top = 32
+    Width = 1128
+    Anchors = [akTop, akLeft, akRight, akBottom]
+    TabOrder = 0
+  end
+  object doReportButton: TBitBtn
+    Left = 952
+    Height = 30
+    Top = 302
+    Width = 99
+    Anchors = [akRight, akBottom]
+    Caption = 'Ejecutar Reporte'
+    OnClick = doReportButtonClick
+    TabOrder = 1
+  end
+  object exportToCSVButton: TBitBtn
+    Left = 8
+    Height = 30
+    Top = 302
+    Width = 75
+    Anchors = [akLeft, akBottom]
+    Caption = 'Exportar CSV'
+    OnClick = exportToCSVButtonClick
+    TabOrder = 2
+  end
+  object closeButton: TBitBtn
+    Left = 1056
+    Height = 30
+    Top = 302
+    Width = 75
+    Anchors = [akRight, akBottom]
+    Caption = 'Cerrar'
+    OnClick = closeButtonClick
+    TabOrder = 3
+  end
+  object Label1: TLabel
+    Left = 312
+    Height = 15
+    Top = 8
+    Width = 38
+    Caption = 'Desde: '
+    ParentColor = False
+  end
+  object fromDateEdit: TDateEdit
+    Left = 362
+    Height = 23
+    Top = 5
+    Width = 103
+    CalendarDisplaySettings = [dsShowHeadings, dsShowDayNames]
+    DefaultToday = True
+    DateOrder = doDMY
+    ButtonWidth = 23
+    NumGlyphs = 1
+    MaxLength = 10
+    TabOrder = 4
+    Text = '  -  -    '
+  end
+  object Label2: TLabel
+    Left = 480
+    Height = 15
+    Top = 8
+    Width = 36
+    Caption = 'Hasta: '
+    ParentColor = False
+  end
+  object toDateEdit: TDateEdit
+    Left = 520
+    Height = 23
+    Top = 5
+    Width = 103
+    CalendarDisplaySettings = [dsShowHeadings, dsShowDayNames]
+    DateOrder = doDMY
+    ButtonWidth = 23
+    NumGlyphs = 1
+    MaxLength = 10
+    TabOrder = 5
+    Text = '  -  -    '
+  end
+  object Label3: TLabel
+    Left = 8
+    Height = 15
+    Top = 8
+    Width = 51
+    Caption = 'Categoría'
+    ParentColor = False
+  end
+  object categoryComboBox: TComboBox
+    Left = 64
+    Height = 23
+    Top = 5
+    Width = 236
+    ItemHeight = 15
+    TabOrder = 6
+    Text = 'categoryComboBox'
+  end
+end

@@ -1,0 +1,53 @@
+object tMessageWidget: tMessageWidget
+  Left = 504
+  Height = 144
+  Top = 383
+  Width = 837
+  BorderStyle = bsNone
+  BorderWidth = 1
+  Caption = 'Mensaje'
+  ClientHeight = 144
+  ClientWidth = 837
+  OnCreate = FormCreate
+  LCLVersion = '1.8.0.6'
+  object questionLabel: TLabel
+    Left = 11
+    Height = 56
+    Top = 8
+    Width = 818
+    Anchors = [akTop, akLeft, akRight]
+    AutoSize = False
+    ParentColor = False
+  end
+  object responseEdit: TMemo
+    Left = 41
+    Height = 66
+    Hint = 'Respuesta...'
+    Top = 68
+    Width = 710
+    Anchors = [akTop, akLeft, akRight, akBottom]
+    Lines.Strings = (
+      ''
+    )
+    ParentShowHint = False
+    TabOrder = 0
+  end
+  object doneButton: TBitBtn
+    Left = 757
+    Height = 30
+    Top = 108
+    Width = 75
+    Anchors = [akRight, akBottom]
+    Caption = 'Enviar'
+    OnClick = doneButtonClick
+    TabOrder = 1
+  end
+  object responseLabel: TLabel
+    Left = 41
+    Height = 64
+    Top = 72
+    Width = 702
+    Anchors = [akTop, akLeft, akRight, akBottom]
+    ParentColor = False
+  end
+end

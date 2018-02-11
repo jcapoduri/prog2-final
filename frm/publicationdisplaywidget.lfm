@@ -1,0 +1,106 @@
+object tPublicationDisplayWidget: tPublicationDisplayWidget
+  Left = 640
+  Height = 119
+  Top = 366
+  Width = 696
+  Anchors = [akTop, akLeft, akRight]
+  BorderStyle = bsNone
+  Caption = 'Form2'
+  ClientHeight = 119
+  ClientWidth = 696
+  OnCreate = FormCreate
+  LCLVersion = '1.8.0.6'
+  object imagePreview: TImage
+    Left = 7
+    Height = 103
+    Top = 8
+    Width = 99
+  end
+  object titleLabel: TLabel
+    Left = 144
+    Height = 15
+    Top = 8
+    Width = 20
+    Caption = 'title'
+    ParentColor = False
+  end
+  object descriptionLabel: TLabel
+    Left = 114
+    Height = 48
+    Top = 32
+    Width = 494
+    AutoSize = False
+    Caption = 'desc'
+    ParentColor = False
+    WordWrap = True
+  end
+  object priceLabel: TLabel
+    Left = 659
+    Height = 15
+    Top = 8
+    Width = 27
+    Anchors = [akTop, akRight]
+    Caption = '$0.00'
+    ParentColor = False
+  end
+  object openButton: TButton
+    Left = 611
+    Height = 30
+    Top = 86
+    Width = 75
+    Anchors = [akRight, akBottom]
+    Caption = 'Abrir'
+    OnClick = openButtonClick
+    TabOrder = 0
+  end
+  object editButton: TBitBtn
+    Left = 533
+    Height = 30
+    Top = 86
+    Width = 75
+    Anchors = [akRight, akBottom]
+    Caption = 'Editar'
+    OnClick = editButtonClick
+    TabOrder = 1
+    Visible = False
+  end
+  object statusLabel: TLabel
+    Left = 615
+    Height = 15
+    Top = 27
+    Width = 32
+    Anchors = [akTop, akRight]
+    Caption = 'Status'
+    ParentColor = False
+  end
+  object deleteButton: TBitBtn
+    Left = 456
+    Height = 30
+    Top = 86
+    Width = 75
+    Anchors = [akRight, akBottom]
+    Caption = 'Borrar'
+    OnClick = deleteButtonClick
+    TabOrder = 2
+    Visible = False
+  end
+  object blockButton: TBitBtn
+    Left = 376
+    Height = 30
+    Top = 86
+    Width = 75
+    Anchors = [akRight, akBottom]
+    Caption = 'Bloquear'
+    OnClick = blockButtonClick
+    TabOrder = 3
+    Visible = False
+  end
+  object idLabel: TLabel
+    Left = 114
+    Height = 15
+    Top = 8
+    Width = 17
+    Caption = 'ID: '
+    ParentColor = False
+  end
+end

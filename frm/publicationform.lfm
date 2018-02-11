@@ -1,0 +1,206 @@
+object tPublicationForm: tPublicationForm
+  Left = 501
+  Height = 400
+  Top = 264
+  Width = 627
+  Caption = 'Publicacion'
+  ClientHeight = 400
+  ClientWidth = 627
+  OnCreate = FormCreate
+  LCLVersion = '1.8.0.6'
+  object titleEdit: TLabeledEdit
+    Left = 16
+    Height = 23
+    Top = 24
+    Width = 374
+    Anchors = [akTop, akLeft, akRight]
+    EditLabel.AnchorSideLeft.Control = titleEdit
+    EditLabel.AnchorSideRight.Control = titleEdit
+    EditLabel.AnchorSideRight.Side = asrBottom
+    EditLabel.AnchorSideBottom.Control = titleEdit
+    EditLabel.Left = 16
+    EditLabel.Height = 15
+    EditLabel.Top = 6
+    EditLabel.Width = 374
+    EditLabel.Caption = 'Nombre del producto:'
+    EditLabel.ParentColor = False
+    TabOrder = 0
+  end
+  object Label1: TLabel
+    Left = 16
+    Height = 15
+    Top = 56
+    Width = 62
+    Caption = 'Descripcion'
+    ParentColor = False
+  end
+  object descriptionEdit: TMemo
+    Left = 16
+    Height = 124
+    Top = 80
+    Width = 373
+    Anchors = [akTop, akLeft, akRight]
+    Lines.Strings = (
+      'Memo1'
+    )
+    TabOrder = 1
+  end
+  object Label2: TLabel
+    Left = 16
+    Height = 15
+    Top = 216
+    Width = 51
+    Caption = 'Categoría'
+    ParentColor = False
+  end
+  object categoryComboBox: TComboBox
+    Left = 120
+    Height = 23
+    Top = 216
+    Width = 269
+    Anchors = [akTop, akLeft, akRight]
+    ItemHeight = 15
+    Style = csDropDownList
+    TabOrder = 2
+  end
+  object Label3: TLabel
+    Left = 16
+    Height = 15
+    Top = 251
+    Width = 36
+    Caption = 'Precio:'
+    ParentColor = False
+  end
+  object priceEdit: TFloatSpinEdit
+    Left = 120
+    Height = 23
+    Top = 251
+    Width = 50
+    Increment = 1
+    MaxValue = 100
+    MinValue = 0
+    TabOrder = 3
+    Value = 0
+  end
+  object expireDateEdit: TDateEdit
+    Left = 120
+    Height = 23
+    Top = 291
+    Width = 103
+    CalendarDisplaySettings = [dsShowHeadings, dsShowDayNames]
+    DefaultToday = True
+    DateOrder = doDMY
+    ButtonWidth = 23
+    NumGlyphs = 1
+    MaxLength = 10
+    TabOrder = 4
+    Text = '  -  -    '
+  end
+  object Label4: TLabel
+    Left = 16
+    Height = 15
+    Top = 291
+    Width = 82
+    Caption = 'Fecha de cierre:'
+    ParentColor = False
+  end
+  object isNewCheckBox: TCheckBox
+    Left = 216
+    Height = 19
+    Top = 251
+    Width = 67
+    Caption = 'Es nuevo'
+    TabOrder = 5
+  end
+  object Image1: TImage
+    Left = 411
+    Height = 196
+    Top = 8
+    Width = 202
+    Anchors = [akTop, akRight]
+  end
+  object addPhotoButton: TBitBtn
+    Left = 539
+    Height = 30
+    Top = 216
+    Width = 75
+    Anchors = [akTop, akRight]
+    Caption = 'Agregar foto'
+    OnClick = addPictureButtonClick
+    TabOrder = 6
+  end
+  object saveButton: TBitBtn
+    Left = 543
+    Height = 30
+    Top = 361
+    Width = 75
+    Anchors = [akRight, akBottom]
+    Caption = 'Salvar'
+    OnClick = saveButtonClick
+    TabOrder = 7
+  end
+  object closeButton: TBitBtn
+    Left = 461
+    Height = 30
+    Top = 361
+    Width = 75
+    Anchors = [akRight, akBottom]
+    Caption = 'Cerrar'
+    OnClick = CloseForm
+    TabOrder = 8
+  end
+  object errorLabel: TLabel
+    Left = 13
+    Height = 1
+    Top = 337
+    Width = 1
+    Anchors = [akRight, akBottom]
+    Font.Color = clRed
+    ParentColor = False
+    ParentFont = False
+  end
+  object statusNameLabel: TLabel
+    Left = 16
+    Height = 15
+    Top = 328
+    Width = 41
+    Caption = 'Estado: '
+    ParentColor = False
+    Visible = False
+  end
+  object statusLabel: TLabel
+    Left = 120
+    Height = 15
+    Top = 328
+    Width = 59
+    Caption = 'statusLabel'
+    ParentColor = False
+    Visible = False
+  end
+  object pauseButton: TBitBtn
+    Left = 200
+    Height = 30
+    Top = 325
+    Width = 75
+    Caption = 'Pausar'
+    Enabled = False
+    OnClick = pauseButtonClick
+    TabOrder = 9
+    Visible = False
+  end
+  object voidButton: TBitBtn
+    Left = 280
+    Height = 30
+    Top = 325
+    Width = 75
+    Caption = 'Anular'
+    Enabled = False
+    OnClick = voidButtonClick
+    TabOrder = 10
+    Visible = False
+  end
+  object pictureDialog: TOpenPictureDialog
+    left = 488
+    top = 216
+  end
+end

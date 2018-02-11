@@ -1,54 +1,145 @@
-object Form1: TForm1
+object mainWidget: TmainWidget
   Left = 313
-  Height = 473
+  Height = 471
   Top = 200
-  Width = 979
-  Caption = 'Form1'
+  Width = 1060
+  Caption = 'MercaTrucho'
   ChildSizing.ShrinkHorizontal = crsHomogenousChildResize
   ChildSizing.ShrinkVertical = crsHomogenousChildResize
   ChildSizing.Layout = cclLeftToRightThenTopToBottom
-  ClientHeight = 453
-  ClientWidth = 979
+  ClientHeight = 451
+  ClientWidth = 1060
   Menu = MainMenu1
   OnCreate = FormCreate
   LCLVersion = '1.8.0.6'
-  object Panel1: TPanel
+  object displayPanel: TPanel
     Left = 0
-    Height = 476
-    Top = -10
-    Width = 976
-    Anchors = []
+    Height = 454
+    Top = 0
+    Width = 1065
+    Anchors = [akTop, akLeft, akRight, akBottom]
     AutoSize = True
-    Caption = 'Panel1'
     ChildSizing.Layout = cclLeftToRightThenTopToBottom
     TabOrder = 0
   end
   object MainMenu1: TMainMenu
     top = 4
-    object MenuItem1: TMenuItem
+    object userBaseMenuItem: TMenuItem
       Caption = 'Usuario'
-      object MenuItem6: TMenuItem
+      object userEditMenuItem: TMenuItem
         Caption = 'Editar'
+        OnClick = userEditMenuItemClick
       end
-      object MenuItem7: TMenuItem
+      object deleteUserMenuItem: TMenuItem
+        Caption = 'Eliminar cuenta'
+        OnClick = deleteUserMenuItemClick
+      end
+      object MenuItem1: TMenuItem
+        Caption = '-'
+      end
+      object quitMenuItem: TMenuItem
         Caption = 'Salir'
+        OnClick = quitMenuItemClick
       end
     end
-    object MenuItem2: TMenuItem
+    object publicationBaseMenuItem: TMenuItem
       Caption = 'Publicaciones'
-      object MenuItem8: TMenuItem
+      object publicationAllMenuItem: TMenuItem
         Caption = 'Ver Todas'
+        OnClick = publicationAllMenuItemClick
+      end
+      object myPublicationMenuItem: TMenuItem
+        Caption = 'Ver mias'
+        OnClick = myPublicationMenuItemClick
+      end
+      object newPublicationMenuItem: TMenuItem
+        Caption = 'Nueva publicacion'
+        OnClick = newPublicationMenuItemClick
       end
     end
     object categoryMenuItem: TMenuItem
       Caption = 'Cateogorias'
-      OnClick = categoryMenuItemClick
+      object categoryCRUDMenuItem: TMenuItem
+        Caption = 'Editar Categorias'
+        OnClick = categoryCRUDMenuItemClick
+      end
     end
-    object MenuItem4: TMenuItem
-      Caption = 'Ventas'
+    object sellsBaseMenuItem: TMenuItem
+      Caption = 'Compras'
+      object mySellsBaseMenuItem: TMenuItem
+        Caption = 'Ver mis compras'
+        OnClick = mySellsBaseMenuItemClick
+      end
     end
-    object MenuItem5: TMenuItem
+    object reportsMenuItem: TMenuItem
+      Caption = 'Reportes'
+      object reportAllPublicationsMenuItem: TMenuItem
+        Caption = 'Listado de articulos publicados'
+        OnClick = reportAllPublicationsMenuItemClick
+      end
+      object reportByCategoryMenuItem: TMenuItem
+        Caption = 'Listado de totales de categoría'
+        OnClick = reportByCategoryMenuItemClick
+      end
+      object reportByMaxPerCateogryMenuItem: TMenuItem
+        Caption = 'Listado de Categorias por Mayores Totales'
+        OnClick = reportByMaxPerCateogryMenuItemClick
+      end
+      object blockedUserReportMenuItem: TMenuItem
+        Caption = 'Listado de usuarios bloqueados'
+        OnClick = blockedUserReportMenuItemClick
+      end
+      object reportBySellerMenuItem: TMenuItem
+        Caption = 'Listado de mensajes de vendedor'
+        OnClick = reportBySellerMenuItemClick
+      end
+      object reportByBuyerMenuItem: TMenuItem
+        Caption = 'Listado de mensajes de comprador'
+        OnClick = reportByBuyerMenuItemClick
+      end
+      object topSellersReportMenuItem: TMenuItem
+        Caption = 'Listado de mayores vendedores'
+        OnClick = topSellersReportMenuItemClick
+      end
+      object reportOfPurchaseByMenuItem: TMenuItem
+        Caption = 'Listado de compras de un usuario'
+        OnClick = reportOfPurchaseByMenuItemClick
+      end
+      object publicationByUserReportMenuItem: TMenuItem
+        Caption = 'Listado de publicaciones por usuario'
+        OnClick = publicationByUserReportMenuItemClick
+      end
+      object reportByPurchasesMenuItem: TMenuItem
+        Caption = 'Listado de Compras'
+        OnClick = reportByPurchasesMenuItemClick
+      end
+      object purchaseDetailedReportMenuItem: TMenuItem
+        Caption = 'Listado de Compras Detallado'
+        OnClick = purchaseDetailedReportMenuItemClick
+      end
+      object reportCategoryMenuItem: TMenuItem
+        Caption = 'Listado expirados de una categoría'
+        OnClick = reportCategoryMenuItemClick
+      end
+    end
+    object advanceBaseMenuItem: TMenuItem
       Caption = 'Avanzado'
+      object balanceTrinaryTreeMenuItem: TMenuItem
+        Caption = 'Balanceo de Arbol de mensajes'
+        OnClick = balanceTrinaryTreeMenuItemClick
+      end
+      object hashDispersionTestMenuItem: TMenuItem
+        Caption = 'Test de dispersion de Hashing'
+        OnClick = hashDispersionTestMenuItemClick
+      end
+      object lockUserMenuItem: TMenuItem
+        Caption = 'Bloqueo/Desbloqueo de Usuarios'
+        OnClick = lockUserMenuItemClick
+      end
+      object messagesPopulationMenuItem: TMenuItem
+        Caption = 'Generar conversaciones en publicacion'
+        OnClick = messagesPopulationMenuItemClick
+      end
     end
   end
 end

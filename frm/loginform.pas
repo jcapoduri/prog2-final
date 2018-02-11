@@ -40,13 +40,17 @@ implementation
 
 procedure TLoginForm.loginButtonClick(Sender: TObject);
 var
-  ok : boolean;
+  ok      : boolean;
+  blocked : boolean;
 begin
-  ok := metru.core.login(metruApp, self.emailEdit.Text, self.passwordEdit.Text);
+  ok := metru.core.login(metruApp, self.emailEdit.Text, self.passwordEdit.Text, blocked);
   if ok then
      self.Close
   else
-    self.errorLabel.Caption := 'Email o Password Invalido';
+    if blocked then
+      self.errorLabel.Caption := 'Usuario bloqueado, pongase en contacto con el administrador'
+    else
+      self.errorLabel.Caption := 'Email o Password Invalido';
 end;
 
 procedure TLoginForm.newUserButtonClick(Sender: TObject);

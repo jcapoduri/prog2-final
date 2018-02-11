@@ -1,12 +1,12 @@
 object CategoryForm: TCategoryForm
   Left = 749
-  Height = 206
+  Height = 272
   Top = 337
   Width = 320
   Caption = 'Categoría'
-  ClientHeight = 206
+  ClientHeight = 272
   ClientWidth = 320
-  OnActivate = FormActivate
+  OnCreate = FormCreate
   LCLVersion = '1.8.0.6'
   object nameEdit: TLabeledEdit
     Left = 8
@@ -29,7 +29,7 @@ object CategoryForm: TCategoryForm
   object Label1: TLabel
     Left = 9
     Height = 15
-    Top = 56
+    Top = 104
     Width = 54
     Caption = 'Comision:'
     ParentColor = False
@@ -37,7 +37,7 @@ object CategoryForm: TCategoryForm
   object comisionEdit: TFloatSpinEdit
     Left = 9
     Height = 23
-    Top = 80
+    Top = 128
     Width = 56
     Increment = 1
     MaxValue = 100
@@ -48,16 +48,18 @@ object CategoryForm: TCategoryForm
   object categoryCombobox: TComboBox
     Left = 9
     Height = 23
-    Top = 134
+    Top = 182
     Width = 303
+    AutoComplete = True
+    AutoCompleteText = [cbactEnabled, cbactEndOfLineComplete, cbactSearchAscending]
     ItemHeight = 15
+    Style = csDropDownList
     TabOrder = 2
-    Text = 'categoryCombobox'
   end
   object Label2: TLabel
     Left = 8
     Height = 15
-    Top = 110
+    Top = 158
     Width = 94
     Caption = 'Cateogoría padre:'
     ParentColor = False
@@ -65,7 +67,7 @@ object CategoryForm: TCategoryForm
   object saveButton: TBitBtn
     Left = 237
     Height = 30
-    Top = 168
+    Top = 224
     Width = 75
     Caption = 'Salvar'
     OnClick = saveButtonClick
@@ -74,9 +76,27 @@ object CategoryForm: TCategoryForm
   object cancelButton: TBitBtn
     Left = 9
     Height = 30
-    Top = 168
+    Top = 224
     Width = 75
     Caption = 'Cancelar'
+    OnClick = cancelButtonClick
     TabOrder = 4
+  end
+  object descriptionEdit: TLabeledEdit
+    Left = 8
+    Height = 23
+    Top = 72
+    Width = 304
+    EditLabel.AnchorSideLeft.Control = descriptionEdit
+    EditLabel.AnchorSideRight.Control = descriptionEdit
+    EditLabel.AnchorSideRight.Side = asrBottom
+    EditLabel.AnchorSideBottom.Control = descriptionEdit
+    EditLabel.Left = 8
+    EditLabel.Height = 15
+    EditLabel.Top = 54
+    EditLabel.Width = 304
+    EditLabel.Caption = 'Descripcion: '
+    EditLabel.ParentColor = False
+    TabOrder = 5
   end
 end

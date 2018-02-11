@@ -1,0 +1,63 @@
+object tSellListForm: tSellListForm
+  Left = 583
+  Height = 86
+  Top = 320
+  Width = 782
+  BorderStyle = bsNone
+  Caption = 'Venta'
+  ClientHeight = 86
+  ClientWidth = 782
+  OnCreate = FormCreate
+  LCLVersion = '1.8.0.6'
+  object openButton: TBitBtn
+    Left = 701
+    Height = 31
+    Top = 24
+    Width = 75
+    Anchors = [akTop, akRight, akBottom]
+    Caption = 'Abrir'
+    OnClick = openButtonClick
+    TabOrder = 0
+  end
+  object ItemNameLabel: TLabel
+    Left = 8
+    Height = 15
+    Top = 8
+    Width = 20
+    Caption = 'iten'
+    ParentColor = False
+  end
+  object Label2: TLabel
+    Left = 8
+    Height = 15
+    Top = 32
+    Width = 42
+    Caption = 'Importe'
+    ParentColor = False
+  end
+  object priceLabel: TLabel
+    Left = 104
+    Height = 15
+    Top = 32
+    Width = 27
+    Alignment = taRightJustify
+    Caption = '$0.00'
+    ParentColor = False
+  end
+  object Label1: TLabel
+    Left = 8
+    Height = 15
+    Top = 59
+    Width = 72
+    Caption = 'Comprado el:'
+    ParentColor = False
+  end
+  object purchaseDateLabel: TLabel
+    Left = 96
+    Height = 15
+    Top = 59
+    Width = 100
+    Caption = 'purchaseDateLabel'
+    ParentColor = False
+  end
+end

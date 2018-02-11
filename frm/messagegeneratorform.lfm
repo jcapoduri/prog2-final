@@ -1,0 +1,63 @@
+object messageGeneratorForm: TmessageGeneratorForm
+  Left = 641
+  Height = 180
+  Top = 329
+  Width = 379
+  Caption = 'Generador de mensajes'
+  ClientHeight = 180
+  ClientWidth = 379
+  LCLVersion = '1.8.0.6'
+  object generateButton: TBitBtn
+    Left = 304
+    Height = 30
+    Top = 146
+    Width = 72
+    Anchors = [akRight, akBottom]
+    Caption = 'Generar'
+    OnClick = generateButtonClick
+    TabOrder = 0
+  end
+  object closeButton: TBitBtn
+    Left = 0
+    Height = 30
+    Top = 146
+    Width = 75
+    Anchors = [akLeft, akBottom]
+    Caption = 'Cerrar'
+    OnClick = closeButtonClick
+    TabOrder = 1
+  end
+  object Label1: TLabel
+    Left = 8
+    Height = 15
+    Top = 8
+    Width = 87
+    Caption = 'Publication (id): '
+    ParentColor = False
+    WordWrap = True
+  end
+  object Label3: TLabel
+    Left = 8
+    Height = 40
+    Top = 40
+    Width = 166
+    AutoSize = False
+    Caption = 'Cantidad de usuarios (que preguntan por publicacion)'
+    ParentColor = False
+    WordWrap = True
+  end
+  object publicationSpinEditor: TSpinEdit
+    Left = 184
+    Height = 23
+    Top = 8
+    Width = 50
+    TabOrder = 2
+  end
+  object usersSpinEditor: TSpinEdit
+    Left = 184
+    Height = 23
+    Top = 40
+    Width = 50
+    TabOrder = 3
+  end
+end

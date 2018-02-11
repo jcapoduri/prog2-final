@@ -1,0 +1,60 @@
+object messageCheckFrm: TmessageCheckFrm
+  Left = 511
+  Height = 179
+  Top = 417
+  Width = 529
+  Caption = 'messageCheckFrm'
+  ClientHeight = 179
+  ClientWidth = 529
+  OnCreate = FormCreate
+  LCLVersion = '1.8.0.6'
+  object levelsLabel: TLabel
+    Left = 8
+    Height = 15
+    Top = 8
+    Width = 109
+    Caption = 'Cantidad de niveles: '
+    ParentColor = False
+  end
+  object percentageLabel: TLabel
+    Left = 8
+    Height = 15
+    Top = 32
+    Width = 240
+    Caption = 'Porcentajes de niveles completos requeridos: '
+    ParentColor = False
+  end
+  object statusLimitLabel: TLabel
+    Left = 8
+    Height = 15
+    Top = 80
+    Width = 121
+    Caption = 'Estado del nivel limite: '
+    ParentColor = False
+  end
+  object resultLabel: TLabel
+    Left = 9
+    Height = 15
+    Top = 104
+    Width = 58
+    Caption = 'Resultado: '
+    ParentColor = False
+  end
+  object balanceButton: TBitBtn
+    Left = 448
+    Height = 30
+    Top = 144
+    Width = 75
+    Caption = 'Rebalancear'
+    OnClick = balanceButtonClick
+    TabOrder = 0
+  end
+  object limitLevelLabel: TLabel
+    Left = 9
+    Height = 15
+    Top = 56
+    Width = 66
+    Caption = 'Nivel limite: '
+    ParentColor = False
+  end
+end

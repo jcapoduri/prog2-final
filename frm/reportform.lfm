@@ -1,0 +1,49 @@
+object ReportFormWidget: TReportFormWidget
+  Left = 283
+  Height = 339
+  Top = 251
+  Width = 1146
+  Caption = 'ReportFormWidget'
+  ClientHeight = 339
+  ClientWidth = 1146
+  OnCreate = FormCreate
+  LCLVersion = '1.8.0.6'
+  object dataGrid: TStringGrid
+    Left = 8
+    Height = 286
+    Top = 8
+    Width = 1128
+    Anchors = [akTop, akLeft, akRight, akBottom]
+    TabOrder = 0
+  end
+  object doReportButton: TBitBtn
+    Left = 952
+    Height = 30
+    Top = 302
+    Width = 99
+    Anchors = [akRight, akBottom]
+    Caption = 'Ejecutar Reporte'
+    OnClick = doReportButtonClick
+    TabOrder = 1
+  end
+  object exportToCSVButton: TBitBtn
+    Left = 8
+    Height = 30
+    Top = 302
+    Width = 75
+    Anchors = [akLeft, akBottom]
+    Caption = 'Exportar CSV'
+    OnClick = exportToCSVButtonClick
+    TabOrder = 2
+  end
+  object closeButton: TBitBtn
+    Left = 1056
+    Height = 30
+    Top = 302
+    Width = 75
+    Anchors = [akRight, akBottom]
+    Caption = 'Cerrar'
+    OnClick = closeButtonClick
+    TabOrder = 3
+  end
+end
