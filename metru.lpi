@@ -33,7 +33,7 @@
         <PackageName Value="LCL"/>
       </Item2>
     </RequiredPackages>
-    <Units Count="17">
+    <Units Count="29">
       <Unit0>
         <Filename Value="metru.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -41,7 +41,7 @@
       <Unit1>
         <Filename Value="mainunit.pas"/>
         <IsPartOfProject Value="True"/>
-        <ComponentName Value="Form1"/>
+        <ComponentName Value="mainWidget"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
       </Unit1>
@@ -133,6 +133,84 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
       </Unit16>
+      <Unit17>
+        <Filename Value="frm\sellwidget.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="tSellWidget"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+      </Unit17>
+      <Unit18>
+        <Filename Value="frm\selllistform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="tSellListForm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+      </Unit18>
+      <Unit19>
+        <Filename Value="frm\widgetlistform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="tWidgetListForm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+      </Unit19>
+      <Unit20>
+        <Filename Value="frm\reportform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="ReportFormWidget"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+      </Unit20>
+      <Unit21>
+        <Filename Value="frm\usereditform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="UserEdit"/>
+        <ResourceBaseClass Value="Form"/>
+      </Unit21>
+      <Unit22>
+        <Filename Value="frm\userblockform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="UserBlockingForm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+      </Unit22>
+      <Unit23>
+        <Filename Value="frm\messagegeneratorform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="messageGeneratorForm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="messageGeneratorForm"/>
+      </Unit23>
+      <Unit24>
+        <Filename Value="frm\hashdispersiontestform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="fHashDispersionTestForm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+      </Unit24>
+      <Unit25>
+        <Filename Value="frm\messagecheckform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="messageCheckFrm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="messageCheckForm"/>
+      </Unit25>
+      <Unit26>
+        <Filename Value="frm\daterangereportform.lfm"/>
+        <IsPartOfProject Value="True"/>
+      </Unit26>
+      <Unit27>
+        <Filename Value="frm\daterangereportform.pas"/>
+        <IsPartOfProject Value="True"/>
+        <HasResources Value="True"/>
+        <UnitName Value="daterangedreportform"/>
+      </Unit27>
+      <Unit28>
+        <Filename Value="frm\sellsReportPublicationForm.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit28>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
