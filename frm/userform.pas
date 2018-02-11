@@ -57,7 +57,9 @@ begin
       addressEdit.Text       := user.address;
       nameEdit.Text          := user.fullname;
       State.ItemIndex        := user.providence;
-      pictureDialog.FileName := user.photoUrl;
+      if user.photoUrl <> EmptyStr then
+        previewWidget.Picture.LoadFromFile(metru.core.retrieveImage(metruApp, user.photoUrl));
+      emailEdit.Enabled      := false;
     end;
 end;
 
@@ -98,7 +100,9 @@ begin
   user.address    := LowerCase(addressEdit.Text);
   user.fullname   := LowerCase(nameEdit.Text);
   user.providence := State.Items.IndexOf(State.Text);
-  user.photoUrl   := LowerCase(pictureDialog.FileName);
+  if pictureDialog.FileName <> EmptyStr then
+    user.photoUrl := metru.core.storeImage(metruApp, pictureDialog.FileName);
+
   if user.id = 0 then
     createdOrUpdated := metru.core.createUser(metruApp, user)
   else

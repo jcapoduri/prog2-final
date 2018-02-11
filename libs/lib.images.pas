@@ -14,7 +14,7 @@ type
                     end;
 
   procedure setupContainer (var this : tImageContainer; path : string);
-  procedure storeImage     (var this : tImageContainer; pathToImage : string);
+  function  storeImage     (var this : tImageContainer; pathToImage : string) : string;
   function  retrieveImage  (var this : tImageContainer; uniqId : string) : string;
 
 implementation
@@ -28,12 +28,13 @@ implementation
     this.path := path;
   end;
 
-  procedure storeImage     (var this : tImageContainer; pathToImage : string);
+  function  storeImage     (var this : tImageContainer; pathToImage : string) : string;
   var
     filename : string;
   begin
     filename := _uniqId(pathToImage);
     copyfile(pathToImage, retrieveImage(this, filename));
+    storeImage := filename;
   end;
   
   function  retrieveImage  (var this : tImageContainer; uniqId : string) : string;

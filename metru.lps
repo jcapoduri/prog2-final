@@ -18,9 +18,9 @@
         <ComponentName Value="mainWidget"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="6"/>
-        <TopLine Value="166"/>
-        <CursorPos X="19" Y="174"/>
+        <EditorIndex Value="7"/>
+        <TopLine Value="186"/>
+        <CursorPos X="20" Y="203"/>
         <UsageCount Value="204"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -53,7 +53,7 @@
       <Unit5>
         <Filename Value="libs\lib.tree.trinary.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="11"/>
+        <EditorIndex Value="12"/>
         <TopLine Value="830"/>
         <CursorPos Y="847"/>
         <UsageCount Value="204"/>
@@ -82,8 +82,8 @@
         <Filename Value="libs\metru.core.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="4"/>
-        <TopLine Value="414"/>
-        <CursorPos Y="434"/>
+        <TopLine Value="284"/>
+        <CursorPos X="150" Y="318"/>
         <UsageCount Value="204"/>
         <Loaded Value="True"/>
       </Unit8>
@@ -93,10 +93,13 @@
         <ComponentName Value="UserForm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="87"/>
-        <CursorPos X="26" Y="116"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="5"/>
+        <TopLine Value="46"/>
+        <CursorPos Y="60"/>
         <UsageCount Value="204"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
       </Unit9>
       <Unit10>
         <Filename Value="frm\categoryform.pas"/>
@@ -138,10 +141,10 @@
         <ComponentName Value="tPublicationDisplayWidget"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="5"/>
+        <EditorIndex Value="6"/>
         <TopLine Value="35"/>
         <CursorPos Y="58"/>
-        <UsageCount Value="198"/>
+        <UsageCount Value="199"/>
         <Loaded Value="True"/>
       </Unit13>
       <Unit14>
@@ -153,7 +156,7 @@
         <EditorIndex Value="1"/>
         <TopLine Value="186"/>
         <CursorPos X="28" Y="189"/>
-        <UsageCount Value="196"/>
+        <UsageCount Value="197"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit14>
@@ -166,7 +169,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="48"/>
         <CursorPos X="118" Y="64"/>
-        <UsageCount Value="179"/>
+        <UsageCount Value="180"/>
       </Unit15>
       <Unit16>
         <Filename Value="frm\messagewidget.pas"/>
@@ -177,7 +180,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="14"/>
         <CursorPos X="118" Y="34"/>
-        <UsageCount Value="179"/>
+        <UsageCount Value="180"/>
       </Unit16>
       <Unit17>
         <Filename Value="frm\sellwidget.pas"/>
@@ -188,7 +191,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="51"/>
         <CursorPos X="99" Y="72"/>
-        <UsageCount Value="159"/>
+        <UsageCount Value="160"/>
       </Unit17>
       <Unit18>
         <Filename Value="frm\selllistform.pas"/>
@@ -199,7 +202,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="29"/>
         <CursorPos X="55" Y="43"/>
-        <UsageCount Value="144"/>
+        <UsageCount Value="145"/>
       </Unit18>
       <Unit19>
         <Filename Value="frm\widgetlistform.pas"/>
@@ -210,7 +213,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="37"/>
         <CursorPos X="33" Y="51"/>
-        <UsageCount Value="143"/>
+        <UsageCount Value="144"/>
       </Unit19>
       <Unit20>
         <Filename Value="frm\reportform.pas"/>
@@ -218,10 +221,10 @@
         <ComponentName Value="ReportFormWidget"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="17"/>
+        <EditorIndex Value="18"/>
         <TopLine Value="29"/>
         <CursorPos Y="46"/>
-        <UsageCount Value="133"/>
+        <UsageCount Value="134"/>
         <Loaded Value="True"/>
       </Unit20>
       <Unit21>
@@ -231,7 +234,7 @@
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="33" Y="19"/>
-        <UsageCount Value="110"/>
+        <UsageCount Value="111"/>
       </Unit21>
       <Unit22>
         <Filename Value="frm\userblockform.pas"/>
@@ -242,7 +245,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="19"/>
         <CursorPos X="16" Y="73"/>
-        <UsageCount Value="90"/>
+        <UsageCount Value="91"/>
       </Unit22>
       <Unit23>
         <Filename Value="frm\messagegeneratorform.pas"/>
@@ -254,7 +257,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="4"/>
         <CursorPos X="47" Y="9"/>
-        <UsageCount Value="73"/>
+        <UsageCount Value="74"/>
       </Unit23>
       <Unit24>
         <Filename Value="frm\hashdispersiontestform.pas"/>
@@ -264,7 +267,7 @@
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="13" Y="74"/>
-        <UsageCount Value="56"/>
+        <UsageCount Value="57"/>
       </Unit24>
       <Unit25>
         <Filename Value="frm\messagecheckform.pas"/>
@@ -276,7 +279,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="34"/>
         <CursorPos X="51" Y="47"/>
-        <UsageCount Value="53"/>
+        <UsageCount Value="54"/>
       </Unit25>
       <Unit26>
         <Filename Value="frm\daterangereportform.lfm"/>
@@ -285,7 +288,7 @@
         <WindowIndex Value="-1"/>
         <TopLine Value="-1"/>
         <CursorPos X="-1" Y="-1"/>
-        <UsageCount Value="35"/>
+        <UsageCount Value="36"/>
         <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit26>
       <Unit27>
@@ -295,15 +298,15 @@
         <UnitName Value="daterangedreportform"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="6"/>
-        <UsageCount Value="35"/>
+        <UsageCount Value="36"/>
       </Unit27>
       <Unit28>
         <Filename Value="frm\sellsReportPublicationForm.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="14"/>
+        <EditorIndex Value="15"/>
         <TopLine Value="81"/>
         <CursorPos X="37" Y="86"/>
-        <UsageCount Value="35"/>
+        <UsageCount Value="36"/>
         <Loaded Value="True"/>
       </Unit28>
       <Unit29>
@@ -311,7 +314,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="3889"/>
         <CursorPos Y="3900"/>
-        <UsageCount Value="20"/>
+        <UsageCount Value="19"/>
       </Unit29>
       <Unit30>
         <Filename Value="C:\lazarus\lcl\controls.pp"/>
@@ -319,7 +322,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="1897"/>
         <CursorPos X="31" Y="1929"/>
-        <UsageCount Value="14"/>
+        <UsageCount Value="13"/>
       </Unit30>
       <Unit31>
         <Filename Value="C:\lazarus\lcl\forms.pp"/>
@@ -327,7 +330,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="715"/>
         <CursorPos X="8" Y="738"/>
-        <UsageCount Value="20"/>
+        <UsageCount Value="19"/>
       </Unit31>
       <Unit32>
         <Filename Value="C:\lazarus\lcl\lclclasses.pp"/>
@@ -335,49 +338,49 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="25"/>
         <CursorPos X="3" Y="42"/>
-        <UsageCount Value="5"/>
+        <UsageCount Value="4"/>
       </Unit32>
       <Unit33>
         <Filename Value="C:\lazarus\fpc\3.0.4\source\rtl\inc\objpash.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="182"/>
         <CursorPos X="37" Y="210"/>
-        <UsageCount Value="5"/>
+        <UsageCount Value="4"/>
       </Unit33>
       <Unit34>
         <Filename Value="C:\lazarus\lcl\include\customform.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="2061"/>
         <CursorPos Y="2054"/>
-        <UsageCount Value="26"/>
+        <UsageCount Value="25"/>
       </Unit34>
       <Unit35>
         <Filename Value="C:\lazarus\fpc\3.0.4\source\packages\fcl-base\src\contnrs.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="63"/>
         <CursorPos X="3" Y="74"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
       </Unit35>
       <Unit36>
         <Filename Value="C:\lazarus\fpc\3.0.4\source\rtl\inc\objpas.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="539"/>
         <CursorPos Y="556"/>
-        <UsageCount Value="8"/>
+        <UsageCount Value="7"/>
       </Unit36>
       <Unit37>
         <Filename Value="frm\userReportPublicationForm.pas"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="50" Y="12"/>
-        <UsageCount Value="15"/>
+        <UsageCount Value="14"/>
       </Unit37>
       <Unit38>
         <Filename Value="C:\lazarus\lcl\grids.pas"/>
         <UnitName Value="Grids"/>
-        <EditorIndex Value="12"/>
+        <EditorIndex Value="13"/>
         <TopLine Value="10648"/>
         <CursorPos Y="10665"/>
-        <UsageCount Value="18"/>
+        <UsageCount Value="19"/>
         <Loaded Value="True"/>
       </Unit38>
       <Unit39>
@@ -385,34 +388,34 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="4"/>
         <CursorPos Y="21"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
       </Unit39>
       <Unit40>
         <Filename Value="C:\lazarus\lcl\include\buttons.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="152"/>
         <CursorPos Y="169"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
       </Unit40>
       <Unit41>
         <Filename Value="C:\lazarus\lcl\include\bitbtn.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="48"/>
         <CursorPos Y="64"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
       </Unit41>
       <Unit42>
         <Filename Value="models\model.categoryitem.pas"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="32" Y="15"/>
-        <UsageCount Value="19"/>
+        <UsageCount Value="18"/>
       </Unit42>
       <Unit43>
         <Filename Value="C:\lazarus\lcl\include\wincontrol.inc"/>
         <EditorIndex Value="3"/>
         <TopLine Value="6435"/>
         <CursorPos Y="6452"/>
-        <UsageCount Value="31"/>
+        <UsageCount Value="32"/>
         <Loaded Value="True"/>
       </Unit43>
       <Unit44>
@@ -420,7 +423,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="2198"/>
         <CursorPos Y="2215"/>
-        <UsageCount Value="13"/>
+        <UsageCount Value="12"/>
       </Unit44>
       <Unit45>
         <Filename Value="C:\lazarus\lcl\lresources.pp"/>
@@ -428,28 +431,28 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="3137"/>
         <CursorPos Y="3173"/>
-        <UsageCount Value="2"/>
+        <UsageCount Value="1"/>
       </Unit45>
       <Unit46>
         <Filename Value="C:\lazarus\fpc\3.0.4\source\rtl\objpas\classes\reader.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="1402"/>
         <CursorPos Y="1419"/>
-        <UsageCount Value="3"/>
+        <UsageCount Value="2"/>
       </Unit46>
       <Unit47>
         <Filename Value="C:\lazarus\fpc\3.0.4\source\rtl\objpas\classes\compon.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="167"/>
         <CursorPos X="31" Y="180"/>
-        <UsageCount Value="7"/>
+        <UsageCount Value="6"/>
       </Unit47>
       <Unit48>
         <Filename Value="C:\lazarus\fpc\3.0.4\source\rtl\objpas\classes\classesh.inc"/>
-        <EditorIndex Value="20"/>
+        <EditorIndex Value="21"/>
         <TopLine Value="181"/>
         <CursorPos X="65" Y="197"/>
-        <UsageCount Value="29"/>
+        <UsageCount Value="30"/>
         <Loaded Value="True"/>
       </Unit48>
       <Unit49>
@@ -458,7 +461,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="20"/>
         <CursorPos X="24" Y="30"/>
-        <UsageCount Value="7"/>
+        <UsageCount Value="6"/>
       </Unit49>
       <Unit50>
         <Filename Value="frm\blockeduserreportform.pas"/>
@@ -466,29 +469,29 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="11"/>
         <CursorPos X="30" Y="21"/>
-        <UsageCount Value="7"/>
+        <UsageCount Value="6"/>
       </Unit50>
       <Unit51>
         <Filename Value="frm\detailedCategoryReportPublicationForm.pas"/>
-        <EditorIndex Value="19"/>
-        <TopLine Value="72"/>
+        <EditorIndex Value="20"/>
+        <TopLine Value="38"/>
         <CursorPos X="27" Y="38"/>
-        <UsageCount Value="19"/>
+        <UsageCount Value="20"/>
         <Loaded Value="True"/>
       </Unit51>
       <Unit52>
         <Filename Value="frm\topNUserReportPublicationForm.pas"/>
-        <EditorIndex Value="18"/>
-        <TopLine Value="36"/>
+        <EditorIndex Value="19"/>
+        <TopLine Value="35"/>
         <CursorPos X="41" Y="89"/>
-        <UsageCount Value="18"/>
+        <UsageCount Value="19"/>
         <Loaded Value="True"/>
       </Unit52>
       <Unit53>
         <Filename Value="frm\purchasesByUserReportPublicationForm.pas"/>
-        <EditorIndex Value="16"/>
+        <EditorIndex Value="17"/>
         <CursorPos X="119" Y="17"/>
-        <UsageCount Value="17"/>
+        <UsageCount Value="18"/>
         <Loaded Value="True"/>
       </Unit53>
       <Unit54>
@@ -496,43 +499,43 @@
         <ComponentName Value="DateRangeReportFormWidget"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="15"/>
+        <EditorIndex Value="16"/>
         <TopLine Value="32"/>
         <CursorPos Y="49"/>
-        <UsageCount Value="16"/>
+        <UsageCount Value="17"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit54>
       <Unit55>
         <Filename Value="frm\buyerUserMessagesReportPublicationForm.pas"/>
-        <EditorIndex Value="13"/>
+        <EditorIndex Value="14"/>
         <TopLine Value="30"/>
         <CursorPos X="83" Y="39"/>
-        <UsageCount Value="12"/>
+        <UsageCount Value="13"/>
         <Loaded Value="True"/>
       </Unit55>
       <Unit56>
         <Filename Value="frm\sellerUserMessagesReportPublicationForm.pas"/>
-        <EditorIndex Value="10"/>
+        <EditorIndex Value="11"/>
         <TopLine Value="47"/>
         <CursorPos X="35" Y="68"/>
-        <UsageCount Value="12"/>
+        <UsageCount Value="13"/>
         <Loaded Value="True"/>
       </Unit56>
       <Unit57>
         <Filename Value="frm\publicationByUserReportPublicationForm.pas"/>
-        <EditorIndex Value="9"/>
+        <EditorIndex Value="10"/>
         <TopLine Value="40"/>
         <CursorPos X="54" Y="66"/>
-        <UsageCount Value="11"/>
+        <UsageCount Value="12"/>
         <Loaded Value="True"/>
       </Unit57>
       <Unit58>
         <Filename Value="frm\detailedSellsReportPublicationForm.pas"/>
-        <EditorIndex Value="8"/>
+        <EditorIndex Value="9"/>
         <TopLine Value="85"/>
         <CursorPos X="25" Y="90"/>
-        <UsageCount Value="11"/>
+        <UsageCount Value="12"/>
         <Loaded Value="True"/>
       </Unit58>
       <Unit59>
@@ -540,140 +543,139 @@
         <ComponentName Value="ExpiredPublicationsByCategoryReportRorm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="7"/>
+        <EditorIndex Value="8"/>
         <TopLine Value="128"/>
         <CursorPos X="57" Y="152"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="11"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit59>
     </Units>
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
-        <Filename Value="mainunit.pas"/>
-        <Caret Line="341" Column="33" TopLine="335"/>
+        <Filename Value="C:\lazarus\lcl\grids.pas"/>
+        <Caret Line="9628" TopLine="9611"/>
       </Position1>
       <Position2>
-        <Filename Value="mainunit.pas"/>
-        <Caret Line="13" Column="42"/>
+        <Filename Value="frm\daterangedreportform.pas"/>
+        <Caret Line="49" TopLine="32"/>
       </Position2>
       <Position3>
-        <Filename Value="mainunit.pas"/>
-        <Caret Line="17" Column="79" TopLine="67"/>
+        <Filename Value="frm\detailedSellsReportPublicationForm.pas"/>
+        <Caret Line="91" Column="3" TopLine="77"/>
       </Position3>
       <Position4>
-        <Filename Value="mainunit.pas"/>
-        <Caret Line="22" Column="39" TopLine="4"/>
+        <Filename Value="C:\lazarus\lcl\grids.pas"/>
+        <Caret Line="9628" TopLine="9611"/>
       </Position4>
       <Position5>
-        <Filename Value="mainunit.pas"/>
-        <Caret Line="20" Column="92" TopLine="4"/>
+        <Filename Value="C:\lazarus\lcl\grids.pas"/>
+        <Caret Line="10665" TopLine="10648"/>
       </Position5>
       <Position6>
         <Filename Value="mainunit.pas"/>
-        <Caret Line="22" Column="39" TopLine="4"/>
+        <Caret Line="354" Column="40" TopLine="332"/>
       </Position6>
       <Position7>
         <Filename Value="mainunit.pas"/>
-        <Caret Line="23" Column="41"/>
+        <Caret Line="174" Column="19" TopLine="166"/>
       </Position7>
       <Position8>
-        <Filename Value="mainunit.pas"/>
-        <Caret Line="21" Column="84"/>
+        <Filename Value="frm\expiredpublicationsbycategoryreportform.pas"/>
+        <Caret Line="15" Column="3"/>
       </Position8>
       <Position9>
-        <Filename Value="mainunit.pas"/>
-        <Caret Line="23" Column="41"/>
+        <Filename Value="frm\expiredpublicationsbycategoryreportform.pas"/>
+        <Caret Line="21" Column="47"/>
       </Position9>
       <Position10>
-        <Filename Value="mainunit.pas"/>
-        <Caret Line="11" Column="35"/>
+        <Filename Value="frm\expiredpublicationsbycategoryreportform.pas"/>
+        <Caret Line="26" Column="32"/>
       </Position10>
       <Position11>
-        <Filename Value="mainunit.pas"/>
-        <Caret Line="342" Column="50" TopLine="329"/>
+        <Filename Value="frm\expiredpublicationsbycategoryreportform.pas"/>
+        <Caret Line="9" Column="41"/>
       </Position11>
       <Position12>
-        <Filename Value="frm\publicationByUserReportPublicationForm.pas"/>
-        <Caret Line="66" Column="54" TopLine="40"/>
+        <Filename Value="frm\expiredpublicationsbycategoryreportform.pas"/>
+        <Caret Line="79" Column="38" TopLine="59"/>
       </Position12>
       <Position13>
         <Filename Value="mainunit.pas"/>
-        <Caret Line="355" Column="69" TopLine="336"/>
+        <Caret Line="174" Column="19" TopLine="166"/>
       </Position13>
       <Position14>
-        <Filename Value="mainunit.pas"/>
-        <Caret Line="230" Column="25" TopLine="205"/>
-      </Position14>
-      <Position15>
-        <Filename Value="mainunit.pas"/>
-        <Caret Line="351" Column="3" TopLine="332"/>
-      </Position15>
-      <Position16>
-        <Filename Value="frm\detailedSellsReportPublicationForm.pas"/>
-        <Caret Line="43" Column="28" TopLine="26"/>
-      </Position16>
-      <Position17>
-        <Filename Value="C:\lazarus\lcl\grids.pas"/>
-        <Caret Line="9628" TopLine="9611"/>
-      </Position17>
-      <Position18>
-        <Filename Value="frm\daterangedreportform.pas"/>
-        <Caret Line="49" TopLine="32"/>
-      </Position18>
-      <Position19>
-        <Filename Value="frm\detailedSellsReportPublicationForm.pas"/>
-        <Caret Line="91" Column="3" TopLine="77"/>
-      </Position19>
-      <Position20>
-        <Filename Value="C:\lazarus\lcl\grids.pas"/>
-        <Caret Line="9628" TopLine="9611"/>
-      </Position20>
-      <Position21>
-        <Filename Value="C:\lazarus\lcl\grids.pas"/>
-        <Caret Line="10665" TopLine="10648"/>
-      </Position21>
-      <Position22>
-        <Filename Value="mainunit.pas"/>
-        <Caret Line="354" Column="40" TopLine="332"/>
-      </Position22>
-      <Position23>
-        <Filename Value="mainunit.pas"/>
-        <Caret Line="174" Column="19" TopLine="166"/>
-      </Position23>
-      <Position24>
-        <Filename Value="frm\expiredpublicationsbycategoryreportform.pas"/>
-        <Caret Line="15" Column="3"/>
-      </Position24>
-      <Position25>
-        <Filename Value="frm\expiredpublicationsbycategoryreportform.pas"/>
-        <Caret Line="21" Column="47"/>
-      </Position25>
-      <Position26>
-        <Filename Value="frm\expiredpublicationsbycategoryreportform.pas"/>
-        <Caret Line="26" Column="32"/>
-      </Position26>
-      <Position27>
-        <Filename Value="frm\expiredpublicationsbycategoryreportform.pas"/>
-        <Caret Line="9" Column="41"/>
-      </Position27>
-      <Position28>
-        <Filename Value="frm\expiredpublicationsbycategoryreportform.pas"/>
-        <Caret Line="79" Column="38" TopLine="59"/>
-      </Position28>
-      <Position29>
-        <Filename Value="mainunit.pas"/>
-        <Caret Line="174" Column="19" TopLine="166"/>
-      </Position29>
-      <Position30>
         <Filename Value="frm\expiredpublicationsbycategoryreportform.pas"/>
         <Caret Line="60" Column="37" TopLine="65"/>
+      </Position14>
+      <Position15>
+        <Filename Value="libs\metru.core.pas"/>
+        <Caret Line="434" TopLine="414"/>
+      </Position15>
+      <Position16>
+        <Filename Value="frm\userform.pas"/>
+        <Caret Line="102" Column="33" TopLine="85"/>
+      </Position16>
+      <Position17>
+        <Filename Value="libs\metru.core.pas"/>
+        <Caret Line="70" Column="13" TopLine="58"/>
+      </Position17>
+      <Position18>
+        <Filename Value="frm\userform.pas"/>
+        <Caret Line="60" TopLine="42"/>
+      </Position18>
+      <Position19>
+        <Filename Value="frm\userform.pas"/>
+        <Caret Line="61" Column="94" TopLine="51"/>
+      </Position19>
+      <Position20>
+        <Filename Value="frm\userform.pas"/>
+        <Caret Line="60" TopLine="51"/>
+      </Position20>
+      <Position21>
+        <Filename Value="frm\userform.pas"/>
+        <Caret Line="102" TopLine="86"/>
+      </Position21>
+      <Position22>
+        <Filename Value="frm\userform.pas"/>
+        <Caret Line="103" TopLine="86"/>
+      </Position22>
+      <Position23>
+        <Filename Value="frm\userform.pas"/>
+        <Caret Line="105" TopLine="86"/>
+      </Position23>
+      <Position24>
+        <Filename Value="frm\userform.pas"/>
+        <Caret Line="60" TopLine="42"/>
+      </Position24>
+      <Position25>
+        <Filename Value="frm\userform.pas"/>
+        <Caret Line="61" TopLine="42"/>
+      </Position25>
+      <Position26>
+        <Filename Value="frm\userform.pas"/>
+        <Caret Line="63" TopLine="42"/>
+      </Position26>
+      <Position27>
+        <Filename Value="frm\userform.pas"/>
+        <Caret Line="102" TopLine="86"/>
+      </Position27>
+      <Position28>
+        <Filename Value="frm\userform.pas"/>
+        <Caret Line="103" TopLine="86"/>
+      </Position28>
+      <Position29>
+        <Filename Value="libs\metru.core.pas"/>
+        <Caret Line="318" Column="150" TopLine="284"/>
+      </Position29>
+      <Position30>
+        <Filename Value="mainunit.pas"/>
+        <Caret Line="203" Column="20" TopLine="186"/>
       </Position30>
     </JumpHistory>
   </ProjectSession>
   <Debugging>
-    <BreakPoints Count="1">
+    <BreakPoints Count="3">
       <Item1>
         <Kind Value="bpkSource"/>
         <WatchScope Value="wpsLocal"/>
@@ -681,6 +683,20 @@
         <Source Value="frm\categorybase.pas"/>
         <Line Value="77"/>
       </Item1>
+      <Item2>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="frm\userform.pas"/>
+        <Line Value="103"/>
+      </Item2>
+      <Item3>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="frm\userform.pas"/>
+        <Line Value="60"/>
+      </Item3>
     </BreakPoints>
     <Watches Count="1">
       <Item1>
