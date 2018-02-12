@@ -72,9 +72,10 @@ begin
       Cells[7,0]  := 'Fecha limite';
     end;
 
-  item        := TCategoryItem(self.categoryCombobox.Items.Objects[self.categoryCombobox.ItemIndex]);
-  publishList := metru.core.retrievePublicationByCategory(metruApp, item.category);
-  count       := length(publishList);
+  item              := TCategoryItem(self.categoryCombobox.Items.Objects[self.categoryCombobox.ItemIndex]);
+  publishList       := metru.core.retrievePublicationByCategory(metruApp, item.category);
+  count             := length(publishList);
+  dataGrid.RowCount := count + 1;
   for i := 0 to count - 1 do
     begin
       metru.core.dereferencePublication(metruApp, publishList[i], pubItem);

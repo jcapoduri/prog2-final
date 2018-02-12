@@ -47,6 +47,7 @@ end;
 procedure TDateRangeReportFormWidget.doReportButtonClick(Sender: TObject);
 begin
   doReport;
+  dataGrid.AutoSizeColumns;
 end;
 
 procedure TDateRangeReportFormWidget.exportToCSVButtonClick(Sender: TObject);

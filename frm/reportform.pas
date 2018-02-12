@@ -44,6 +44,7 @@ end;
 procedure TReportFormWidget.doReportButtonClick(Sender: TObject);
 begin
   doReport;
+  dataGrid.AutoSizeColumns;
 end;
 
 procedure TReportFormWidget.exportToCSVButtonClick(Sender: TObject);

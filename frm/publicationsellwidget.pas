@@ -13,6 +13,8 @@ type
   { tPublicationSellWidget }
 
   tPublicationSellWidget = class(TForm)
+    Label1: TLabel;
+    expireLabel: TLabel;
     sendQuestionButton: TBitBtn;
     buyButton: TBitBtn;
     imageDisplay: TImage;
@@ -65,9 +67,10 @@ end;
 
 procedure tPublicationSellWidget.FormCreate(Sender: TObject);
 begin
-  self.titleLabel.Caption := self.publication.itemName;
+  self.titleLabel.Caption       := self.publication.itemName;
   self.descriptionLabel.Caption := self.publication.details;
-  self.priceLabel.Caption:= FloatToStr(self.publication.price);
+  self.priceLabel.Caption       := FloatToStr(self.publication.price);
+  self.expireLabel.Caption      := DateTimeToStr(self.publication.etimestamp);
   if (publication.image <> EmptyStr) then
     imageDisplay.Picture.LoadFromFile(metru.core.retrieveImage(metruApp, publication.image));
   if (publication.idUser = user.id) or (publication.status <> tStatus.Publish) or (publication.etimestamp < Now) then {if publication is my own, disable purchase}

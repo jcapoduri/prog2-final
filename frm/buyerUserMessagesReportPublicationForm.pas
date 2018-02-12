@@ -58,12 +58,11 @@ begin
           metru.core.dereferenceSell(metruApp, sellsList[i], sellItem);
           msgCount := 0;
           metru.core.retrieveUser(metruApp, sellItem.idBuyer, usr2);
-          //metru.core.retrievePublicationById(metruApp, sellItem.idBuyer, pubIdx);
+          metru.core.retrievePublicationById(metruApp, sellItem.idItem, pubIdx);
           dataGrid.RowCount                    := dataGrid.RowCount + 1;
           dataGrid.Cells[1, dataGrid.RowCount - 1] := IntToStr(sellItem.idITem);
           dataGrid.Cells[2, dataGrid.RowCount - 1] := IntToStr(usr2.id);
           dataGrid.Cells[3, dataGrid.RowCount - 1] := usr2.fullname;
-          //
 
           messageList := metru.core.retrieveMessages(metruApp, pubIdx);
           count2      := length(messageList);

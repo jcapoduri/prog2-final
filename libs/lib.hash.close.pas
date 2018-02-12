@@ -421,7 +421,6 @@ implementation
         found      := false;
         keepLoking := true;
         hashIdx    := 0;
-        pos        := NULLIDX;
         while (not found) and (hashIdx <= MAX) do
           begin
             node := _getHash(this, hashIdx);

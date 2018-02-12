@@ -738,25 +738,22 @@ implementation
   procedure doPayment             (var this : tMetruCore; sellIdx : tSellIdx);
   var
     auxPurchase : tSell;
-    idxPurchase : lib.hash.close.idxRange;
   begin
     if dereferenceSell(this, sellIdx, auxPurchase) then
       begin
         auxPurchase.alreadyCollected := true;
-        lib.hash.close.update(this.io.sells, idxPurchase, auxPurchase);
+        lib.hash.close.update(this.io.sells, sellIdx, auxPurchase);
       end;
   end;
 
   procedure doReviewPurchase      (var this : tMetruCore; sellIdx : tSellIdx; review : tCalification);
   var
     auxPurchase : tSell;
-    idxPurchase : lib.hash.close.idxRange;
-
   begin
     if (review > None) and (dereferenceSell(this, sellIdx, auxPurchase)) then
       begin
         auxPurchase.calification := review;
-        lib.hash.close.update(this.io.sells, idxPurchase, auxPurchase);
+        lib.hash.close.update(this.io.sells, sellIdx, auxPurchase);
       end;
   end;
 
