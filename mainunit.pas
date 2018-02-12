@@ -413,6 +413,7 @@ begin
   self.reportByMaxPerCateogryMenuItem.Visible  := true;
   self.purchaseDetailedReportMenuItem.Visible  := true;
   self.publicationByUserReportMenuItem.Visible := true;
+  self.topSellersReportMenuItem.Visible        := true;
 end;
 
 procedure TmainWidget.setUIasUser;
@@ -429,6 +430,7 @@ begin
   self.reportByMaxPerCateogryMenuItem.Visible  := false;
   self.purchaseDetailedReportMenuItem.Visible  := false;
   self.publicationByUserReportMenuItem.Visible := false;
+  self.topSellersReportMenuItem.Visible        := false;
 end;
 
 end.
