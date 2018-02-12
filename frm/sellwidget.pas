@@ -82,6 +82,8 @@ begin
       self.sell.calification := metru.core.tCalification(self.reviewComboBox.ItemIndex);
       metru.core.doReviewPurchase(metruApp, self.sellIdx, metru.core.tCalification(self.reviewComboBox.ItemIndex));
       MessageDlg('Gracias por calificar el producto!', mtCustom , [mbOK], 0);
+      self.reviewButton.Enabled := false;
+      self.reviewComboBox.Enabled:=false;
     end;
 end;
 

@@ -103,4 +103,20 @@ object tPublicationSellWidget: tPublicationSellWidget
     Anchors = [akLeft, akBottom]
     TabOrder = 3
   end
+  object Label1: TLabel
+    Left = 800
+    Height = 15
+    Top = 397
+    Width = 49
+    Caption = 'Expira el: '
+    ParentColor = False
+  end
+  object expireLabel: TLabel
+    Left = 848
+    Height = 15
+    Top = 397
+    Width = 59
+    Caption = 'expireLabel'
+    ParentColor = False
+  end
 end
