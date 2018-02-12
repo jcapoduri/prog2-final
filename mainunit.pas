@@ -103,6 +103,8 @@ type
     { public declarations }
     procedure cleanPanel;
     procedure setComponentOnPanel(childItem : TForm);
+    procedure setUIasAdmin;
+    procedure setUIasUser;
   end;
 
 var
@@ -211,6 +213,10 @@ begin
   login.emailEdit.Text    := 'admistrador@mercatrucho.com';
   login.passwordEdit.Text := 'palo_y_a_la_bolsa';
   login.ShowModal;
+  if metru.core.isLogedUserAdmin(metruApp) then
+    setUIasAdmin
+  else
+    setUIasUser;
 end;
 
 procedure TmainWidget.balanceTrinaryTreeMenuItemClick(Sender: TObject);
@@ -362,6 +368,10 @@ begin
   metru.core.logoff(metruApp);
   cleanPanel;
   login.ShowModal;
+  if metru.core.isLogedUserAdmin(metruApp) then
+    setUIasAdmin
+  else
+    setUIasUser;
 end;
 
 procedure TmainWidget.cleanPanel;
@@ -387,6 +397,38 @@ begin
   childItem.height  := self.displayPanel.height;
   childItem.anchors := [akTop, akLeft, akRight, akBottom];
   childItem.visible := true;
+end;
+
+procedure TmainWidget.setUIasAdmin;
+begin
+  self.advanceBaseMenuItem.Visible             := true;
+  self.reportByPurchasesMenuItem.Visible       := true;
+  self.reportCategoryMenuItem.Visible          := true;
+  self.reportOfPurchaseByMenuItem.Visible      := true;
+  self.reportBySellerMenuItem.Visible          := true;
+  self.reportByBuyerMenuItem.Visible           := true;
+  self.reportByMaxPerCateogryMenuItem.Visible  := true;
+  self.reportByCategoryMenuItem.Visible        := true;
+  self.reportAllPublicationsMenuItem.Visible   := true;
+  self.reportByMaxPerCateogryMenuItem.Visible  := true;
+  self.purchaseDetailedReportMenuItem.Visible  := true;
+  self.publicationByUserReportMenuItem.Visible := true;
+end;
+
+procedure TmainWidget.setUIasUser;
+begin
+  self.advanceBaseMenuItem.Visible             := false;
+  self.reportByPurchasesMenuItem.Visible       := false;
+  self.reportCategoryMenuItem.Visible          := false;
+  self.reportOfPurchaseByMenuItem.Visible      := false;
+  self.reportBySellerMenuItem.Visible          := false;
+  self.reportByBuyerMenuItem.Visible           := false;
+  self.reportByMaxPerCateogryMenuItem.Visible  := false;
+  self.reportByCategoryMenuItem.Visible        := false;
+  self.reportAllPublicationsMenuItem.Visible   := false;
+  self.reportByMaxPerCateogryMenuItem.Visible  := false;
+  self.purchaseDetailedReportMenuItem.Visible  := false;
+  self.publicationByUserReportMenuItem.Visible := false;
 end;
 
 end.
