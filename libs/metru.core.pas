@@ -205,66 +205,6 @@ implementation
     user.blocked    := false;
     lib.hash.open.insert(this.io.users, user);
 
-    user.email      := 'jcapoduri@gmail.com';
-    user.password   := 'palo_y_a_la_bolsa';
-    user.fullname   := 'Jorge Capoduri';
-    user.address    := 'Yrigoyen 831';
-    user.providence := 4;
-    user.ctimestamp := Now;
-    user.photoUrl   := '';
-    user.status     := false;
-    user.utimestamp := Now;
-    user.blocked    := false;
-    lib.hash.open.insert(this.io.users, user);
-
-    user.email      := 'alexalv@juan23.edu.ar';
-    user.password   := 'palo_y_a_la_bolsa';
-    user.fullname   := 'Claudio Alvarez';
-    user.address    := 'El Juan 23';
-    user.providence := 2;
-    user.ctimestamp := Now;
-    user.photoUrl   := '';
-    user.status     := false;
-    user.utimestamp := Now;
-    user.blocked    := false;
-    lib.hash.open.insert(this.io.users, user);
-
-    user.email      := 'natalia.vallone87@gmail.com';
-    user.password   := 'palo_y_a_la_bolsa';
-    user.fullname   := 'Naty  Carulias';
-    user.address    := 'Yrigoyen 831';
-    user.providence := 4;
-    user.ctimestamp := Now;
-    user.photoUrl   := '';
-    user.status     := false;
-    user.utimestamp := Now;
-    user.blocked    := false;
-    lib.hash.open.insert(this.io.users, user);
-
-    user.email      := 'donbarredora@gmail.com';
-    user.password   := 'palo_y_a_la_bolsa';
-    user.fullname   := 'Don barredora';
-    user.address    := 'Yrigoyen 831';
-    user.providence := 4;
-    user.ctimestamp := Now;
-    user.photoUrl   := '';
-    user.status     := false;
-    user.utimestamp := Now;
-    user.blocked    := false;
-    lib.hash.open.insert(this.io.users, user);
-
-    user.email      := 'cloetonko@gmail.com';
-    user.password   := 'palo_y_a_la_bolsa';
-    user.fullname   := 'El terror de los 7 mares';
-    user.address    := 'Yrigoyen 831';
-    user.providence := 4;
-    user.ctimestamp := Now;
-    user.photoUrl   := '';
-    user.status     := false;
-    user.utimestamp := Now;
-    user.blocked    := false;
-    lib.hash.open.insert(this.io.users, user);
-
     { setup categories }
     cat.categoryName := 'RAIZ';
     cat.description  := 'RAIZ';
@@ -273,39 +213,6 @@ implementation
     cat.leftChild    := NULLIDX;
     cat.rightSibling := NULLIDX;
     lib.tree.lcrs.addSibling(this.io.categories, NULLIDX, cat);
-
-
-    cat.categoryName := 'Tecnologia';
-    cat.description  := 'Tecnologia';
-    cat.VAT          := 10;
-    cat.parent       := NULLIDX;
-    cat.leftChild    := NULLIDX;
-    cat.rightSibling := NULLIDX;
-    createCateogry(metruApp, cat);
-
-    cat.categoryName := 'Electrodomestico';
-    cat.description  := 'Electrodomestico';
-    cat.VAT          := 10;
-    cat.parent       := NULLIDX;
-    cat.leftChild    := NULLIDX;
-    cat.rightSibling := NULLIDX;
-    createCateogry(metruApp, cat);
-
-    cat.categoryName := 'Computadoras';
-    cat.description  := 'Computadoras';
-    cat.VAT          := 10;
-    cat.parent       := 1;
-    cat.leftChild    := NULLIDX;
-    cat.rightSibling := NULLIDX;
-    createCateogry(metruApp, cat);
-
-    cat.categoryName := 'Aires';
-    cat.description  := 'Aires';
-    cat.VAT          := 10;
-    cat.parent       := 2;
-    cat.leftChild    := NULLIDX;
-    cat.rightSibling := NULLIDX;
-    createCateogry(metruApp, cat);
   end;
 
   function  storeImage     (var this : tMetruCore; pathToImage : string) : string;

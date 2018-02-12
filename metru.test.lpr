@@ -15,6 +15,7 @@ uses
   Crt
 {$ENDIF}
   { you can add units after this }
+  ,DateUtils
   ,lib.tree.lcrs    in 'libs\lib.tree.lcrs.pas'
   ,lib.hash.open    in 'libs\lib.hash.open.pas'
   ,lib.hash.close   in 'libs\lib.hash.close.pas'
@@ -95,12 +96,52 @@ begin
   wait('presione una tecla para continuar');
 end;
 
+procedure generateCategories();
+var
+  cat  : tCategory;
+begin
+  metru.core.setup(metruApp);
+
+  cat.categoryName := 'Tecnologia';
+  cat.description  := 'Tecnologia';
+  cat.VAT          := Random(2000) / 100;
+  cat.parent       := NULLIDX;
+  cat.leftChild    := NULLIDX;
+  cat.rightSibling := NULLIDX;
+  metru.core.createCateogry(metruApp, cat);
+
+  cat.categoryName := 'Electrodomestico';
+  cat.description  := 'Electrodomestico';
+  cat.VAT          := Random(2000) / 100;
+  cat.parent       := NULLIDX;
+  cat.leftChild    := NULLIDX;
+  cat.rightSibling := NULLIDX;
+  metru.core.createCateogry(metruApp, cat);
+
+  cat.categoryName := 'Computadoras';
+  cat.description  := 'Computadoras';
+  cat.VAT          := Random(2000) / 100;
+  cat.parent       := 1;
+  cat.leftChild    := NULLIDX;
+  cat.rightSibling := NULLIDX;
+  metru.core.createCateogry(metruApp, cat);
+
+  cat.categoryName := 'Aires';
+  cat.description  := 'Aires';
+  cat.VAT          := Random(2000) / 100;
+  cat.parent       := 2;
+  cat.leftChild    := NULLIDX;
+  cat.rightSibling := NULLIDX;
+  metru.core.createCateogry(metruApp, cat);
+end;
+
 function categorymenu() : integer;
 begin
   ClrScr;
   writeln('Menu Categorias (1-2)');
   writeln('1- Dump de estructura de datos');
   writeln('2- Dump de estructura de control');
+  writeln('3- Generar categorias');
   writeln('0- Salir');
   categorymenu := readValidNumber(0, 2);
 end;
@@ -110,6 +151,7 @@ begin
   case op of
     1: dumpCategoryTree;
     2: dumpCategoryControl;
+    3: generateCategories;
   end;
 end;
 
@@ -182,13 +224,82 @@ begin
   wait('presione una tecla para continuar');
 end;
 
+procedure generateBulkUsers();
+var
+  user : tUser;
+  io   : tOpenHash;
+begin
+  lib.hash.open.loadHash(io, BASEPATH, USERFILE);
+
+  user.email      := 'jcapoduri@gmail.com';
+  user.password   := 'palo_y_a_la_bolsa';
+  user.fullname   := 'Jorge Capoduri';
+  user.address    := 'Yrigoyen 831';
+  user.providence := Random(25);
+  user.ctimestamp := Now;
+  user.photoUrl   := '';
+  user.status     := false;
+  user.utimestamp := Now;
+  user.blocked    := false;
+  lib.hash.open.insert(io, user);
+
+  user.email      := 'alexalv@juan23.edu.ar';
+  user.password   := 'palo_y_a_la_bolsa';
+  user.fullname   := 'Claudio Alvarez';
+  user.address    := 'El Juan 23';
+  user.providence := Random(25);
+  user.ctimestamp := Now;
+  user.photoUrl   := '';
+  user.status     := false;
+  user.utimestamp := Now;
+  user.blocked    := false;
+  lib.hash.open.insert(io, user);
+
+  user.email      := 'natalia.vallone87@gmail.com';
+  user.password   := 'palo_y_a_la_bolsa';
+  user.fullname   := 'Naty  Carulias';
+  user.address    := 'Yrigoyen 831';
+  user.providence := Random(25);
+  user.ctimestamp := Now;
+  user.photoUrl   := '';
+  user.status     := false;
+  user.utimestamp := Now;
+  user.blocked    := false;
+  lib.hash.open.insert(io, user);
+
+  user.email      := 'donbarredora@gmail.com';
+  user.password   := 'palo_y_a_la_bolsa';
+  user.fullname   := 'Don barredora';
+  user.address    := 'Yrigoyen 831';
+  user.providence := Random(25);
+  user.ctimestamp := Now;
+  user.photoUrl   := '';
+  user.status     := false;
+  user.utimestamp := Now;
+  user.blocked    := false;
+  lib.hash.open.insert(io, user);
+
+  user.email      := 'cloetonko@gmail.com';
+  user.password   := 'palo_y_a_la_bolsa';
+  user.fullname   := 'El terror de los 7 mares';
+  user.address    := 'Yrigoyen 831';
+  user.providence := Random(25);
+  user.ctimestamp := Now;
+  user.photoUrl   := '';
+  user.status     := false;
+  user.utimestamp := Now;
+  user.blocked    := false;
+  lib.hash.open.insert(io, user);
+
+end;
+
 function usermenu() : integer;
 begin
   ClrScr;
   writeln('Menu Usuarios (1-3)');
   writeln('1- Dump de estructura del hash');
   writeln('2- Dump de estructura de control');
-  writeln('3- Test de aglomeracion/dispersion');
+  writeln('3- Generar Usuarios de prueba');
   writeln('0- Salir');
   usermenu := readValidNumber(0, 3);
 end;
@@ -576,10 +687,13 @@ begin
           pub.idUser     := user.id;
           pub.itemName   := 'Item generado al azar ' + user.fullname + ' ' + cat.categoryName;
           pub.details    := 'Item generado al azar';
-          pub.price      := 12.23;
+          pub.price      := Random(100000) / 100;
           pub.ctimestamp := Now;
-          pub.etimestamp := Now;
-          pub.itemType   := New;
+          pub.etimestamp := IncDay(Now, Random(8));
+          if (Random(2) = 0) then
+            pub.itemType   := New
+          else
+            pub.itemType   := Used;
           pub.status     := tStatus.Publish;
           pub.image      := EmptyStr;
           writeln('generando publication para ' + user.fullname + ' en categoria ' + cat.categoryName);
@@ -717,6 +831,16 @@ begin
   wait('Reset realizado. Presione una tecla para continuar');
 end;
 
+procedure resetAppAndMock;
+begin
+  metru.core.kickoff(metruApp);
+  generateCategories;
+  generateBulkUsers;
+  generatePublication;
+  bulkInsertMessage;
+  wait('Reset realizado. Datos de prueba cargados. Presione una tecla para continuar');
+end;
+
 function mainmenu() : integer;
 begin
   ClrScr;
@@ -727,8 +851,9 @@ begin
   writeln('4- Mensajes');
   writeln('5- Ventas');
   writeln('6- RESET GENERAL DEL SISTEMA');
+  writeln('7- RESET GENERAL + DATOS DE PRUEBA');
   writeln('0- Salir');
-  mainmenu := readValidNumber(0, 6);
+  mainmenu := readValidNumber(0, 7);
 end;
 
 procedure mainmenuAct(op : integer);
@@ -740,11 +865,14 @@ begin
     4: actMenu(@messagemenu, @messagemenuAct);
     5: actMenu(@sellsmenu, @sellsmenuAct);
     6: resetApp;
+    7: resetAppAndMock;
   end;
 end;
 {end main menu block }
 
 begin
+  Randomize;
+
   actMenu(@mainmenu, @mainmenuAct);
 end.
 
