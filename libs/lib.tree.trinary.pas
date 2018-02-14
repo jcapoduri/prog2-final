@@ -710,8 +710,10 @@ implementation
             auxNode.parent := parentPos;
             auxPos         := _appendNode(this, auxNode);
             _insertBySk(this, sk, parentPos, auxPos);
-          end;
-        pos := auxPos;
+            pos := auxPos;
+          end
+        else
+          pos := parentPos;
       end;
     _retrieveOrCreate := pos;
   end;

@@ -403,34 +403,36 @@ procedure TmainWidget.setUIasAdmin;
 begin
   self.advanceBaseMenuItem.Visible             := true;
   self.reportByPurchasesMenuItem.Visible       := true;
+  self.blockedUserReportMenuItem.Visible       := true;
   self.reportCategoryMenuItem.Visible          := true;
   self.reportOfPurchaseByMenuItem.Visible      := true;
   self.reportBySellerMenuItem.Visible          := true;
   self.reportByBuyerMenuItem.Visible           := true;
   self.reportByMaxPerCateogryMenuItem.Visible  := true;
   self.reportByCategoryMenuItem.Visible        := true;
-  self.reportAllPublicationsMenuItem.Visible   := true;
   self.reportByMaxPerCateogryMenuItem.Visible  := true;
   self.purchaseDetailedReportMenuItem.Visible  := true;
   self.publicationByUserReportMenuItem.Visible := true;
   self.topSellersReportMenuItem.Visible        := true;
+  self.categoryMenuItem.Visible                := true;
 end;
 
 procedure TmainWidget.setUIasUser;
 begin
   self.advanceBaseMenuItem.Visible             := false;
   self.reportByPurchasesMenuItem.Visible       := false;
+  self.blockedUserReportMenuItem.Visible       := false;
   self.reportCategoryMenuItem.Visible          := false;
   self.reportOfPurchaseByMenuItem.Visible      := false;
   self.reportBySellerMenuItem.Visible          := false;
   self.reportByBuyerMenuItem.Visible           := false;
   self.reportByMaxPerCateogryMenuItem.Visible  := false;
   self.reportByCategoryMenuItem.Visible        := false;
-  self.reportAllPublicationsMenuItem.Visible   := false;
   self.reportByMaxPerCateogryMenuItem.Visible  := false;
   self.purchaseDetailedReportMenuItem.Visible  := false;
   self.publicationByUserReportMenuItem.Visible := false;
   self.topSellersReportMenuItem.Visible        := false;
+  self.categoryMenuItem.Visible                := false;
 end;
 
 end.
