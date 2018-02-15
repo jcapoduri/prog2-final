@@ -209,9 +209,9 @@ end;
 procedure TmainWidget.FormCreate(Sender: TObject);
 begin
   Application.CreateForm(TLoginForm, login);
-  { WARNING : Please delete this 2 lines before prod! }
+  { WARNING : Please delete this 2 lines before prod!
   login.emailEdit.Text    := 'admistrador@mercatrucho.com';
-  login.passwordEdit.Text := 'palo_y_a_la_bolsa';
+  login.passwordEdit.Text := 'palo_y_a_la_bolsa';}
   login.ShowModal;
   if metru.core.isLogedUserAdmin(metruApp) then
     setUIasAdmin
