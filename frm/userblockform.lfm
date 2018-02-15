@@ -9,7 +9,7 @@ object UserBlockingForm: TUserBlockingForm
   LCLVersion = '1.8.0.6'
   object emailEdit: TLabeledEdit
     Left = 8
-    Height = 23
+    Height = 27
     Top = 24
     Width = 369
     Anchors = [akTop, akLeft, akRight]
@@ -18,8 +18,8 @@ object UserBlockingForm: TUserBlockingForm
     EditLabel.AnchorSideRight.Side = asrBottom
     EditLabel.AnchorSideBottom.Control = emailEdit
     EditLabel.Left = 8
-    EditLabel.Height = 15
-    EditLabel.Top = 6
+    EditLabel.Height = 17
+    EditLabel.Top = 4
     EditLabel.Width = 369
     EditLabel.Caption = 'Ingrese e-mail del usuario'
     EditLabel.ParentColor = False
@@ -55,16 +55,16 @@ object UserBlockingForm: TUserBlockingForm
     ParentColor = False
   end
   object Label2: TLabel
-    Left = 304
-    Height = 15
+    Left = 291
+    Height = 17
     Top = 56
-    Width = 35
+    Width = 48
     Anchors = [akTop, akRight]
     Caption = 'Estado'
     ParentColor = False
   end
   object statusLabel: TLabel
-    Left = 416
+    Left = 451
     Height = 1
     Top = 56
     Width = 1

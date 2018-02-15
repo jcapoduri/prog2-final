@@ -57,7 +57,7 @@ begin
       else
         begin
           self.statusLabel.Caption:= 'HABILITADO';
-          self.toggleBlockButton.Caption:= 'Desbloquear';
+          self.toggleBlockButton.Caption:= 'Bloquear';
         end;
     end
   else
@@ -71,6 +71,7 @@ procedure TUserBlockingForm.toggleBlockButtonClick(Sender: TObject);
 begin
   self.user.blocked := not self.user.blocked;
   metru.core.updateUser(metruApp, self.user);
+  self.searchButtonClick(Sender);
 end;
 
 procedure TUserBlockingForm.closeButtonClick(Sender: TObject);
