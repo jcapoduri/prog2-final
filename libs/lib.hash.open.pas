@@ -202,7 +202,7 @@ implementation
       begin
         pos    := _hash(email);
         node   := _get(this, pos);
-        if (node.email = email) then
+        if (node.email = email) and (node.id > NULLIDX)  then
           found := true
         else
           begin
@@ -210,7 +210,7 @@ implementation
             while (auxPos <> pos) and (not found) do
               begin
                 node := _get(this, auxPos);
-                if (node.email = email) then
+                if (node.email = email) and (node.id > NULLIDX) then
                   found := true
                 else
                   auxPos := _nextPos(auxPos);
@@ -289,7 +289,7 @@ implementation
     rc    : tControlRecord;
   begin
     _openHash(this);
-    search(this, node.email, pos);
+    _search(this, node.email, pos);
     node.id := NULLIDX;
     _set(this, pos, node);
     rc       := _getControl(this);

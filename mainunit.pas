@@ -415,6 +415,7 @@ begin
   self.publicationByUserReportMenuItem.Visible := true;
   self.topSellersReportMenuItem.Visible        := true;
   self.categoryMenuItem.Visible                := true;
+  self.deleteUserMenuItem.Visible              := false;
 end;
 
 procedure TmainWidget.setUIasUser;
@@ -433,6 +434,7 @@ begin
   self.publicationByUserReportMenuItem.Visible := false;
   self.topSellersReportMenuItem.Visible        := false;
   self.categoryMenuItem.Visible                := false;
+  self.deleteUserMenuItem.Visible              := true;
 end;
 
 end.

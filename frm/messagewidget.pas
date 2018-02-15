@@ -58,7 +58,7 @@ end;
 
 procedure tMessageWidget.FormCreate(Sender: TObject);
 begin
-  self.questionLabel.Caption := message.question;
+  self.questionLabel.Caption := IntToStr(message.number) + ' - ' + message.question;
   if (EmptyStr <> message.answer) then
      begin
        responseLabel.Caption:= message.answer;

@@ -265,7 +265,10 @@ implementation
   end;
 
   procedure logoff     (var this : tMetruCore);
+  var
+    user : tUser;
   begin
+    this.user        := lib.hash.open.fetch(this.io.users, this.user.email);
     this.user.status := false;
     lib.hash.open.update(this.io.users, this.user);
     this.user.id := 0;
@@ -317,6 +320,7 @@ implementation
           begin
             metru.core.dereferencePublication(this, list[i], pub);
             ok  := pub.status <> lib.tree.avl.Publish;
+            i   := i + 1;
           end;
         if ok then
           lib.hash.open.remove(this.io.users, user);
