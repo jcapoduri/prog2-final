@@ -185,7 +185,7 @@ begin
     begin
       seek(io.data, i);
       read(io.data, user);
-      write(i);
+      write(i, ' | ');
       if (user.id > 0) then
         begin
           write(user.id, ' | ');
