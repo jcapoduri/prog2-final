@@ -502,12 +502,12 @@ implementation
             auxList := _retrieveAllLeafCateogies(this, auxPos);
             list    := list + auxList;
           end;
-        auxPos := lib.tree.lcrs.nextSibling(this.io.categories, pos);  
-        if (auxPos <> NULLIDX) then
-          begin
-            auxList := _retrieveAllLeafCateogies(this, auxPos);
-            list    := list + auxList;
-          end;
+      end;
+    auxPos := lib.tree.lcrs.nextSibling(this.io.categories, pos);  
+    if (auxPos <> NULLIDX) then
+      begin
+        auxList := _retrieveAllLeafCateogies(this, auxPos);
+        list    := list + auxList;
       end;
     _retrieveAllLeafCateogies := list;
   end;  

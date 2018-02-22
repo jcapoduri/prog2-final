@@ -92,7 +92,7 @@ implementation
 
   function _isLeaf(var node : tNode) : boolean;
   begin
-    _isLeaf := (node.leftChild = NULLIDX) and (node.rightSibling = NULLIDX);
+    _isLeaf := (node.leftChild = NULLIDX);
   end;
 
   function isLeaf(var this : tLCRStree; var node : tNode) : boolean;
@@ -100,7 +100,7 @@ implementation
     itIs : boolean;
   begin
     _openTree(this);
-    itIs   := (node.leftChild = NULLIDX) and (node.rightSibling = NULLIDX);
+    itIs   := (node.leftChild = NULLIDX);
     _closeTree(this);
     isLeaf := itIs;
   end;

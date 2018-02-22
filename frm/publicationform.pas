@@ -62,8 +62,9 @@ implementation
 {$R *.lfm}
 constructor tPublicationForm.Create(parentComponent : TComponent; var User : tUser); Overload;
 begin
-  Create(parentComponent);
   self.user := user;
+  self.publicationIdx := NULLIDX;
+  Create(parentComponent);
 end;
 
 constructor tPublicationForm.Create(parentComponent: TComponent;
