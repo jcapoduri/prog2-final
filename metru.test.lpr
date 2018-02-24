@@ -383,6 +383,7 @@ begin
   close(io.data);
   write('pos | ');
   write('number | ');
+  write('idUser | ');
   write('question | ');
   write('answer | ');
   write('timestamp | ');
@@ -393,6 +394,7 @@ begin
       message := lib.tree.trinary.fetchMessage(io, idx);
       write(idx, ' | ');
       write(message.number, ' | ');
+      write(message.idUser, ' | ');
       write(message.question, ' | ');
       write(message.answer, ' | ');
       write(message.timestamp, ' | ');

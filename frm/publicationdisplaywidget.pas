@@ -20,6 +20,7 @@ type
     deleteButton: TBitBtn;
     imagePreview: TImage;
     idLabel: TLabel;
+    publishByLabel: TLabel;
     statusLabel: TLabel;
     openButton: TButton;
     priceLabel: TLabel;
@@ -114,11 +115,15 @@ begin
 end;
 
 procedure tPublicationDisplayWidget.FormCreate(Sender: TObject);
+var
+  usr : tUser;
 begin
+  metru.core.retrieveUser(metruApp, publication.idUser, usr);
   descriptionLabel.Caption := publication.details;
   titleLabel.Caption       := publication.itemName;
   priceLabel.Caption       := FloatToStr(publication.price);
   idLabel.Caption          := 'ID: ' + IntToStr(publication.id);
+  publishByLabel.Caption   := 'Publicado por: ' + usr.fullname;
   if publication.image <> EmptyStr then
     imagePreview.Picture.LoadFromFile(metru.core.retrieveImage(metruApp,  publication.image));
   case self.publication.status of

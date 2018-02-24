@@ -28,7 +28,7 @@ object tPublicationDisplayWidget: tPublicationDisplayWidget
   end
   object descriptionLabel: TLabel
     Left = 114
-    Height = 48
+    Height = 40
     Top = 32
     Width = 494
     AutoSize = False
@@ -103,6 +103,14 @@ object tPublicationDisplayWidget: tPublicationDisplayWidget
     Top = 8
     Width = 17
     Caption = 'ID: '
+    ParentColor = False
+  end
+  object publishByLabel: TLabel
+    Left = 360
+    Height = 15
+    Top = 8
+    Width = 80
+    Caption = 'publishByLabel'
     ParentColor = False
   end
 end

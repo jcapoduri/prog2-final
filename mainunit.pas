@@ -400,7 +400,11 @@ begin
 end;
 
 procedure TmainWidget.setUIasAdmin;
+var
+  usr : tUser;  
 begin
+  usr                                          := metru.core.loggedUser(metruApp);
+  self.Caption                                 := 'MercaTrucho::' + usr.fullname;
   self.advanceBaseMenuItem.Visible             := true;
   self.reportByPurchasesMenuItem.Visible       := true;
   self.blockedUserReportMenuItem.Visible       := true;
@@ -419,7 +423,11 @@ begin
 end;
 
 procedure TmainWidget.setUIasUser;
+var
+  usr : tUser;  
 begin
+  usr                                          := metru.core.loggedUser(metruApp);
+  self.Caption                                 := 'MercaTrucho::' + usr.fullname;
   self.advanceBaseMenuItem.Visible             := false;
   self.reportByPurchasesMenuItem.Visible       := false;
   self.blockedUserReportMenuItem.Visible       := false;

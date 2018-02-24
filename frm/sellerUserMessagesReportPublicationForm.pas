@@ -30,8 +30,8 @@ var
   messageList         : tMessageList;
   message             : tMessage;
 begin
-  ok            := InputQuery('Reporte', 'Por favor, ingrese el id del usuario a listar', userInput);
-  userId        := StrToIntDef(userInput, 0);
+  ok     := InputQuery('Reporte', 'Por favor, ingrese el id del usuario a listar', userInput);
+  userId := StrToIntDef(userInput, 0);
   if ok and (userId > 0) then
     ok := metru.core.retrieveUser(metruApp, userId, usr);
   
@@ -41,8 +41,6 @@ begin
   with dataGrid do
     begin
       Cells[1,0] := 'Id publicacion';
-      //Cells[2,0] := 'Id usuario vend.';
-      //Cells[3,0] := 'Usuario vendedor';
       Cells[2,0] := 'Fecha';
       Cells[3,0] := 'Mensaje enviado';
       Cells[4,0] := 'Respuesta';
@@ -56,12 +54,9 @@ begin
       for i := 0 to count - 1 do
         begin
           metru.core.dereferencePublication(metruApp, publishList[i], pubItem);
-          msgCount := 0;
-          //metru.core.retrieveUser(metruApp, sellItem.idBuyer, usr2);
+          msgCount                                 := 0;
           dataGrid.RowCount                        := dataGrid.RowCount + 1;
           dataGrid.Cells[1, dataGrid.RowCount - 1] := IntToStr(pubItem.id);
-          //dataGrid.Cells[2, dataGrid.RowCount] := IntToStr(usr2.id);
-          //dataGrid.Cells[3, dataGrid.RowCount] := usr2.fullname;
 
           messageList := metru.core.retrieveMessages(metruApp, publishList[i]);
           count2      := length(messageList);
@@ -72,9 +67,9 @@ begin
               dataGrid.Cells[2, dataGrid.RowCount - 1] := DateTimeToStr(message.timestamp);
               dataGrid.Cells[3, dataGrid.RowCount - 1] := message.answer;
               dataGrid.Cells[4, dataGrid.RowCount - 1] := message.question;
-              msgCount                             := msgCount + 1;
+              msgCount                                 := msgCount + 1;
             end;
-          dataGrid.RowCount := dataGrid.RowCount + 1;
+          dataGrid.RowCount                        := dataGrid.RowCount + 1;
           dataGrid.Cells[5, dataGrid.RowCount - 1] := IntToStr(msgCount);
         end;
     end;

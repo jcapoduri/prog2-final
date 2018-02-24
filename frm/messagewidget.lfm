@@ -14,7 +14,7 @@ object tMessageWidget: tMessageWidget
     Left = 11
     Height = 56
     Top = 8
-    Width = 818
+    Width = 685
     Anchors = [akTop, akLeft, akRight]
     AutoSize = False
     ParentColor = False
@@ -48,6 +48,24 @@ object tMessageWidget: tMessageWidget
     Top = 72
     Width = 702
     Anchors = [akTop, akLeft, akRight, akBottom]
+    ParentColor = False
+  end
+  object Label1: TLabel
+    Left = 710
+    Height = 15
+    Top = 9
+    Width = 66
+    Anchors = [akTop, akRight]
+    Caption = 'Enviado por:'
+    ParentColor = False
+  end
+  object sentByLabel: TLabel
+    Left = 710
+    Height = 15
+    Top = 31
+    Width = 63
+    Anchors = [akTop, akRight]
+    Caption = 'sentByLabel'
     ParentColor = False
   end
 end

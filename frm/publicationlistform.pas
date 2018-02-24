@@ -151,7 +151,7 @@ begin
       widget.top     := i * 206;
       widget.left    := 0;
       widget.width   := self.publicationContainer.Width;
-      widget.Height  := 100;
+      widget.Height  := 120;
       widget.Visible := true;
     end;
   self.publicationContainer.Refresh;

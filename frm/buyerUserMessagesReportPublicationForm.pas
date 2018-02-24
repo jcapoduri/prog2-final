@@ -69,11 +69,14 @@ begin
           for j := 0 to count2 - 1 do
             begin
               metru.core.dereferenceMessage(metruApp, messageList[j], message);
-              dataGrid.RowCount                    := dataGrid.RowCount + 1;
-              dataGrid.Cells[4, dataGrid.RowCount - 1] := DateTimeToStr(message.timestamp);
-              dataGrid.Cells[5, dataGrid.RowCount - 1] := message.answer;
-              dataGrid.Cells[6, dataGrid.RowCount - 1] := message.question;
-              msgCount := msgCount + 1;
+              if userId = message.idUser then
+                begin
+                  dataGrid.RowCount                        := dataGrid.RowCount + 1;
+                  dataGrid.Cells[4, dataGrid.RowCount - 1] := DateTimeToStr(message.timestamp);
+                  dataGrid.Cells[5, dataGrid.RowCount - 1] := message.answer;
+                  dataGrid.Cells[6, dataGrid.RowCount - 1] := message.question;
+                  msgCount := msgCount + 1;
+                end;
             end;
           dataGrid.RowCount := dataGrid.RowCount + 1;
           dataGrid.Cells[7, dataGrid.RowCount - 1] := IntToStr(msgCount);

@@ -35,6 +35,7 @@ type
                    end;
   tMessage       = record
                      number    : integer;
+                     idUser    : longint;
                      question  : string[255];
                      answer    : string[255];
                      timestamp : tDateTime;
@@ -811,6 +812,7 @@ implementation
     node        := _get(this, pos);
     node.lastID := node.lastID + 1;
     msg.number  := node.lastID;
+    msg.idUser  := sk;
     idxMsg      := _appendData(this, msg);    
     if node.first = NULLIDX then { first message}
       begin

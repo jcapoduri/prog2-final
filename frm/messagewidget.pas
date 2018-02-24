@@ -16,17 +16,18 @@ type
 
   tMessageWidget = class(TForm)
     doneButton: TBitBtn;
+    Label1: TLabel;
+    sentByLabel: TLabel;
     questionLabel: TLabel;
     responseLabel: TLabel;
     responseEdit: TMemo;
-    constructor Create(parentComponent : TComponent; User : tUser; msgIdx : tMessageIdx); overload;
+    constructor Create(parentComponent : TComponent; canResponseQuestion : boolean; msgIdx : tMessageIdx); overload;
     procedure doneButtonClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
   private
-    user       : tUser;
-    canEdit    : boolean;
-    messageIdx : tMessageIdx;
-    message    : tMessage;
+    canResponse : boolean;
+    messageIdx  : tMessageIdx;
+    message     : tMessage;
   public
 
   end;
@@ -40,11 +41,10 @@ implementation
 
 { tMessageWidget }
 
-constructor tMessageWidget.Create(parentComponent : TComponent; User : tUser; msgIdx : tMessageIdx);
+constructor tMessageWidget.Create(parentComponent : TComponent; canResponseQuestion : boolean; msgIdx : tMessageIdx);
 begin
-  self.user       := user;
-  self.messageIdx := msgIdx;
-  self.canEdit    := true;
+  self.messageIdx  := msgIdx;
+  self.canResponse := canResponseQuestion;
   metru.core.dereferenceMessage(metruApp, self.messageIdx, self.message);
   Create(parentComponent);
 end;
@@ -57,9 +57,13 @@ begin
 end;
 
 procedure tMessageWidget.FormCreate(Sender: TObject);
+var
+  usr : tUser;
 begin
+  if metru.core.retrieveUser(metruApp, message.idUser, usr) then
+    sentByLabel.Caption := usr.fullname;
   self.questionLabel.Caption := IntToStr(message.number) + ' - ' + message.question;
-  if (EmptyStr <> message.answer) then
+  if (EmptyStr <> message.answer) or (not canResponse) then
      begin
        responseLabel.Caption:= message.answer;
        responseEdit.Visible:=false;
