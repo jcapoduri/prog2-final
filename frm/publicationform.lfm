@@ -77,7 +77,7 @@ object tPublicationForm: tPublicationForm
     Top = 251
     Width = 50
     Increment = 1
-    MaxValue = 100
+    MaxValue = 1000000
     MinValue = 0
     TabOrder = 3
     Value = 0
