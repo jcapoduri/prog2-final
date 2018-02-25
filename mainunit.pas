@@ -133,9 +133,9 @@ end;
 
 procedure TmainWidget.reportByBuyerMenuItemClick(Sender: TObject);
 var
-  form : tSellerUserMessagesReportPublicationForm;
+  form : tBuyerUserMessagesReportPublicationForm;
 begin
-  form := tSellerUserMessagesReportPublicationForm.Create(self);
+  form := tBuyerUserMessagesReportPublicationForm.Create(self);
   setComponentOnPanel(form);
 end;
 
@@ -165,9 +165,9 @@ end;
 
 procedure TmainWidget.reportBySellerMenuItemClick(Sender: TObject);
 var
-  form : tBuyerUserMessagesReportPublicationForm;
+  form : tSellerUserMessagesReportPublicationForm;
 begin
-  form := tBuyerUserMessagesReportPublicationForm.Create(self);
+  form := tSellerUserMessagesReportPublicationForm.Create(self);
   setComponentOnPanel(form);
 end;
 
