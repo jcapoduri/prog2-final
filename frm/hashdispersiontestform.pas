@@ -61,10 +61,10 @@ var
   strToHash                  : string;
 begin
   count := metru.core.getMaxUserBuckets(metruApp);
-  self.resultStringGrid.RowCount := count + 1;
+  self.resultStringGrid.RowCount := count;
   max   := self.SpinEdit1.Value;
 
-  for i := 1 to count do self.resultStringGrid.Cells[0, i] := IntToStr(i);
+  for i := 0 to count - 1 do self.resultStringGrid.Cells[0, i] := IntToStr(i);
 
   for i := 1 to max do
     begin
@@ -80,10 +80,10 @@ var
   count, i, max, val, bucket : LongInt;
 begin
   count := metru.core.getMaxSellBuckets(metruApp);
-  self.resultStringGrid.RowCount := count + 1;
+  self.resultStringGrid.RowCount := count;
   max   := self.SpinEdit1.Value;
 
-  for i := 1 to count do self.resultStringGrid.Cells[0, i] := IntToStr(i);
+  for i := 0 to count - 1 do self.resultStringGrid.Cells[0, i] := IntToStr(i);
 
   for i := 1 to max do
     begin
