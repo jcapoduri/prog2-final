@@ -70,7 +70,7 @@ begin
     begin
       strToHash                         := MD5Print(MD5String(IntToStr(i)));
       bucket                            := metru.core.hashUser(metruApp, strToHash);
-      val                               := StrToIntDef(self.resultStringGrid.Cells[1, bucket + 1], 0) + 1;
+      val                               := StrToIntDef(self.resultStringGrid.Cells[1, bucket], 0) + 1;
       resultStringGrid.Cells[1, bucket] := IntToStr(val);
     end;
 end;
@@ -88,7 +88,7 @@ begin
   for i := 1 to max do
     begin
       bucket                            := metru.core.hashSell(metruApp, i);
-      val                               := StrToIntDef(self.resultStringGrid.Cells[1, bucket + 1], 0) + 1;
+      val                               := StrToIntDef(self.resultStringGrid.Cells[1, bucket], 0) + 1;
       resultStringGrid.Cells[1, bucket] := IntToStr(val);
     end;
 end;
