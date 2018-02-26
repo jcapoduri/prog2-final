@@ -106,9 +106,12 @@ end;
 
 procedure tPublicationSellWidget.sendQuestionButtonClick(Sender: TObject);
 begin
-  metru.core.postMessage(metruApp, self.publicationIdx, self.user, string(self.questionEdit.Text));
-  self.questionEdit.Text := EmptyStr;
-  populateMessages;
+  if Trim(self.questionEdit.Text) <> EmptyStr then
+    begin
+      metru.core.postMessage(metruApp, self.publicationIdx, self.user, string(self.questionEdit.Text));
+      self.questionEdit.Text := EmptyStr;
+      populateMessages;
+    end;
 end;
 
 end.
